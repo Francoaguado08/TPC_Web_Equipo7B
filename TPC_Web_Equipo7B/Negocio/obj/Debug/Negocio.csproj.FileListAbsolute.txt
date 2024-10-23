@@ -7,3 +7,12 @@ C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.csproj.CopyComplete
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.dll
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.pdb
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\bin\Debug\Negocio.dll
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\bin\Debug\Negocio.pdb
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\bin\Debug\Dominio.dll
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\bin\Debug\Dominio.pdb
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.csproj.AssemblyReference.cache
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.csproj.CoreCompileInputs.cache
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.csproj.Up2Date
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.dll
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Negocio\obj\Debug\Negocio.pdb

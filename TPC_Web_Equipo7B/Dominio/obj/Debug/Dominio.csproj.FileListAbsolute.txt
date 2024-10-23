@@ -4,3 +4,9 @@ C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.dll
 C:\Users\Franco\Desktop\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.pdb
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\bin\Debug\Dominio.dll
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\bin\Debug\Dominio.pdb
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.AssemblyReference.cache
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.dll
+D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.pdb

@@ -10,3 +10,9 @@ D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Domin
 D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
 D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.dll
 D:\ProyectoProgra3\TPC\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.pdb
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\bin\Debug\Dominio.dll
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\bin\Debug\Dominio.pdb
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.AssemblyReference.cache
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.dll
+E:\ProyectoEcommerce\TPC_Web_Equipo7B\TPC_Web_Equipo7B\Dominio\obj\Debug\Dominio.pdb

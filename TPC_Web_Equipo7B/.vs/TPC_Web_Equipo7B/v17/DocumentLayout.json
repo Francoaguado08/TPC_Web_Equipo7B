@@ -1,12 +1,85 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|d:\\proyectoprogra3\\tpc\\tpc_web_equipo7b\\tpc_web_equipo7b\\dominio\\marca.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|solutionrelative:dominio\\marca.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\dominio\\imagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|solutionrelative:dominio\\imagen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\dominio\\categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|solutionrelative:dominio\\categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\dominio\\articulo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B0936B-2272-4896-9D93-6D96AFDDF062}|Dominio\\Dominio.csproj|solutionrelative:dominio\\articulo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Marca.cs",
+              "DocumentMoniker": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Marca.cs",
+              "RelativeDocumentMoniker": "Dominio\\Marca.cs",
+              "ToolTip": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Marca.cs",
+              "RelativeToolTip": "Dominio\\Marca.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T00:56:49.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Imagen.cs",
+              "DocumentMoniker": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Imagen.cs",
+              "RelativeDocumentMoniker": "Dominio\\Imagen.cs",
+              "ToolTip": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Imagen.cs",
+              "RelativeToolTip": "Dominio\\Imagen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T00:56:47.637Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Categoria.cs",
+              "DocumentMoniker": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Categoria.cs",
+              "RelativeDocumentMoniker": "Dominio\\Categoria.cs",
+              "ToolTip": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Categoria.cs",
+              "RelativeToolTip": "Dominio\\Categoria.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T00:56:46.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Articulo.cs",
+              "DocumentMoniker": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Articulo.cs",
+              "RelativeDocumentMoniker": "Dominio\\Articulo.cs",
+              "ToolTip": "D:\\ProyectoProgra3\\TPC\\TPC_Web_Equipo7B\\TPC_Web_Equipo7B\\Dominio\\Articulo.cs",
+              "RelativeToolTip": "Dominio\\Articulo.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA5wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T00:56:43.533Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

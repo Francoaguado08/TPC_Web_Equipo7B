@@ -78,7 +78,7 @@ namespace TPC_Web
             {
                 ddlCriterio.Items.Clear();
                 //llamar a base de datos, listar marcas
-                MarcaNegocio marcasNegocios = new MarcaNegocio();
+                MarcasNegocio marcasNegocios = new MarcasNegocio();
                 List<Marca> misMarcas = marcasNegocios.listar();
                 foreach (Marca item in misMarcas)
                 {

@@ -14,7 +14,7 @@ namespace Negocio
         // Modifico el metodo listar para manejar multiples imagenes si es que lo contiene el articulo....
         public List<Articulo> listar()
         {
-            List<Articulo> lista = new List<Articulo>();
+            List<Articulo> lista = new List<Articulo>(); // Crea una lista de los 
             AccesoDatos datos = new AccesoDatos();
 
 
@@ -258,7 +258,9 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Descripcion AS Marca, C.Descripcion AS Categoria, A.Precio, M.Id AS IDMarca, C.Id AS IDCategoria FROM Articulos AS A, Marcas AS M, Categorias AS C WHERE M.Id = A.IdMarca AND C.Id = A.IdCategoria ";
+                string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, M.Id AS IDMarca, C.Id AS IDCategoria FROM Articulos AS A, Marcas AS M, Categorias AS C WHERE M.Id = A.IdMarca AND C.Id = A.IdCategoria ";
+                 
+                /// JOIN IMPLICITO //////
 
                 if (campo == "Precio")
                 {
@@ -274,11 +276,11 @@ namespace Negocio
                 }
                 else if (campo == "Categoría")
                 {
-                    consulta += "AND C.Descripcion = '" + criterio + "' ";
+                    consulta += "AND C.Nombre = '" + criterio + "' ";
                 }
                 else if (campo == "Marca")
                 {
-                    consulta += "AND M.Descripcion = '" + criterio + "' ";
+                    consulta += "AND M.Nombre = '" + criterio + "' ";
                 }
 
                 // Imprimir la consulta SQL generada
@@ -299,11 +301,11 @@ namespace Negocio
 
                     aux.Marca = new Marca();
                     aux.Marca.Descripcion = (string)datos.Lector["Marca"];
-                    aux.Marca.ID = (int)datos.Lector["IDMarca"];
+                    aux.Marca.ID = (int)datos.Lector["ID"];
 
                     aux.Categoria = new Categoria();
                     aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
-                    aux.Categoria.ID = (int)datos.Lector["IDCategoria"];
+                    aux.Categoria.ID = (int)datos.Lector["ID"];
 
                     lista.Add(aux);
                 }

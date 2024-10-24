@@ -244,80 +244,85 @@ namespace Negocio
             }
         }
 
-
-
-        //AGREGO FUNCION LISTARFILTADOS PARA MI DEFAULT.ASPX
         //public List<Articulo> listarFiltrados(string campo, string criterio)
         //{
-        //    List<Articulo> lista = new List<Articulo>();
-        //    AccesoDatos datos = new AccesoDatos();
-        //    try
-        //    {
-        //        string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Descripcion AS Marca, C.Descripcion AS Categoria, A.Precio, M.Id AS IDMarca, C.Id AS IDCategoria FROM Articulos AS A, Marcas AS M, Categorias AS C WHERE M.Id = A.IdMarca AND C.Id = A.IdCategoria ";
-
-        //        if (campo == "Precio")
-        //        {
-        //            switch (criterio)
-        //            {
-        //                case "Ascendente":
-        //                    consulta += "ORDER BY Precio ASC";
-        //                    break;
-        //                case "Descendente":
-        //                    consulta += "ORDER BY Precio DESC";
-        //                    break;
-        //            }
-        //        }
-        //        else if (campo == "Categoría")
-        //        {
-        //            consulta += "AND C.Descripcion = '" + criterio + "' ";
-        //        }
-        //        else if (campo == "Marca")
-        //        {
-        //            consulta += "AND M.Descripcion = '" + criterio + "' ";
-        //        }
-
-        //        // Imprimir la consulta SQL generada
-        //        Console.WriteLine(consulta);
-
-        //        datos.setearConsulta(consulta);
-        //        datos.ejecutarLectura();
-
-        //        while (datos.Lector.Read())
-        //        {
-        //            Articulo aux = new Articulo();
-
-        //            aux.ID = (int)datos.Lector["Id"];
-        //            aux.Codigo = (string)datos.Lector["Codigo"];
-        //            aux.Nombre = (string)datos.Lector["Nombre"];
-        //            aux.Descripcion = (string)datos.Lector["Descripcion"];
-        //            aux.Precio = (decimal)datos.Lector["Precio"];
-
-        //            aux.Marca = new Marca();
-        //            aux.Marca.Descripcion = (string)datos.Lector["Marca"];
-        //            aux.Marca.ID = (int)datos.Lector["IDMarca"];
-
-        //            aux.Categoria = new Categoria();
-        //            aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
-        //            aux.Categoria.ID = (int)datos.Lector["IDCategoria"];
-
-        //            lista.Add(aux);
-        //        }
-
-        //        return lista;
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        // Capturar y manejar excepciones SQL específicas
-        //        Console.WriteLine("Error de SQL: " + ex.Message);
-        //        throw;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Capturar y manejar otras excepciones
-        //        Console.WriteLine("Error: " + ex.Message);
-        //        throw;
-        //    }
+        //    throw new NotImplementedException();
         //}
+
+
+
+       // AGREGO FUNCION LISTARFILTADOS PARA MI DEFAULT.ASPX
+        public List<Articulo> listarFiltrados(string campo, string criterio)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Descripcion AS Marca, C.Descripcion AS Categoria, A.Precio, M.Id AS IDMarca, C.Id AS IDCategoria FROM Articulos AS A, Marcas AS M, Categorias AS C WHERE M.Id = A.IdMarca AND C.Id = A.IdCategoria ";
+
+                if (campo == "Precio")
+                {
+                    switch (criterio)
+                    {
+                        case "Ascendente":
+                            consulta += "ORDER BY Precio ASC";
+                            break;
+                        case "Descendente":
+                            consulta += "ORDER BY Precio DESC";
+                            break;
+                    }
+                }
+                else if (campo == "Categoría")
+                {
+                    consulta += "AND C.Descripcion = '" + criterio + "' ";
+                }
+                else if (campo == "Marca")
+                {
+                    consulta += "AND M.Descripcion = '" + criterio + "' ";
+                }
+
+                // Imprimir la consulta SQL generada
+                Console.WriteLine(consulta);
+
+                datos.setearConsulta(consulta);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Articulo aux = new Articulo();
+
+                    aux.ID = (int)datos.Lector["Id"];
+                    aux.Codigo = (string)datos.Lector["Codigo"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+                    aux.Precio = (decimal)datos.Lector["Precio"];
+
+                    aux.Marca = new Marca();
+                    aux.Marca.Descripcion = (string)datos.Lector["Marca"];
+                    aux.Marca.ID = (int)datos.Lector["IDMarca"];
+
+                    aux.Categoria = new Categoria();
+                    aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
+                    aux.Categoria.ID = (int)datos.Lector["IDCategoria"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (SqlException ex)
+            {
+                // Capturar y manejar excepciones SQL específicas
+                Console.WriteLine("Error de SQL: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Capturar y manejar otras excepciones
+                Console.WriteLine("Error: " + ex.Message);
+                throw;
+            }
+        }
 
 
 

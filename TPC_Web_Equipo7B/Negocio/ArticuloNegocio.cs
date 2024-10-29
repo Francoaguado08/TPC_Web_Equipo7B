@@ -20,7 +20,8 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, I.ImagenURL FROM ARTICULOS  AS A LEFT JOIN MARCAS M ON A.IDMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IDCategoria = C.ID LEFT JOIN IMAGENES I ON A.ID = I.IDArticulo");
+                datos.setearProcedimiento("SP_ListarArticulos");
+                //datos.setearConsulta("SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, I.ImagenURL FROM ARTICULOS  AS A LEFT JOIN MARCAS M ON A.IDMarca = M.Id LEFT JOIN CATEGORIAS C ON A.IDCategoria = C.ID LEFT JOIN IMAGENES I ON A.ID = I.IDArticulo");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())

@@ -10,6 +10,9 @@ namespace Negocio
     public class ImagenesNegocio
     {
 
+
+
+        //CONSULTA SQL CHEQUEADA!
         public List<Imagen> listar()
         {
             List<Imagen> lista = new List<Imagen>();
@@ -17,15 +20,15 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT ID, IdArticulo, ImagenURl FROM imagenes ");
+                datos.setearConsulta("SELECT ID, IDArticulo, ImagenURL FROM Imagenes ");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Imagen aux = new Imagen();
                     aux.ID = (int)datos.Lector["ID"];
-                    aux.IDArticulo = (int)datos.Lector["IdArticulo"];
-                    aux.ImagenURl = (string)datos.Lector["ImagenURl"];
+                    aux.IDArticulo = (int)datos.Lector["IDArticulo"];
+                    aux.ImagenURl = (string)datos.Lector["ImagenURL"];
 
                     lista.Add(aux);
                 }
@@ -43,7 +46,7 @@ namespace Negocio
         }
 
 
-
+        //CONSULTA SQL CHEQUEADA!
         public List<Imagen> listarImagenesArticuloSeleccionado(int idArticulo)
         {
             List<Imagen> lista = new List<Imagen>();
@@ -51,7 +54,7 @@ namespace Negocio
 
             try
             {
-                string consulta = String.Format("SELECT ImagenUrl FROM imagenes Where idArticulo = {0}", idArticulo);
+                string consulta = String.Format("SELECT ImagenURL FROM Imagenes WHERE IDArticulo = {0}", idArticulo);
 
 
                 datos.setearConsulta(consulta);
@@ -78,9 +81,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
-
-
 
         public Articulo listarArticulo(int idArticulo)
         {
@@ -144,13 +144,16 @@ namespace Negocio
 
 
 
+
+
+        //Consulta SQL CHEQUEADA!
         public void agregarImagen(Imagen nuevaImagen)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
                 // Insertar en IMAGENES
-                string consulta = "INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl);";
+                string consulta = "INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl);";
                 datos.setearConsulta(consulta);
 
                 // Establecer parámetros para la imagen
@@ -167,14 +170,15 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
+      
+        //Consulta SQL CHEQUEADA!
         public void actualizarImagen(Imagen nuevaImagen)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
                 // Actualizar IMAGENES
-                string consulta = "UPDATE imagenes SET ImagenUrl=@ImagenUrl WHERE IdArticulo=@IdArticulo AND ID=@ID;";
+                string consulta = "UPDATE Imagenes SET ImagenURL = @ImagenUrl WHERE IDArticulo = @IdArticulo AND ID = @ID;";
                 datos.setearConsulta(consulta);
 
                 // Establecer parámetros para la imagen
@@ -194,6 +198,8 @@ namespace Negocio
             }
         }
 
+
+        //Consulta SQL CHEQUEADA!
         public void eliminar(int id)
         {
             try
@@ -209,11 +215,12 @@ namespace Negocio
             }
         }
 
+        //Verificada !
         public bool TieneProductosAsociados(Imagen imagen)
         {
             AccesoDatos datos = new AccesoDatos();
             // Consulta SQL para contar los productos asociados a la imagen
-            datos.setearConsulta("SELECT COUNT(*) FROM IMAGENES I INNER JOIN Articulos A ON I.IDArticulo=A.ID WHERE I.ID=@IDImagen;");
+            datos.setearConsulta("SELECT COUNT(*) FROM Imagenes I INNER JOIN Articulos A ON I.IDArticulo= A.ID WHERE I.ID = @IDImagen;");
             datos.setearParametro("@IDImagen", imagen.ID);
             // Verifica cuántos productos asociados a la imagen hay
             int cantidadProductos = datos.ejecutarScalar();
@@ -221,6 +228,9 @@ namespace Negocio
             return cantidadProductos > 0;
         }
 
+       
+        
+        
         public void vincularImagenes(List<Articulo> articulos, List<Imagen> imagenes)
         {
 

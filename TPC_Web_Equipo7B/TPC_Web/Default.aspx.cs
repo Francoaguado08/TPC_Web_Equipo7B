@@ -16,34 +16,52 @@ namespace TPC_Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (!IsPostBack) 
             {
-                obtenerProductos();
+                 obtenerProductos(); 
+                             
+                // Añade opciones al dropdown `ddlFiltrarPor`
+                ddlFiltrarPor.Items.Add("Precio");     
+                ddlFiltrarPor.Items.Add("Categoría");    
+                ddlFiltrarPor.Items.Add("Marca");        
 
-                ddlFiltrarPor.Items.Add("Precio");
-                ddlFiltrarPor.Items.Add("Categoría");
-                ddlFiltrarPor.Items.Add("Marca");
+                // Inserta un elemento vacío en el índice 0 del dropdown, que aparece al inicio como valor predeterminado vacío
                 ddlFiltrarPor.Items.Insert(0, new ListItem(string.Empty, string.Empty));
-                ddlFiltrarPor.SelectedIndex = 0;
+                ddlFiltrarPor.SelectedIndex = 0; // Establece el índice de selección en el valor predeterminado (vacío).
 
+                // Inicializa `ddlCriterio` (otro dropdown) con un elemento vacío
                 ddlCriterio.Items.Insert(0, new ListItem(string.Empty, string.Empty));
-                ddlCriterio.SelectedIndex = 0;
+                ddlCriterio.SelectedIndex = 0; // Establece el índice de selección en el valor predeterminado (vacío).
+
+
             }
             else
-            {
+            {   // Si es una carga de página después de un `PostBack`, recupera la lista de artículos desde la sesión.
                 listaArticulo = (List<Articulo>)Session["articulos"];
             }
         }
 
+
+
+
+
+
+        //      Llama a la base de datos para obtener los artículos e imágenes.
+        //      Vincula las imágenes con cada artículo usando vincularImagenes.
+        //      Guarda la lista en la sesión para que esté disponible en toda la página y en futuros postbacks.
         private void obtenerProductos()
         {
             ArticuloNegocio articulos = new ArticuloNegocio();
             ImagenesNegocio imagenes = new ImagenesNegocio();
-            List<Imagen> misImagenes = new List<Imagen>();
-            misImagenes = imagenes.listar();
-            listaArticulo = new List<Articulo>();
+
+            // Obtiene las imágenes y los artículos
+            List<Imagen> misImagenes = imagenes.listar();
             listaArticulo = articulos.listar();
+
+            // Vincula las imágenes con los artículos
             imagenes.vincularImagenes(listaArticulo, misImagenes);
+
+            // Guarda la lista de artículos en la sesión
             if (Session["articulos"] == null)
             {
                 Session.Add("articulos", listaArticulo);
@@ -52,12 +70,18 @@ namespace TPC_Web
             {
                 Session["articulos"] = listaArticulo;
             }
+
+
         }
 
 
 
 
 
+
+
+
+        //      ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------> 
         protected void ddlCriterio_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["criterio"] = ddlCriterio.SelectedItem.ToString();
@@ -142,7 +166,6 @@ namespace TPC_Web
             }
             Session["articulos"] = listaArticulo;
         }
-
         protected void btnBuscar_Click1(object sender, EventArgs e)
         {
             ArticuloNegocio articulos = new ArticuloNegocio();
@@ -158,5 +181,11 @@ namespace TPC_Web
                 listaArticulo = (List<Articulo>)Session["articulos"];
             }
         }
+
+
+        //   < ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------
+
+
+
     }
 }

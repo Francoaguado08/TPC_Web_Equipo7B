@@ -32,6 +32,9 @@
              </div>     
         </div>
 
+
+
+
          <%--MOSTRAR IMAGEN EN CARTA CON CIERTA PROPIEDAD--%>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <% foreach (Dominio.Articulo arti in listaArticulo) { %>
@@ -51,8 +54,8 @@
                         <h5 class="card-title"><%= arti.Nombre %></h5>
                         <p class="card-text"><%= arti.Descripcion %></p>
                         <p class="card-text"><strong>ARS <%= arti.Precio %></strong></p>
-                        <a href="DetalleArticulo.aspx?id=<%= arti.ID %>" class="btn btn-primary">Ver más</a>
-                    </div>
+                        <a href="DetalleArticulo.aspx?id=<%= arti.ID %>" class="btn btn-primary">Ver más</a>  <%--ACA LE MANDAMOS EL ID DEL ARTICULO!--%>
+                    </div> 
                 </div>
             </div>
             <% } %>

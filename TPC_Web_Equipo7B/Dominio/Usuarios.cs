@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
+    public enum TipoUsuario
+    {
+        Admin = 1,
+        Cliente =2
+    }
     public class Usuarios
     {
 
         public int IDUsuario { get; set; }
         public string Contraseña { get; set; }
         public string Email { get; set; }
-        public int IDTipoUsuario { get; set; }
+        public TipoUsuario TipoUsuario { get; set; }
         public string Nombre { get; set; }
 
 
@@ -21,12 +26,12 @@ namespace Dominio
         }
 
 
-        public Usuarios(int idusuario, string contraseña, string email, int idtipousuario, string nombre)
+        public Usuarios(int idusuario, string contraseña, string email, bool admin, string nombre)
         {
             this.IDUsuario = idusuario;
             this.Contraseña = contraseña;
             this.Email = email;
-            this.IDTipoUsuario = idtipousuario;
+            TipoUsuario = admin ? TipoUsuario.Admin : TipoUsuario.Cliente;
             this.Nombre = nombre;
         }
     }

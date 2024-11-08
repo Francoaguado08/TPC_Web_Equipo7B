@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dominio;
+using Negocio;
+using System;
 using System.Web;
 using System.Web.UI;
 
@@ -17,29 +19,28 @@ namespace TPC_Web
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtUsername.Text;
-            string password = txtPassword.Text;
+            Usuarios usuarios;
+            UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Lógica de autenticación simulada (reemplazar con la lógica real)
-            if (AutenticarUsuario(username, password))
+            try
             {
-                // Almacena el nombre de usuario en la sesión y redirige a la página principal
-                Session["Usuario"] = username;
-                Response.Redirect("Default.aspx");
+                usuarios = new Usuarios(0,txtUsername.Text,txtPassword.Text,false,"");
+                if (negocio.Loguear(usuarios))
+                {
+                    Session.Add("Usuario",usuarios);
+                    Response.Redirect("Default.aspx");
+                }
+                else
+                {
+                    Session.Add("Error", "Usuario o contraseña incorrectas");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Muestra un mensaje de error si la autenticación falla
-                lblError.Text = "Usuario o contraseña incorrectos.";
-                lblError.Visible = true;
-            }
-        }
 
-        private bool AutenticarUsuario(string username, string password)
-        {
-            // Reemplaza este código con tu lógica de autenticación real
-            // Aquí podrías consultar una base de datos, por ejemplo
-            return username == "admin" && password == "1234";
+                Session.Add("Error", ex.ToString());
+            }
+
         }
     }
 }

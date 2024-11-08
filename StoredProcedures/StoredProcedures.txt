@@ -1,0 +1,124 @@
+                  Stored Procedures
+Clase Articulo: 
+SOlO EJECUTE EN SQL EL SP DE LISTAR POR EL MOMENTO, PERO LOS DEMAS LOS TENGO PREPARADOS POR SI NECESITO QUE EL CODIGO QUEDE MAS SOFISTICADO.
+
+CREATE PROCEDURE SP_ListarArticulos
+   AS
+   BEGIN
+		SELECT
+		A.ID,
+        A.Codigo,
+        A.Nombre,
+        A.Descripcion,
+        A.Precio,
+        M.Nombre AS Marca,
+        C.Nombre AS Categoria,
+        I.ImagenURL
+ 
+		 FROM 
+        Articulos AS A
+    LEFT JOIN 
+        Marcas AS M ON A.IDMarca = M.Id
+    LEFT JOIN 
+        Categorias AS C ON A.IDCategoria = C.Id
+    LEFT JOIN 
+        Imagenes AS I ON A.ID = I.IDArticulo
+	END;
+
+
+CREATE PROCEDURE SP_AgregarImagen
+    @IDArticulo INT,
+    @ImagenURL NVARCHAR(MAX)
+AS
+BEGIN
+    INSERT INTO Imagenes (IDArticulo, ImagenURL)
+    VALUES (@IDArticulo, @ImagenURL);
+END;
+
+CREATE PROCEDURE SP_EliminarArticulo
+    @ID INT
+AS
+BEGIN
+    DELETE FROM Articulos
+    WHERE ID = @ID;
+END;
+
+CREATE PROCEDURE SP_ModificarArticulo
+    @ID INT,
+    @Codigo NVARCHAR(50),
+    @Nombre NVARCHAR(50),
+    @Descripcion NVARCHAR(MAX),
+    @Precio DECIMAL(18,2)
+AS
+BEGIN
+    UPDATE Articulos
+    SET Codigo = @Codigo,
+        Nombre = @Nombre,
+        Descripcion = @Descripcion,
+        Precio = @Precio
+    WHERE ID = @ID;
+END;
+
+
+CREATE PROCEDURE SP_ModificarCategoriaArticulo
+    @IDArticulo INT,
+    @IDCategoria INT
+AS
+BEGIN
+    UPDATE Articulos
+    SET IDCategoria = @IDCategoria
+    WHERE ID = @IDArticulo;
+END;
+
+CREATE PROCEDURE SP_ModificarMarcaArticulo
+    @IDArticulo INT,
+    @IDMarca INT
+AS
+BEGIN
+    UPDATE Articulos
+    SET IDMarca = @IDMarca
+    WHERE ID = @IDArticulo;
+END;
+
+
+CREATE PROCEDURE SP_ModificarImagenArticulo
+    @IDArticulo INT,
+    @ImagenURL NVARCHAR(MAX)
+AS
+BEGIN
+    UPDATE Imagenes
+    SET ImagenURL = @ImagenURL
+    WHERE ID = (
+        SELECT TOP 1 ID
+        FROM Imagenes
+        WHERE IDArticulo = @IDArticulo
+    );
+END;
+
+
+CREATE PROCEDURE SP_ListarFiltrados
+    @Campo NVARCHAR(50),
+    @Criterio NVARCHAR(50)
+AS
+BEGIN
+    DECLARE @Consulta NVARCHAR(MAX);
+    SET @Consulta = 'SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, 
+                            M.Nombre AS Marca, C.Nombre AS Categoria, 
+                            A.Precio, M.ID AS IDMarca, C.ID AS IDCategoria
+                     FROM Articulos A
+                     INNER JOIN Marcas M ON A.IDMarca = M.ID
+                     INNER JOIN Categorias C ON A.IDCategoria = C.ID';
+
+    IF @Campo = 'Precio' AND @Criterio = 'Ascendente'
+        SET @Consulta += ' ORDER BY A.Precio ASC';
+    ELSE IF @Campo = 'Precio' AND @Criterio = 'Descendente'
+        SET @Consulta += ' ORDER BY A.Precio DESC';
+    ELSE IF @Campo = 'Categoría'
+        SET @Consulta += ' WHERE C.Nombre = ''' + @Criterio + '''';
+    ELSE IF @Campo = 'Marca'
+        SET @Consulta += ' WHERE M.Nombre = ''' + @Criterio + '''';
+
+    EXEC sp_executesql @Consulta;
+END;
+
+

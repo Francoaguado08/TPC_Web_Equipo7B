@@ -46,7 +46,12 @@ namespace Negocio
         }
 
 
-        //CONSULTA SQL CHEQUEADA!
+     
+
+
+
+
+
         public List<Imagen> listarImagenesArticuloSeleccionado(int idArticulo)
         {
             List<Imagen> lista = new List<Imagen>();
@@ -54,26 +59,30 @@ namespace Negocio
 
             try
             {
-                string consulta = String.Format("SELECT ImagenURL FROM Imagenes WHERE IDArticulo = {0}", idArticulo);
-
-
+                string consulta = $"SELECT ImagenURL FROM Imagenes WHERE IDArticulo = {idArticulo}";
                 datos.setearConsulta(consulta);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Imagen aux = new Imagen();
-                    //aux.IDImagen = (int)datos.Lector["Id"];
-                    //aux.IDArticulo = (int)datos.Lector["IdArticulo"];
-                    aux.ImagenURl = (string)datos.Lector["ImagenUrl"];
-
+                    Imagen aux = new Imagen
+                    {
+                        IDArticulo = idArticulo,
+                        ImagenURl = (string)datos.Lector["ImagenUrl"]
+                    };
                     lista.Add(aux);
                 }
+
+                // Si no hay imágenes, agrega una imagen predeterminada
+                if (lista.Count == 0)
+                {
+                    lista.Add(new Imagen { ImagenURl = "https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png" });
+                }
+
                 return lista;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
@@ -81,6 +90,19 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public Articulo listarArticulo(int idArticulo)
         {

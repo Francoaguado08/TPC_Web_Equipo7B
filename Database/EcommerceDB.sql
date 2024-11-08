@@ -92,6 +92,14 @@ CREATE TABLE DetallesPedidos (
 );
 
 
+------------------------------------------------------------ hasta aca es la creacion!------------------------------------
+
+
+
+
+
+
+
 
 --INSERTAR DATOS!
 
@@ -132,9 +140,7 @@ VALUES
 
 
 
--- Insertar Tipos de Usuario (Admin, Cliente)
-INSERT INTO TiposUsuario (Nombre)
-VALUES ('Admin'), ('Cliente');
+
 
 
 -- Insertar usuarios
@@ -177,8 +183,7 @@ SELECT * FROM Articulos;
 -- Seleccionar todos los datos de la tabla Imágenes
 SELECT * FROM Imagenes;
 
--- Seleccionar todos los datos de la tabla Tipos de Usuario
-SELECT * FROM TiposUsuario;
+
 
 -- Seleccionar todos los datos de la tabla Usuarios
 SELECT * FROM Usuarios;
@@ -191,3 +196,44 @@ SELECT * FROM Pedidos;
 
 -- Seleccionar todos los datos de la tabla Detalles del Pedido
 SELECT * FROM DetallesPedidos;
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+-- ELIMINAR TABLA DEL TIPOUSERS
+	SELECT 
+    name AS ForeignKeyName 
+FROM 
+    sys.foreign_keys 
+WHERE 
+    referenced_object_id = OBJECT_ID('TiposUsuario') 
+    AND parent_object_id = OBJECT_ID('Usuarios');
+-- PRIMERO ESTO
+
+
+
+
+--2
+ALTER TABLE Usuarios
+DROP CONSTRAINT FK__Usuarios__IDTipo__44FF419A;  --(PRIMERO ESTAS DOS LINEAS)
+
+
+DROP TABLE TiposUsuario; -- (LUEGO ESTA LINEA.)
+
+
+-----------------------------------------------------------------------------------------------------
+ 
+
+ --INSERTO MAS IMAGENES PARA PROBAR EL CARROUSEL...
+ -- Insertar imágenes para los artículos
+INSERT INTO Imagenes (IDArticulo, ImagenURL)
+VALUES 
+(1, 'https://tienda.personal.com.ar/images/Smart_TV_43_4_K_AU_7000_Frente_min_9ec8fb1c52.png'),  -- Samsung Smart TV
+(2, 'https://icenter.ar/wp-content/uploads/2024/06/ip-13-usado.png'),      -- iPhone 13
+
+(3, 'https://www.techopedia.com/wp-content/uploads/2024/09/PS5-Pro-vs-PS5-How-Does-the-Upgraded-PlayStation-5-Compare.jpg'); --PS5
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------

@@ -22,6 +22,9 @@ namespace Dominio
         
         //Es una lista de URLS COMO ATRIBUTO.
         public List<string> ImagenURL { get; set; } = new List<string>();
+
+        public int Cantidad { get; set; } // Agrega esta propiedad
+
     }
 
 }

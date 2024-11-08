@@ -29,7 +29,7 @@
                     // Itera sobre cada imagen y añade un nuevo item al carrusel.
                     for (int i = 0; i < listaImagenes.Count; i++)
                     { %>
-                <div class="carousel-item <%= (i == 0) ? "active" : "" %>">
+                <div class="carousel-item <%=(i == 0) ? "active" : "" %>">
                     <img src="<%= listaImagenes[i].ImagenURl %>" class="d-block w-100" alt="Imagen del producto"
                          onerror="this.src='<%= defaultUrl %>'" style="height: auto; width: 100%;">
                 </div>
@@ -48,8 +48,7 @@
         </button>
     </div>
 
-    <!-- Bootstrap JS (para el carrusel) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 
 
 

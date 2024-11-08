@@ -101,7 +101,9 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Carrousel.aspx" />
+    <Content Include="Checkout.aspx" />
     <Content Include="Compras.aspx" />
+    <Content Include="ConfirmacionCompra.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -181,12 +183,26 @@
     <Compile Include="Carrousel.aspx.designer.cs">
       <DependentUpon>Carrousel.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Checkout.aspx.cs">
+      <DependentUpon>Checkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Checkout.aspx.designer.cs">
+      <DependentUpon>Checkout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Compras.aspx.cs">
       <DependentUpon>Compras.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Compras.aspx.designer.cs">
       <DependentUpon>Compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmacionCompra.aspx.cs">
+      <DependentUpon>ConfirmacionCompra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfirmacionCompra.aspx.designer.cs">
+      <DependentUpon>ConfirmacionCompra.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>

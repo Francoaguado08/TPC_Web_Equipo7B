@@ -60,7 +60,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <a href="Comprar.aspx" class="btn btn-primary float-end">Comprar</a>
+                <a href="Checkout.aspx" class="btn btn-primary float-end">Comprar</a>
             </div>
         </div>
     </div>

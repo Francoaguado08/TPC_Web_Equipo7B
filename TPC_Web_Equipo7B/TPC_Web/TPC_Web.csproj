@@ -100,7 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="Carrousel.aspx" />
+    <Content Include="AdministrarArticulos.aspx" />
+    <Content Include="AltaProducto.aspx" />
     <Content Include="Checkout.aspx" />
     <Content Include="Compras.aspx" />
     <Content Include="ConfirmacionCompra.aspx" />
@@ -125,6 +126,7 @@
     <Content Include="Default.aspx" />
     <Content Include="DetalleArticulo.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="GestionarImagenes.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -167,6 +169,20 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdministrarArticulos.aspx.cs">
+      <DependentUpon>AdministrarArticulos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrarArticulos.aspx.designer.cs">
+      <DependentUpon>AdministrarArticulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AltaProducto.aspx.cs">
+      <DependentUpon>AltaProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AltaProducto.aspx.designer.cs">
+      <DependentUpon>AltaProducto.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -176,13 +192,6 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Carrousel.aspx.cs">
-      <DependentUpon>Carrousel.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Carrousel.aspx.designer.cs">
-      <DependentUpon>Carrousel.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Checkout.aspx.cs">
       <DependentUpon>Checkout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -224,6 +233,13 @@
     </Compile>
     <Compile Include="DetalleArticulo.aspx.designer.cs">
       <DependentUpon>DetalleArticulo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarImagenes.aspx.cs">
+      <DependentUpon>GestionarImagenes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionarImagenes.aspx.designer.cs">
+      <DependentUpon>GestionarImagenes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

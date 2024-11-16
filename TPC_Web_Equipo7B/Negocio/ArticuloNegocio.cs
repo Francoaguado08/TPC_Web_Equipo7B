@@ -100,30 +100,62 @@ namespace Negocio
             }
         }
 
-        public void agregarImagen(Articulo nuevoArticulo)
+
+
+        //este metodo de agregar devuelve INT, lo utilizo en el btnGuardar de alta de Producto.
+        public int agregarr(Articulo nuevo)
+        {
+            AccesoDatos acceso = new AccesoDatos();
+            try
+            {
+                acceso.setearConsulta("INSERT INTO Articulos (Codigo, Nombre, Descripcion, Precio, IDMarca, IDCategoria) " +
+                                      "OUTPUT INSERTED.ID " +
+                                      "VALUES (@Codigo, @Nombre, @Descripcion, @Precio, @IDMarca, @IDCategoria)");
+
+                acceso.setearParametro("@Codigo", nuevo.Codigo);
+                acceso.setearParametro("@Nombre", nuevo.Nombre);
+                acceso.setearParametro("@Descripcion", nuevo.Descripcion);
+                acceso.setearParametro("@Precio", nuevo.Precio);
+                acceso.setearParametro("@IDMarca", nuevo.Marca.ID);
+                acceso.setearParametro("@IDCategoria", nuevo.Categoria.ID);
+
+                int idArticulo = acceso.ejecutarScalar(); // Cambiar a un método que devuelva el valor
+                return idArticulo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                acceso.cerrarConexion();
+            }
+        }
+
+
+        public void agregarImagen(int idArticulo, string imagenURL)
         {
             AccesoDatos datos = new AccesoDatos();
-            Articulo articulo = new Articulo();
-            articulo = listar().Last();
 
             try
             {
-                int idArticulo = articulo.ID;
                 datos.setearConsulta("INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IDArticulo, @ImagenURL)");
                 datos.setearParametro("@IDArticulo", idArticulo);
-                datos.setearParametro("@ImagenURL", nuevoArticulo.ImagenURL);
-                datos.cerrarConexion();
+                datos.setearParametro("@ImagenURL", imagenURL);
                 datos.ejecutarAccion();
             }
-            catch ///(Exception ex)
+            catch (Exception ex)
             {
-                throw; ///ex;
+                throw ex;
             }
             finally
             {
                 datos.cerrarConexion();
             }
         }
+
+
+
 
         public void eliminarArticulo(int ID)
         {
@@ -141,6 +173,9 @@ namespace Negocio
             finally { datos.cerrarConexion(); }
         }
 
+        
+        
+        
         // --- MODIFICAR (arranca acá) ---
         public void modificar(Articulo modificar)
         {
@@ -326,6 +361,75 @@ namespace Negocio
                 throw;
             }
         }
+
+
+
+        // Método para obtener un artículo por su ID
+
+
+       
+        
+        
+        
+        public Articulo ObtenerPorId(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                string consulta = "SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, A.IDCategoria, A.IDMarca, A.Precio, " +
+                                  "C.Nombre AS NombreCategoria, M.Nombre AS NombreMarca " +
+                                  "FROM Articulos A " +
+                                  "INNER JOIN Categorias C ON A.IDCategoria = C.ID " +
+                                  "INNER JOIN Marcas M ON A.IDMarca = M.ID " +
+                                  "WHERE A.ID = @ID";
+
+                datos.setearConsulta(consulta);
+                datos.setearParametro("@ID", id);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Articulo articulo = new Articulo
+                    {
+                        ID = (int)datos.Lector["ID"],
+                        Codigo = (string)datos.Lector["Codigo"],
+                        Nombre = (string)datos.Lector["Nombre"],
+                        Descripcion = (string)datos.Lector["Descripcion"],
+                        Precio = (decimal)datos.Lector["Precio"],
+                        Categoria = new Categoria
+                        {
+                            ID = (int)datos.Lector["IDCategoria"],
+                            Nombre = (string)datos.Lector["NombreCategoria"]
+                        },
+                        Marca = new Marca
+                        {
+                            ID = (int)datos.Lector["IDMarca"],
+                            Nombre = (string)datos.Lector["NombreMarca"]
+                        }
+                    };
+
+                    return articulo;
+                }
+
+                return null; // Si no se encuentra el artículo
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
+
+
+
 
 
 

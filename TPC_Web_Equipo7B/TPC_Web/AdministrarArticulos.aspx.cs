@@ -53,7 +53,7 @@ namespace TPC_Web
         protected void btnNuevoArticulo_Click(object sender, EventArgs e)
         {
             // Redirige a la página de alta de artículo
-            Response.Redirect("AltaArticulo.aspx");
+            Response.Redirect("AltaProducto.aspx");
         }
 
 

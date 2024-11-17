@@ -75,6 +75,12 @@ namespace TPC_Web
             articulo.Nombre = txtNombre.Text;
             articulo.Descripcion = txtDescripcion.Text;
 
+            if (decimal.TryParse(txtPrecio.Text, out decimal precio))
+            {
+                articulo.Precio = precio;
+            }
+
+
             // Asignar la categoría seleccionada
             if (int.TryParse(ddlCategorias.SelectedValue, out int categoriaId))
             {
@@ -113,6 +119,8 @@ namespace TPC_Web
 
             // Agregar el artículo a la lista en la sesión
             temporal.Add(articulo);
+
+            negocioArticulo.agregar(articulo);
 
             // Redirigir a la página de administración de artículos
             Response.Redirect("AdministrarArticulos.aspx", false);

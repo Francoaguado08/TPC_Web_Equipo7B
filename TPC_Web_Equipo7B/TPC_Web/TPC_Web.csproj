@@ -101,6 +101,8 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="AdministrarArticulos.aspx" />
+    <Content Include="AdministrarCategoria.aspx" />
+    <Content Include="AdministrarMarca.aspx" />
     <Content Include="AltaProducto.aspx" />
     <Content Include="Checkout.aspx" />
     <Content Include="Compras.aspx" />
@@ -126,7 +128,6 @@
     <Content Include="Default.aspx" />
     <Content Include="DetalleArticulo.aspx" />
     <Content Include="favicon.ico" />
-    <Content Include="GestionarImagenes.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -175,6 +176,20 @@
     </Compile>
     <Compile Include="AdministrarArticulos.aspx.designer.cs">
       <DependentUpon>AdministrarArticulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrarCategoria.aspx.cs">
+      <DependentUpon>AdministrarCategoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrarCategoria.aspx.designer.cs">
+      <DependentUpon>AdministrarCategoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrarMarca.aspx.cs">
+      <DependentUpon>AdministrarMarca.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrarMarca.aspx.designer.cs">
+      <DependentUpon>AdministrarMarca.aspx</DependentUpon>
     </Compile>
     <Compile Include="AltaProducto.aspx.cs">
       <DependentUpon>AltaProducto.aspx</DependentUpon>
@@ -233,13 +248,6 @@
     </Compile>
     <Compile Include="DetalleArticulo.aspx.designer.cs">
       <DependentUpon>DetalleArticulo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionarImagenes.aspx.cs">
-      <DependentUpon>GestionarImagenes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionarImagenes.aspx.designer.cs">
-      <DependentUpon>GestionarImagenes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

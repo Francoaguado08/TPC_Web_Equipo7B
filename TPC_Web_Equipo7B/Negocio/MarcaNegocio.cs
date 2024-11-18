@@ -23,7 +23,7 @@ namespace Negocio
                 {
                     Marca aux = new Marca();
                     aux.ID = (int)datos.Lector["ID"];
-                    aux.Descripcion = (string)datos.Lector["Nombre"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
 
                     lista.Add(aux);
                 }

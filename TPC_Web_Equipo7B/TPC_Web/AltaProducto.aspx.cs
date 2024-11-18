@@ -39,8 +39,7 @@ namespace TPC_Web
                     ddlCategorias.SelectedValue = seleccionado.Categoria.ID.ToString();
                     ddlMarcas.SelectedValue = seleccionado.Marca.ID.ToString();
 
-                    // Mostrar las URLs existentes (concatenarlas en el TextBox o mostrarlas de otra forma)
-                    txtUrlImagen.Text = string.Join(", ", seleccionado.ImagenURL);
+                  
                 }
             }
         }
@@ -50,7 +49,7 @@ namespace TPC_Web
             // Cargar las categorías desde la base de datos
             List<Categoria> categorias = negocioCategoria.listar();
             ddlCategorias.DataSource = categorias;
-            ddlCategorias.DataTextField = "Descripcion";
+            ddlCategorias.DataTextField = "Nombre";
             ddlCategorias.DataValueField = "ID";
             ddlCategorias.DataBind();
         }
@@ -60,7 +59,7 @@ namespace TPC_Web
             // Cargar las marcas desde la base de datos
             List<Marca> marcas = negocioMarca.listar();
             ddlMarcas.DataSource = marcas;
-            ddlMarcas.DataTextField = "Descripcion";
+            ddlMarcas.DataTextField = "Nombre";
             ddlMarcas.DataValueField = "ID";
             ddlMarcas.DataBind();
         }
@@ -87,7 +86,7 @@ namespace TPC_Web
                 articulo.Categoria = new Categoria
                 {
                     ID = categoriaId,
-                    Descripcion = ddlCategorias.SelectedItem.Text
+                    Nombre = ddlCategorias.SelectedItem.Text
                 };
             }
 
@@ -97,16 +96,11 @@ namespace TPC_Web
                 articulo.Marca = new Marca
                 {
                     ID = marcaId,
-                    Descripcion = ddlMarcas.SelectedItem.Text
+                    Nombre = ddlMarcas.SelectedItem.Text
                 };
             }
 
-            // Asignar la URL de la imagen
-            if (!string.IsNullOrEmpty(txtUrlImagen.Text))
-            {
-                articulo.ImagenURL.Add(txtUrlImagen.Text);
-            }
-
+            
             // Verificar si la sesión contiene la lista de artículos
             List<Articulo> temporal = (List<Articulo>)Session["listaArticulos"];
 

@@ -11,7 +11,7 @@ namespace TPC_Web
 {
 
 
-    public partial class AltaProducto
+    public partial class EditarProducto
     {
 
         /// <summary>

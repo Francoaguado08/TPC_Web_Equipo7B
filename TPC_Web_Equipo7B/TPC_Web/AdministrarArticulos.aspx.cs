@@ -35,21 +35,9 @@ namespace TPC_Web
             gvArticulos.DataBind();
         }
 
-        protected void gvArticulos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            // Verificar que hay una fila seleccionada
-            if (gvArticulos.SelectedIndex >= 0)
-            {
-                // Obtener el ID del artículo seleccionado
-                int id = Convert.ToInt32(gvArticulos.SelectedDataKey.Value);
-
-                // Redirigir a la página de gestión de imágenes
-                Response.Redirect("GestionarImagenes.aspx?id=" + id,false);
-                // Detener el ciclo de vida de la página
-                 Context.ApplicationInstance.CompleteRequest();
-            }
-        }
+       
+        
+        
         protected void btnNuevoArticulo_Click(object sender, EventArgs e)
         {
             // Redirige a la página de alta de artículo

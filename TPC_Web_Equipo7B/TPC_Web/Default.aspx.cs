@@ -106,7 +106,7 @@ namespace TPC_Web
                 List<Marca> misMarcas = marcasNegocios.listar();
                 foreach (Marca item in misMarcas)
                 {
-                    ddlCriterio.Items.Add(item.Descripcion);
+                    ddlCriterio.Items.Add(item.Nombre);
                 }
                 Session.Add("criterio", ddlCriterio.SelectedItem.ToString());
 
@@ -119,7 +119,7 @@ namespace TPC_Web
                 List<Categoria> misCategorias = categoriasNegocios.listar();
                 foreach (Categoria item in misCategorias)
                 {
-                    ddlCriterio.Items.Add(item.Descripcion);
+                    ddlCriterio.Items.Add(item.Nombre);
                 }
                 Session.Add("criterio", ddlCriterio.SelectedItem.ToString());
             }

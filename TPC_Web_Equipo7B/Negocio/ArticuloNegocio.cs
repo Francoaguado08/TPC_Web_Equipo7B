@@ -336,11 +336,11 @@ namespace Negocio
                     aux.Precio = (decimal)datos.Lector["Precio"];
 
                     aux.Marca = new Marca();
-                    aux.Marca.Descripcion = (string)datos.Lector["Marca"];
+                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
                     aux.Marca.ID = (int)datos.Lector["ID"];
 
                     aux.Categoria = new Categoria();
-                    aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
+                    aux.Categoria.Nombre = (string)datos.Lector["Categoria"];
                     aux.Categoria.ID = (int)datos.Lector["ID"];
 
                     lista.Add(aux);

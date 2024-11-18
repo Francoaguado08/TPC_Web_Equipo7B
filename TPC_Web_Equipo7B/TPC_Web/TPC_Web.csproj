@@ -102,6 +102,7 @@
     <Content Include="About.aspx" />
     <Content Include="AdministrarArticulos.aspx" />
     <Content Include="AdministrarCategoria.aspx" />
+    <Content Include="AdministrarImagenes.aspx" />
     <Content Include="AdministrarMarca.aspx" />
     <Content Include="AltaProducto.aspx" />
     <Content Include="Checkout.aspx" />
@@ -127,6 +128,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleArticulo.aspx" />
+    <Content Include="EditarProducto.aspx" />
+    <Content Include="Exito.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
@@ -183,6 +186,13 @@
     </Compile>
     <Compile Include="AdministrarCategoria.aspx.designer.cs">
       <DependentUpon>AdministrarCategoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrarImagenes.aspx.cs">
+      <DependentUpon>AdministrarImagenes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrarImagenes.aspx.designer.cs">
+      <DependentUpon>AdministrarImagenes.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdministrarMarca.aspx.cs">
       <DependentUpon>AdministrarMarca.aspx</DependentUpon>
@@ -248,6 +258,20 @@
     </Compile>
     <Compile Include="DetalleArticulo.aspx.designer.cs">
       <DependentUpon>DetalleArticulo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditarProducto.aspx.cs">
+      <DependentUpon>EditarProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditarProducto.aspx.designer.cs">
+      <DependentUpon>EditarProducto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Exito.aspx.cs">
+      <DependentUpon>Exito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Exito.aspx.designer.cs">
+      <DependentUpon>Exito.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -136,16 +136,16 @@ namespace Negocio
                         Precio = (decimal)datos.Lector["Precio"],
                         Marca = new Marca
                         {
-                            Descripcion = datos.Lector["Marca"] != DBNull.Value ? (string)datos.Lector["Marca"] : null
+                            Nombre = datos.Lector["Marca"] != DBNull.Value ? (string)datos.Lector["Marca"] : null
                         },
                         Categoria = new Categoria
                         {
-                            Descripcion = datos.Lector["Categoria"] != DBNull.Value ? (string)datos.Lector["Categoria"] : null
+                            Nombre = datos.Lector["Categoria"] != DBNull.Value ? (string)datos.Lector["Categoria"] : null
                         }
                     };
 
                     // Mensaje en caso de que la categoría no esté disponible
-                    if (articulo.Categoria.Descripcion == null)
+                    if (articulo.Categoria.Nombre == null)
                     {
                         Console.WriteLine("No disponible");
                     }

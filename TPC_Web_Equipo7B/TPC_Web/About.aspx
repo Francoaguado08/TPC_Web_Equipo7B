@@ -4,17 +4,14 @@
         <main aria-labelledby="title">
       
         
-        <p  class="text-break">
-           Bienvenido a Electrónica Digital Planet!
-
-            Explora nuestra increíble selección de productos electrónicos. Desde dispositivos innovadores hasta componentes de última generación, tenemos todo lo que necesitas para tus proyectos y pasiones electrónicas.
-
-            ¿Eres un aficionado entusiasta o un profesional experimentado? No importa tu nivel de experiencia, aquí encontrarás una amplia gama de productos para satisfacer tus necesidades. Desde kits de desarrollo y herramientas de prototipado hasta módulos y accesorios, estamos aquí para ayudarte a encontrar exactamente lo que necesitas.
-
-            Únete a nuestra comunidad de apasionados por la electrónica digital, comparte tus ideas, resuelve problemas y descubre las últimas noticias y avances en el campo. Juntos, exploremos las infinitas posibilidades de la electrónica digital y creemos un futuro impulsado por la innovación.
-
-            ¡Empieza tu viaje en Electrónica Digital Planet hoy mismo y déjanos ser tu guía en el emocionante mundo de la electrónica digital!
-
-        </p>
+        <p class="text-break">
+    Proyecto de Programacion III - UTN FRPG 2024
+</p>
+<p class="text-break">
+    Integrantes: Aguado Franco, Chique Manuel, Ysaguirre David
+</p>
+<p class="text-break">
+    Profesor: Fernandez Maximiliano
+</p>
     </main>
 </asp:Content>

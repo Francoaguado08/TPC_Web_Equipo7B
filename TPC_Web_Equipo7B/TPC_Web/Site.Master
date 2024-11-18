@@ -53,11 +53,10 @@
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <%--Redirigirme al index--%>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Inicio</a></li>
 
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Login</a></li>
                     </ul>
                 </div>

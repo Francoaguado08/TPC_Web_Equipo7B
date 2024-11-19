@@ -12,7 +12,7 @@ namespace TPC_Web
     public partial class AdministrarImagenes : System.Web.UI.Page
     {
         private ImagenesNegocio imagenNegocio = new ImagenesNegocio();
-        private int IDArti;
+        private int IDArticulo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,13 +21,11 @@ namespace TPC_Web
                 // Verificar que el ID del artículo esté presente en la URL
                 if (Request.QueryString["ID"] != null)
                 {
-                    IDArti = Convert.ToInt32(Request.QueryString["ID"]);
+                    IDArticulo = Convert.ToInt32(Request.QueryString["ID"]);
                 }
                 else
                 {
-                    lblError.Text = "Error: No se encontró el ID del artículo.";
-                    lblError.Visible = true;
-                    return;
+                    Response.Redirect("AdministrarArticulos.aspx");
                 }
 
                 CargarDatosArticulo();
@@ -39,7 +37,7 @@ namespace TPC_Web
         {
             // Obtengo el artículo completo
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
-            Articulo articulo = articuloNegocio.ObtenerPorId(IDArti);
+            Articulo articulo = articuloNegocio.ObtenerPorId(IDArticulo);
 
             if (articulo != null)
             {
@@ -54,7 +52,7 @@ namespace TPC_Web
 
         private void CargarImagenes()
         {
-            List < Imagen > imagenes = imagenNegocio.listarImagenesArticuloSeleccionado(IDArti);
+            List < Imagen > imagenes = imagenNegocio.listarImagenesArticuloSeleccionado(IDArticulo);
 
             // Verificar si se obtienen imágenes después de la eliminación
             if (imagenes.Count == 0)
@@ -105,7 +103,7 @@ namespace TPC_Web
                 // Crear una nueva imagen con la URL proporcionada
                 Imagen nuevaImagen = new Imagen
                 {
-                    IDArticulo = IDArti,  // El ID del artículo actual
+                    IDArticulo = IDArticulo,  // El ID del artículo actual
                     ImagenURl = txtNuevaImagenURL.Text
                 };
 

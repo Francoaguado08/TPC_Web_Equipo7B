@@ -6,7 +6,7 @@
         <Columns>
             <asp:BoundField HeaderText="ID" DataField="ID" />
             <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
-            <asp:BoundField HeaderText="Descripción" DataField="Descripcion" />
+
 
             <%-- Botón de selección para gestionar la marca seleccionada --%>
             <asp:CommandField ShowSelectButton="true" SelectText="Seleccionar" HeaderText="Acción" />

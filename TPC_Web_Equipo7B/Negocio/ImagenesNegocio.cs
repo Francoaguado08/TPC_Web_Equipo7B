@@ -45,13 +45,6 @@ namespace Negocio
             }
         }
 
-
-     
-
-
-
-
-
         public List<Imagen> listarImagenesArticuloSeleccionado(int idArticulo)
         {
             List<Imagen> lista = new List<Imagen>();
@@ -90,19 +83,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public Articulo listarArticulo(int idArticulo)
         {
@@ -164,21 +144,25 @@ namespace Negocio
             }
         }
 
-
-
-
-
         //Consulta SQL CHEQUEADA!
         public void agregarImagen(Imagen nuevaImagen)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                // Insertar en IMAGENES
+                // Validar que el artículo existe
+                datos.setearConsulta("SELECT COUNT(*) FROM Articulos WHERE ID = @IdArticulo");
+                datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
+                int existeArticulo = datos.ejecutarScalar();
+
+                if (existeArticulo == 0)
+                {
+                    throw new Exception("El artículo especificado no existe en la base de datos.");
+                }
+
+                // Insertar en Imagenes
                 string consulta = "INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl);";
                 datos.setearConsulta(consulta);
-
-                // Establecer parámetros para la imagen
                 datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
                 datos.setearParametro("@ImagenUrl", nuevaImagen.ImagenURl);
                 datos.ejecutarAccion();
@@ -192,7 +176,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-      
+
         //Consulta SQL CHEQUEADA!
         public void actualizarImagen(Imagen nuevaImagen)
         {
@@ -219,8 +203,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
-
         //Consulta SQL CHEQUEADA!
         public void eliminar(int id)
         {
@@ -249,9 +231,6 @@ namespace Negocio
 
             return cantidadProductos > 0;
         }
-
-       
-        
         
         public void vincularImagenes(List<Articulo> articulos, List<Imagen> imagenes)
         {
@@ -269,8 +248,6 @@ namespace Negocio
                 }
             }
         }
-
-
 
     }
 }

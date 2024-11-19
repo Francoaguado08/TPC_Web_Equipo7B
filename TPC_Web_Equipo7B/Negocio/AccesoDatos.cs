@@ -92,9 +92,15 @@ namespace Negocio
 
         public void cerrarConexion()
         {
-            if (lector != null)
-                lector.Close();
-            conexion.Close();
+            if (lector != null && !lector.IsClosed)
+            {
+                lector.Close();  // Cierra el lector si está abierto
+            }
+
+            if (conexion != null && conexion.State == System.Data.ConnectionState.Open)
+            {
+                conexion.Close();  // Cierra la conexión si está abierta
+            }
         }
     }
 

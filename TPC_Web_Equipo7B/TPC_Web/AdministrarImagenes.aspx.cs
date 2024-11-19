@@ -18,10 +18,10 @@ namespace TPC_Web
         {
             if (!IsPostBack)
             {
-                // Verificar que el ID del artículo esté presente en la URL
                 if (Request.QueryString["ID"] != null)
                 {
                     IDArticulo = Convert.ToInt32(Request.QueryString["ID"]);
+                    Session["IDArticulo"] = IDArticulo; // Guardar el ID en la sesión
                 }
                 else
                 {
@@ -30,6 +30,14 @@ namespace TPC_Web
 
                 CargarDatosArticulo();
                 CargarImagenes();
+            }
+            else
+            {
+                // Recuperar el ID desde la sesión para mantenerlo disponible
+                if (Session["IDArticulo"] != null)
+                {
+                    IDArticulo = Convert.ToInt32(Session["IDArticulo"]);
+                }
             }
         }
 
@@ -98,8 +106,14 @@ namespace TPC_Web
 
         protected void btnAgregarImagen_Click(object sender, EventArgs e)
         {
+
             try
             {
+                if (IDArticulo <= 0)
+                {
+                    throw new Exception("El ID del artículo no es válido. Verifica que la página tiene el parámetro correcto en la URL.");
+                }
+
                 // Crear una nueva imagen con la URL proporcionada
                 Imagen nuevaImagen = new Imagen
                 {
@@ -118,11 +132,17 @@ namespace TPC_Web
             }
             catch (Exception ex)
             {
-                // Mostrar mensaje de error si ocurre un problema
                 lblError.Visible = true;
                 lblError.Text = "Ocurrió un error al agregar la imagen: " + ex.Message;
             }
+
+
         }
+        
+
+
+
+
 
     }
 }

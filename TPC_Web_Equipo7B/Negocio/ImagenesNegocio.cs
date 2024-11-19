@@ -52,7 +52,7 @@ namespace Negocio
 
             try
             {
-                string consulta = $"SELECT ImagenURL FROM Imagenes WHERE IDArticulo = {idArticulo}";
+                string consulta = $"SELECT ID, ImagenURL FROM Imagenes WHERE IDArticulo = {idArticulo}";
                 datos.setearConsulta(consulta);
                 datos.ejecutarLectura();
 
@@ -60,6 +60,7 @@ namespace Negocio
                 {
                     Imagen aux = new Imagen
                     {
+                        ID = (int)datos.Lector["ID"],
                         IDArticulo = idArticulo,
                         ImagenURl = (string)datos.Lector["ImagenUrl"]
                     };
@@ -144,37 +145,34 @@ namespace Negocio
             }
         }
 
-        //Consulta SQL CHEQUEADA!
         public void agregarImagen(Imagen nuevaImagen)
         {
-            AccesoDatos datos = new AccesoDatos();
-            try
+           AccesoDatos datos = new AccesoDatos(); // Asegura que la conexión se cierra al final
             {
-                // Validar que el artículo existe
-                datos.setearConsulta("SELECT COUNT(*) FROM Articulos WHERE ID = @IdArticulo");
-                datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
-                int existeArticulo = datos.ejecutarScalar();
-
-                if (existeArticulo == 0)
+                try
                 {
-                    throw new Exception("El artículo especificado no existe en la base de datos.");
-                }
+                    // Validar que el artículo existe
+                    datos.setearConsulta("SELECT COUNT(*) FROM Articulos WHERE ID = @IdArticulo");
+                    datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
+                    int existeArticulo = datos.ejecutarScalar();
 
-                // Insertar en Imagenes
-                string consulta = "INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl);";
-                datos.setearConsulta(consulta);
-                datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
-                datos.setearParametro("@ImagenUrl", nuevaImagen.ImagenURl);
-                datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
+                    if (existeArticulo == 0)
+                    {
+                        throw new Exception("El artículo especificado no existe en la base de datos.");
+                    }
+
+                    // Insertar en Imagenes
+                    string consulta = "INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl);";
+                    datos.setearConsulta(consulta);
+                    datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
+                    datos.setearParametro("@ImagenUrl", nuevaImagen.ImagenURl);
+                    datos.ejecutarAccion();
+                }
+                catch (Exception ex)
+                {
+                    throw ex; // Propaga la excepción para que se pueda manejar en la capa superior
+                }
+            } // La conexión se cierra automáticamente aquí
         }
 
         //Consulta SQL CHEQUEADA!

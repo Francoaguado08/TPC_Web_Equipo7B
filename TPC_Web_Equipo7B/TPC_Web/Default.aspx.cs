@@ -81,53 +81,52 @@ namespace TPC_Web
 
 
 
-        //      ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------> 
-        protected void ddlCriterio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Session["criterio"] = ddlCriterio.SelectedItem.ToString();
-        }
-
+        // ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------> 
         protected void ddlFiltrarPor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Session.Add("campo", ddlFiltrarPor.SelectedItem.ToString());
+            // Guardamos en sesión el valor seleccionado para "Filtrar por"
+            Session["campo"] = ddlFiltrarPor.SelectedItem.ToString();
+
+            // Limpiamos el criterio y cambiamos las opciones según el filtro
+            ddlCriterio.Items.Clear();
 
             if (ddlFiltrarPor.SelectedItem.ToString() == "Precio")
             {
-                ddlCriterio.Items.Clear();
                 ddlCriterio.Items.Add("Ascendente");
                 ddlCriterio.Items.Add("Descendente");
-                Session.Add("criterio", ddlCriterio.SelectedItem.ToString());
             }
             else if (ddlFiltrarPor.SelectedItem.ToString() == "Marca")
             {
-                ddlCriterio.Items.Clear();
-                //llamar a base de datos, listar marcas
+                // Obtener las marcas desde la base de datos
                 MarcasNegocio marcasNegocios = new MarcasNegocio();
                 List<Marca> misMarcas = marcasNegocios.listar();
                 foreach (Marca item in misMarcas)
                 {
                     ddlCriterio.Items.Add(item.Nombre);
                 }
-                Session.Add("criterio", ddlCriterio.SelectedItem.ToString());
-
             }
             else if (ddlFiltrarPor.SelectedItem.ToString() == "Categoría")
             {
-                ddlCriterio.Items.Clear();
-                // llamar a base de datos, listar categorías
+                // Obtener las categorías desde la base de datos
                 CategoriaNegocio categoriasNegocios = new CategoriaNegocio();
                 List<Categoria> misCategorias = categoriasNegocios.listar();
                 foreach (Categoria item in misCategorias)
                 {
                     ddlCriterio.Items.Add(item.Nombre);
                 }
-                Session.Add("criterio", ddlCriterio.SelectedItem.ToString());
             }
-            else
+
+            // Verificamos si ya hay un criterio guardado en sesión
+            if (Session["criterio"] != null)
             {
-                ddlCriterio.Items.Clear();
-                obtenerProductos();
+                ddlCriterio.SelectedValue = Session["criterio"].ToString();
             }
+        }
+
+        protected void ddlCriterio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Guardamos en sesión el valor seleccionado para "Criterio"
+            Session["criterio"] = ddlCriterio.SelectedItem.ToString();
         }
 
         protected void btnAplicarFiltro_Click(object sender, EventArgs e)
@@ -135,52 +134,57 @@ namespace TPC_Web
             ArticuloNegocio articulos = new ArticuloNegocio();
             ImagenesNegocio imagenes = new ImagenesNegocio();
             List<Imagen> misImagenes = imagenes.listar();
-            listaArticulo = new List<Articulo>();
+
+            // Recogemos los valores de sesión para aplicar el filtro
             string campo = (string)Session["campo"];
             string criterio = (string)Session["criterio"];
             listaArticulo = articulos.listarFiltrados(campo, criterio);
+
+            // Vinculamos las imágenes a los productos filtrados
             imagenes.vincularImagenes(listaArticulo, misImagenes);
+
+            // Guardamos los artículos filtrados en sesión para usarlos en la vista
             Session["articulos"] = listaArticulo;
         }
 
         protected void btnLimpiarFiltro_Click(object sender, EventArgs e)
         {
+            // Limpiar la selección de los filtros
             ddlFiltrarPor.SelectedIndex = 0;
-            ddlCriterio.Items.Insert(0, new ListItem(string.Empty, string.Empty));
+            ddlCriterio.Items.Clear();
+            ddlCriterio.Items.Add(new ListItem("Selecciona...", ""));
             ddlCriterio.SelectedIndex = 0;
 
+            // Recuperar todos los productos sin filtro
             ArticuloNegocio articulos = new ArticuloNegocio();
             ImagenesNegocio imagenes = new ImagenesNegocio();
-            List<Imagen> misImagenes = new List<Imagen>();
-            misImagenes = imagenes.listar();
-            listaArticulo = new List<Articulo>();
+            List<Imagen> misImagenes = imagenes.listar();
             listaArticulo = articulos.listar();
+
+            // Vincular las imágenes a todos los productos
             imagenes.vincularImagenes(listaArticulo, misImagenes);
-            if (Session["articulos"] == null)
-            {
-                Session.Add("articulos", listaArticulo);
-            }
-            else
-            {
-                Session["articulos"] = listaArticulo;
-            }
+
+            // Guardamos todos los productos en sesión
             Session["articulos"] = listaArticulo;
         }
+
         protected void btnBuscar_Click1(object sender, EventArgs e)
         {
             ArticuloNegocio articulos = new ArticuloNegocio();
-            string textoEnTextbox;
-            textoEnTextbox = tbxBuscar.Text;
+            string textoEnTextbox = tbxBuscar.Text;
 
             if (textoEnTextbox.Length >= 2)
             {
+                // Filtramos los productos por nombre si el texto tiene más de 2 caracteres
                 listaArticulo = ((List<Articulo>)Session["articulos"]).FindAll(x => x.Nombre.ToUpper().Contains(textoEnTextbox.ToUpper()));
             }
             else
             {
+                // Si el texto es menor a 2 caracteres, mostramos todos los artículos
                 listaArticulo = (List<Articulo>)Session["articulos"];
             }
         }
+
 
 
         //   < ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------

@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Administrar.aspx" />
     <Content Include="AdministrarArticulos.aspx" />
     <Content Include="AdministrarCategoria.aspx" />
     <Content Include="AdministrarImagenes.aspx" />
@@ -176,6 +177,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administrar.aspx.cs">
+      <DependentUpon>Administrar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Administrar.aspx.designer.cs">
+      <DependentUpon>Administrar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AdministrarArticulos.aspx.cs">
       <DependentUpon>AdministrarArticulos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

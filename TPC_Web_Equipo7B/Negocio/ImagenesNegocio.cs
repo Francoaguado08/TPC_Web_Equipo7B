@@ -147,32 +147,35 @@ namespace Negocio
 
         public void agregarImagen(Imagen nuevaImagen)
         {
-           AccesoDatos datos = new AccesoDatos(); // Asegura que la conexión se cierra al final
+            AccesoDatos datos = new AccesoDatos(); // Crear una nueva instancia de AccesoDatos
+            try
             {
-                try
-                {
-                    // Validar que el artículo existe
-                    datos.setearConsulta("SELECT COUNT(*) FROM Articulos WHERE ID = @IdArticulo");
-                    datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
-                    int existeArticulo = datos.ejecutarScalar();
+                // Validar que el artículo existe
+                datos.setearConsulta("SELECT COUNT(*) FROM Articulos WHERE ID = @IdArticulo");
+                datos.limpiarParametros(); // Limpia cualquier parámetro previo
+                datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
+                int existeArticulo = datos.ejecutarScalar();
 
-                    if (existeArticulo == 0)
-                    {
-                        throw new Exception("El artículo especificado no existe en la base de datos.");
-                    }
-
-                    // Insertar en Imagenes
-                    string consulta = "INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl);";
-                    datos.setearConsulta(consulta);
-                    datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
-                    datos.setearParametro("@ImagenUrl", nuevaImagen.ImagenURl);
-                    datos.ejecutarAccion();
-                }
-                catch (Exception ex)
+                if (existeArticulo == 0)
                 {
-                    throw ex; // Propaga la excepción para que se pueda manejar en la capa superior
+                    throw new Exception("El artículo especificado no existe en la base de datos.");
                 }
-            } // La conexión se cierra automáticamente aquí
+
+                // Insertar en la tabla Imagenes
+                datos.setearConsulta("INSERT INTO Imagenes (IDArticulo, ImagenURL) VALUES (@IdArticulo, @ImagenUrl)");
+                datos.limpiarParametros(); // Limpia los parámetros antes de configurar nuevos
+                datos.setearParametro("@IdArticulo", nuevaImagen.IDArticulo);
+                datos.setearParametro("@ImagenUrl", nuevaImagen.ImagenURl);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex; // Propaga la excepción para manejarla en capas superiores
+            }
+            finally
+            {
+                datos.cerrarConexion(); // Asegura cerrar la conexión
+            }
         }
 
         //Consulta SQL CHEQUEADA!

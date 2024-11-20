@@ -11,8 +11,8 @@ namespace TPC_Web
 {
     public partial class AdministrarImagenes : System.Web.UI.Page
     {
-        private ImagenesNegocio imagenNegocio = new ImagenesNegocio();
-        private int IDArticulo;
+        ImagenesNegocio imagenNegocio = new ImagenesNegocio();
+         int IDArticulo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -138,8 +138,10 @@ namespace TPC_Web
 
 
         }
-        
 
+
+
+        
 
 
 

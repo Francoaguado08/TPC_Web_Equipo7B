@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,12 @@ namespace Negocio
 
         public void setearConsulta(string consulta)
         {
-            comando.CommandType = System.Data.CommandType.Text;
+            if (conexion.State == ConnectionState.Open)
+            {
+                cerrarConexion(); // Cierra la conexión abierta antes de configurar una nueva
+            }
+
+            comando.CommandType = CommandType.Text;
             comando.CommandText = consulta;
         }
 
@@ -102,6 +108,18 @@ namespace Negocio
                 conexion.Close();  // Cierra la conexión si está abierta
             }
         }
+
+
+        public void limpiarParametros()
+        {
+            if (comando.Parameters != null)
+            {
+                comando.Parameters.Clear();
+            }
+        }
+
+
+
     }
 
 

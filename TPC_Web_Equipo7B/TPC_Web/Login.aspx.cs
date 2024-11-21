@@ -11,7 +11,7 @@ namespace TPC_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             // Verifica si el usuario ya ha iniciado sesión y lo redirige si es necesario
-            if (Session["Usuario"] != null)
+            if (Session["Usuarios"] != null)
             {
                 Response.Redirect("Default.aspx");
             }
@@ -19,28 +19,36 @@ namespace TPC_Web
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            Usuarios usuarios;
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                lblError.Text = "Por favor ingrese un nombre de usuario y una contraseña.";
+                lblError.Visible = true;
+                return;
+            }
+
+            // Crear un objeto de usuario con los valores proporcionados
+            Usuarios usuario = new Usuarios { Nombre = username, Contraseña = password };
+
+            // Crear un objeto de la capa de negocio
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            try
+            // Intentar loguearse
+            if (negocio.Loguear(usuario))
             {
-                usuarios = new Usuarios(0,txtUsername.Text,txtPassword.Text,false,"");
-                if (negocio.Loguear(usuarios))
-                {
-                    Session.Add("Usuario",usuarios);
-                    Response.Redirect("Default.aspx");
-                }
-                else
-                {
-                    Session.Add("Error", "Usuario o contraseña incorrectas");
-                }
+                // Redirigir a la página de inicio o cualquier otra página
+                Response.Redirect("~/Inicio.aspx");
             }
-            catch (Exception ex)
+            else
             {
-
-                Session.Add("Error", ex.ToString());
+                // Si las credenciales no son correctas
+                lblError.Text = "Nombre de usuario o contraseña incorrectos.";
+                lblError.Visible = true;
             }
-
         }
+
+
     }
 }

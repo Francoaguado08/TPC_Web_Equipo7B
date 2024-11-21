@@ -1,9 +1,9 @@
-﻿using Dominio;
-using Negocio;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Dominio;
+using Negocio;
 
 namespace TPC_Web
 {
@@ -30,23 +30,63 @@ namespace TPC_Web
             gvCategorias.DataBind();
         }
 
-        protected void gvCategorias_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (gvCategorias.SelectedIndex >= 0)
-            {
-                // Obtener el ID de la categoría seleccionada
-                int id = Convert.ToInt32(gvCategorias.SelectedDataKey.Value);
-
-                // Redirigir a la página de edición de la categoría
-                Response.Redirect("GestionarCategoria.aspx?id=" + id, false);
-                Context.ApplicationInstance.CompleteRequest();
-            }
-        }
-
         protected void btnNuevaCategoria_Click(object sender, EventArgs e)
         {
             // Redirigir a la página de alta de categoría
             Response.Redirect("AltaCategoria.aspx");
+        }
+
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            // Redirigir a la página principal de administración
+            Response.Redirect("Administrar.aspx");
+        }
+
+        protected void gvCategorias_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            // Poner la fila en modo edición
+            gvCategorias.EditIndex = e.NewEditIndex;
+            CargarCategorias();
+        }
+
+        protected void gvCategorias_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            // Cancelar el modo edición
+            gvCategorias.EditIndex = -1;
+            CargarCategorias();
+        }
+
+        protected void gvCategorias_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            // Obtener los valores editados
+            int id = Convert.ToInt32(gvCategorias.DataKeys[e.RowIndex].Value);
+            string nuevoNombre = ((TextBox)gvCategorias.Rows[e.RowIndex].Cells[1].Controls[0]).Text;
+
+            // Crear objeto Categoría con los valores actualizados
+            Categoria categoriaActualizada = new Categoria
+            {
+                ID = id,
+                Nombre = nuevoNombre
+            };
+
+            // Actualizar la categoría en la base de datos
+            negocioCategoria.modificarCategoria(categoriaActualizada);
+
+            // Salir del modo edición y recargar la tabla
+            gvCategorias.EditIndex = -1;
+            CargarCategorias();
+        }
+
+        protected void gvCategorias_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            // Obtener el ID de la categoría a eliminar
+            int id = Convert.ToInt32(gvCategorias.DataKeys[e.RowIndex].Value);
+
+            // Eliminar la categoría de la base de datos
+            negocioCategoria.eliminarCategoria(id);
+
+            // Recargar la tabla
+            CargarCategorias();
         }
     }
 }

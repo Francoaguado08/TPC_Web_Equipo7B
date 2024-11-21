@@ -24,5 +24,10 @@ namespace TPC_Web
         {
             Response.Redirect("AdministrarMarca.aspx");
         }
+
+        protected void btnAdministrarUsuario_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AdministrarUsuario.aspx");
+        }
     }
 }

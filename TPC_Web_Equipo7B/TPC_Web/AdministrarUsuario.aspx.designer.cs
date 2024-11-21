@@ -11,26 +11,17 @@ namespace TPC_Web
 {
 
 
-    public partial class AdministrarMarcas
+    public partial class AdministrarUsuario
     {
 
         /// <summary>
-        /// Control gvMarcas.
+        /// Control gvUsuarios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvMarcas;
-
-        /// <summary>
-        /// Control btnNuevaMarca.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNuevaMarca;
+        protected global::System.Web.UI.WebControls.GridView gvUsuarios;
 
         /// <summary>
         /// Control btnVolver.

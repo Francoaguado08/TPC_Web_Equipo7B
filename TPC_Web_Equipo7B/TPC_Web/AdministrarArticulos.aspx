@@ -59,7 +59,7 @@
     
     
     <div>
-        <asp:Button ID="btnHome" runat="server" Text="Menu Principal" OnClick="btnHome_Click" CssClass="btn btn-outline-danger" />
+        <asp:Button ID="btnHome" runat="server" Text="Menu Administrar" OnClick="btnHome_Click" CssClass="btn btn-outline-danger" />
     </div>
 
 

@@ -105,6 +105,7 @@
     <Content Include="AdministrarCategoria.aspx" />
     <Content Include="AdministrarImagenes.aspx" />
     <Content Include="AdministrarMarca.aspx" />
+    <Content Include="AdministrarUsuario.aspx" />
     <Content Include="AltaCategoria.aspx" />
     <Content Include="AltaMarca.aspx" />
     <Content Include="AltaProducto.aspx" />
@@ -211,6 +212,13 @@
     </Compile>
     <Compile Include="AdministrarMarca.aspx.designer.cs">
       <DependentUpon>AdministrarMarca.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrarUsuario.aspx.cs">
+      <DependentUpon>AdministrarUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrarUsuario.aspx.designer.cs">
+      <DependentUpon>AdministrarUsuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="AltaCategoria.aspx.cs">
       <DependentUpon>AltaCategoria.aspx</DependentUpon>

@@ -12,29 +12,40 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
+                // Verificar que los parámetros se pasen correctamente
+                Console.WriteLine($"Nombre: {usuarios.Nombre}, Contraseña: {usuarios.Contraseña}");
 
-                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, Contraseña, IDTipoUsuario FROM Usuarios WHERE Nombre = @Nombre AND Contraseña = @Contraseña");
+                // Cambiar la consulta SQL para obtener resultados
+                datos.setearConsulta("SELECT IDUsuario, IDTipoUsuario, Email FROM Usuarios WHERE Nombre = @Nombre AND Contraseña = @Contraseña");
                 datos.setearParametro("@Nombre", usuarios.Nombre);
                 datos.setearParametro("@Contraseña", usuarios.Contraseña);
 
-                datos.ejecutarAccion();
+                // Ejecutar la consulta y leer los resultados
+                datos.ejecutarLectura();
                 while (datos.Lector.Read())
                 {
                     usuarios.IDUsuario = (int)datos.Lector["IDUsuario"];
-                    usuarios.Email = (string)datos.Lector["Email"];
+                    usuarios.Email = datos.Lector["Email"] != DBNull.Value ? (string)datos.Lector["Email"] : null;
                     usuarios.TipoUsuario = (int)datos.Lector["IDTipoUsuario"] == 1 ? TipoUsuario.Admin : TipoUsuario.Cliente;
+
+                    // Verificar si se obtiene un IDUsuario válido
+                    Console.WriteLine($"IDUsuario: {usuarios.IDUsuario}");
+
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Mostrar error para ayudar en la depuración
+                Console.WriteLine(ex.ToString());
                 throw;
             }
             finally
             {
                 datos.cerrarConexion();
             }
-            return false;
+
+            return false; // Si no se encontró ningún usuario, devolver false
         }
 
         // Método para obtener la lista de todos los usuarios
@@ -72,6 +83,5 @@ namespace Negocio
 
             return listaUsuarios;
         }
-
     }
 }

@@ -38,8 +38,17 @@ namespace TPC_Web
             // Intentar loguearse
             if (negocio.Loguear(usuario))
             {
-                // Redirigir a la página de inicio o cualquier otra página
-                Response.Redirect("~/Inicio.aspx");
+                // Redirigir a la página según el tipo de usuario
+                if (usuario.TipoUsuario == TipoUsuario.Admin)
+                {
+                    // Redirigir a Administrar.aspx si es Admin
+                    Response.Redirect("Administrar.aspx");
+                }
+                else
+                {
+                    // Redirigir a Default.aspx si es Cliente
+                    Response.Redirect("Default.aspx");
+                }
             }
             else
             {
@@ -48,7 +57,5 @@ namespace TPC_Web
                 lblError.Visible = true;
             }
         }
-
-
     }
 }

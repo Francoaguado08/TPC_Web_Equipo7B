@@ -156,7 +156,7 @@ namespace Negocio
 
 
 
-
+        //Perfecto!
         public void eliminarArticulo(int ID)
         {
             AccesoDatos datos = new AccesoDatos();

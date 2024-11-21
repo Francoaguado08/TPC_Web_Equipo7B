@@ -36,6 +36,8 @@
     <asp:TextBox ID="txtNuevaImagenURL" runat="server" CssClass="form-control"
         Placeholder="Ingrese la URL de la nueva imagen"></asp:TextBox>
     <asp:Button ID="btnAgregarImagen" runat="server" Text="Agregar Imagen" CssClass="btn btn-success mt-2" OnClick="btnAgregarImagen_Click" />
+    <br />
+     <asp:Button ID="btnHome" runat="server" Text="Pagina Principal" CssClass="btn btn-success mt-2" OnClick="btnHome_Click" />
 
 
 

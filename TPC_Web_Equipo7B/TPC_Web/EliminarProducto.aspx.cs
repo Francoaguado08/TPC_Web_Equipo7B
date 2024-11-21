@@ -62,7 +62,10 @@ namespace TPC_Web
                 {
                     // Eliminar el producto usando la capa de negocio
                     ArticuloNegocio negocio = new ArticuloNegocio();
+                    
+                    
                     negocio.eliminarArticulo(idProducto);
+                    
 
                     // Redirigir después de eliminar
                     Response.Redirect("AdministrarArticulos.aspx");

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TPC_Web
 {
@@ -44,9 +45,9 @@ namespace TPC_Web
             Response.Redirect("AltaProducto.aspx");
         }
 
-
-
-
-
+        protected void btnHome_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Default.aspx?reload=true");
+        }
     }
 }

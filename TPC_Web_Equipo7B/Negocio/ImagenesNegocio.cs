@@ -220,6 +220,12 @@ namespace Negocio
             }
         }
 
+       
+        
+
+
+
+
         //Verificada !
         public bool TieneProductosAsociados(Imagen imagen)
         {

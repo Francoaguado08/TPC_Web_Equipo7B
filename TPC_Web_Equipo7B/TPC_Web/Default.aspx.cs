@@ -16,178 +16,168 @@ namespace TPC_Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) 
+            if (!IsPostBack || Request.QueryString["reload"] == "true")
             {
-                 obtenerProductos(); 
-                             
-                // Añade opciones al dropdown `ddlFiltrarPor`
-                ddlFiltrarPor.Items.Add("Precio");     
-                ddlFiltrarPor.Items.Add("Categoría");    
-                ddlFiltrarPor.Items.Add("Marca");        
-
-                // Inserta un elemento vacío en el índice 0 del dropdown, que aparece al inicio como valor predeterminado vacío
-                ddlFiltrarPor.Items.Insert(0, new ListItem(string.Empty, string.Empty));
-                ddlFiltrarPor.SelectedIndex = 0; // Establece el índice de selección en el valor predeterminado (vacío).
-
-                // Inicializa `ddlCriterio` (otro dropdown) con un elemento vacío
-                ddlCriterio.Items.Insert(0, new ListItem(string.Empty, string.Empty));
-                ddlCriterio.SelectedIndex = 0; // Establece el índice de selección en el valor predeterminado (vacío).
-
-
-            }
-            else
-            {   // Si es una carga de página después de un `PostBack`, recupera la lista de artículos desde la sesión.
-                listaArticulo = (List<Articulo>)Session["articulos"];
+                obtenerProductos();
+                inicializarFiltros();
             }
         }
 
-
-
-
-
-
-        //      Llama a la base de datos para obtener los artículos e imágenes.
-        //      Vincula las imágenes con cada artículo usando vincularImagenes.
-        //      Guarda la lista en la sesión para que esté disponible en toda la página y en futuros postbacks.
         private void obtenerProductos()
         {
-            ArticuloNegocio articulos = new ArticuloNegocio();
-            ImagenesNegocio imagenes = new ImagenesNegocio();
-
-            // Obtiene las imágenes y los artículos
-            List<Imagen> misImagenes = imagenes.listar();
-            listaArticulo = articulos.listar();
-
-            // Vincula las imágenes con los artículos
-            imagenes.vincularImagenes(listaArticulo, misImagenes);
-
-            // Guarda la lista de artículos en la sesión
-            if (Session["articulos"] == null)
+            try
             {
-                Session.Add("articulos", listaArticulo);
-            }
-            else
-            {
+                ArticuloNegocio articulos = new ArticuloNegocio();
+                ImagenesNegocio imagenes = new ImagenesNegocio();
+
+                // Recargar datos desde la base de datos
+                List<Imagen> misImagenes = imagenes.listar();
+                listaArticulo = articulos.listar();
+
+                // Vincular imágenes con artículos
+                imagenes.vincularImagenes(listaArticulo, misImagenes);
+
+                // Actualizar la sesión con los datos más recientes
                 Session["articulos"] = listaArticulo;
             }
-
-
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                Response.Write($"<script>alert('Error al cargar productos: {ex.Message}');</script>");
+            }
         }
 
+        private void inicializarFiltros()
+        {
+            // Opciones de filtro disponibles
+            ddlFiltrarPor.Items.Add("Precio");
+            ddlFiltrarPor.Items.Add("Categoría");
+            ddlFiltrarPor.Items.Add("Marca");
 
+            // Valor predeterminado vacío
+            ddlFiltrarPor.Items.Insert(0, new ListItem("Selecciona...", ""));
+            ddlFiltrarPor.SelectedIndex = 0;
 
+            // Inicializar ddlCriterio con un valor vacío
+            ddlCriterio.Items.Insert(0, new ListItem("Selecciona...", ""));
+            ddlCriterio.SelectedIndex = 0;
+        }
 
-
-
-
-
-        // ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------> 
         protected void ddlFiltrarPor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Guardamos en sesión el valor seleccionado para "Filtrar por"
-            Session["campo"] = ddlFiltrarPor.SelectedItem.ToString();
+            // Guardar selección del campo en sesión
+            Session["campo"] = ddlFiltrarPor.SelectedValue;
 
-            // Limpiamos el criterio y cambiamos las opciones según el filtro
+            // Limpiar opciones actuales de criterio y cargar nuevas según el campo seleccionado
             ddlCriterio.Items.Clear();
+            ddlCriterio.Items.Add(new ListItem("Selecciona...", ""));
 
-            if (ddlFiltrarPor.SelectedItem.ToString() == "Precio")
+            if (ddlFiltrarPor.SelectedValue == "Precio")
             {
                 ddlCriterio.Items.Add("Ascendente");
                 ddlCriterio.Items.Add("Descendente");
             }
-            else if (ddlFiltrarPor.SelectedItem.ToString() == "Marca")
+            else if (ddlFiltrarPor.SelectedValue == "Marca")
             {
-                // Obtener las marcas desde la base de datos
-                MarcasNegocio marcasNegocios = new MarcasNegocio();
-                List<Marca> misMarcas = marcasNegocios.listar();
-                foreach (Marca item in misMarcas)
+                // Cargar marcas desde la base de datos
+                MarcasNegocio marcasNegocio = new MarcasNegocio();
+                List<Marca> marcas = marcasNegocio.listar();
+                foreach (var marca in marcas)
                 {
-                    ddlCriterio.Items.Add(item.Nombre);
+                    ddlCriterio.Items.Add(marca.Nombre);
                 }
             }
-            else if (ddlFiltrarPor.SelectedItem.ToString() == "Categoría")
+            else if (ddlFiltrarPor.SelectedValue == "Categoría")
             {
-                // Obtener las categorías desde la base de datos
-                CategoriaNegocio categoriasNegocios = new CategoriaNegocio();
-                List<Categoria> misCategorias = categoriasNegocios.listar();
-                foreach (Categoria item in misCategorias)
+                // Cargar categorías desde la base de datos
+                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+                List<Categoria> categorias = categoriaNegocio.listar();
+                foreach (var categoria in categorias)
                 {
-                    ddlCriterio.Items.Add(item.Nombre);
+                    ddlCriterio.Items.Add(categoria.Nombre);
                 }
             }
 
-            // Verificamos si ya hay un criterio guardado en sesión
-            if (Session["criterio"] != null)
-            {
-                ddlCriterio.SelectedValue = Session["criterio"].ToString();
-            }
+            ddlCriterio.SelectedIndex = 0; // Restablecer selección de criterio
         }
 
         protected void ddlCriterio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Guardamos en sesión el valor seleccionado para "Criterio"
-            Session["criterio"] = ddlCriterio.SelectedItem.ToString();
+            // Guardar selección del criterio en sesión
+            Session["criterio"] = ddlCriterio.SelectedValue;
         }
 
         protected void btnAplicarFiltro_Click(object sender, EventArgs e)
         {
-            ArticuloNegocio articulos = new ArticuloNegocio();
-            ImagenesNegocio imagenes = new ImagenesNegocio();
-            List<Imagen> misImagenes = imagenes.listar();
+            try
+            {
+                ArticuloNegocio articulos = new ArticuloNegocio();
+                ImagenesNegocio imagenes = new ImagenesNegocio();
+                List<Imagen> misImagenes = imagenes.listar();
 
-            // Recogemos los valores de sesión para aplicar el filtro
-            string campo = (string)Session["campo"];
-            string criterio = (string)Session["criterio"];
-            listaArticulo = articulos.listarFiltrados(campo, criterio);
+                // Obtener valores de los filtros
+                string campo = ddlFiltrarPor.SelectedValue;
+                string criterio = ddlCriterio.SelectedValue;
 
-            // Vinculamos las imágenes a los productos filtrados
-            imagenes.vincularImagenes(listaArticulo, misImagenes);
+                if (!string.IsNullOrEmpty(campo) && !string.IsNullOrEmpty(criterio))
+                {
+                    // Aplicar filtros
+                    listaArticulo = articulos.listarFiltrados(campo, criterio);
+                }
+                else
+                {
+                    // Si no hay filtro, recargar todos los productos
+                    listaArticulo = articulos.listar();
+                }
 
-            // Guardamos los artículos filtrados en sesión para usarlos en la vista
-            Session["articulos"] = listaArticulo;
+                // Vincular imágenes
+                imagenes.vincularImagenes(listaArticulo, misImagenes);
+
+                // Actualizar la sesión con los datos filtrados
+                Session["articulos"] = listaArticulo;
+            }
+            catch (Exception ex)
+            {
+                Response.Write($"<script>alert('Error al aplicar filtro: {ex.Message}');</script>");
+            }
         }
 
         protected void btnLimpiarFiltro_Click(object sender, EventArgs e)
         {
-            // Limpiar la selección de los filtros
+            // Restablecer selección de filtros
             ddlFiltrarPor.SelectedIndex = 0;
             ddlCriterio.Items.Clear();
             ddlCriterio.Items.Add(new ListItem("Selecciona...", ""));
             ddlCriterio.SelectedIndex = 0;
 
-            // Recuperar todos los productos sin filtro
-            ArticuloNegocio articulos = new ArticuloNegocio();
-            ImagenesNegocio imagenes = new ImagenesNegocio();
-            List<Imagen> misImagenes = imagenes.listar();
-            listaArticulo = articulos.listar();
-
-            // Vincular las imágenes a todos los productos
-            imagenes.vincularImagenes(listaArticulo, misImagenes);
-
-            // Guardamos todos los productos en sesión
-            Session["articulos"] = listaArticulo;
+            // Recargar todos los productos
+            obtenerProductos();
         }
 
         protected void btnBuscar_Click1(object sender, EventArgs e)
         {
-            ArticuloNegocio articulos = new ArticuloNegocio();
-            string textoEnTextbox = tbxBuscar.Text;
+            try
+            {
+                string textoBusqueda = tbxBuscar.Text;
 
-            if (textoEnTextbox.Length >= 2)
-            {
-                // Filtramos los productos por nombre si el texto tiene más de 2 caracteres
-                listaArticulo = ((List<Articulo>)Session["articulos"]).FindAll(x => x.Nombre.ToUpper().Contains(textoEnTextbox.ToUpper()));
+                if (textoBusqueda.Length >= 2)
+                {
+                    // Filtrar artículos por nombre
+                    listaArticulo = ((List<Articulo>)Session["articulos"]).FindAll(x =>
+                        x.Nombre.ToUpper().Contains(textoBusqueda.ToUpper()));
+                }
+                else
+                {
+                    // Mostrar todos los artículos si el texto es muy corto
+                    obtenerProductos();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Si el texto es menor a 2 caracteres, mostramos todos los artículos
-                listaArticulo = (List<Articulo>)Session["articulos"];
+                Response.Write($"<script>alert('Error al buscar productos: {ex.Message}');</script>");
             }
         }
 
-
-
-        //   < ------------------------------    TEMA FILTRADO EN HOME -------------------------------------------
 
 
 

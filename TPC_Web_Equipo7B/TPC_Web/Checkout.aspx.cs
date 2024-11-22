@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Net.Mail; //agrego para email!
+using Negocio;
 
 namespace TPC_Web
 {
@@ -54,98 +55,111 @@ namespace TPC_Web
 
     public partial class Checkout : Page
     {
+        // Evento que se ejecuta cuando la página se carga
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Verifica que no sea una carga posterior (IsPostBack),
+            // para evitar que se recargue innecesariamente la información
             if (!IsPostBack)
             {
-                CalcularTotal(); // Calcular el total inicial al cargar la página
+                // Recupera el carrito de compras de la sesión
+                CarritoCompras miCarrito = (CarritoCompras)Session["compras"];
+
+                // Si el carrito está vacío o no existe, redirige al menú principal
+                if (miCarrito == null || !miCarrito.ObtenerProductos().Any())
+                {
+                    Response.Redirect("Default.aspx");
+                    return;
+                }
+
+                // Asigna los productos del carrito al GridView para mostrarlos
+                gvCarrito.DataSource = miCarrito.ObtenerProductos();
+                gvCarrito.DataBind();
+
+                // Calcula y muestra el total del carrito
+                lblTotal.Text = "Total: " + miCarrito.ObtenerTotal().ToString("C");
             }
         }
 
-        protected void ddlEnvio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CalcularTotal(); // Actualizar el total cuando cambia el método de envío
-        }
-
-        private void CalcularTotal()
-        {
-            // Obtener el carrito de la sesión
-            CarritoCompras miCarrito = (CarritoCompras)Session["compras"];
-
-            // Verificar que el carrito no sea nulo
-            if (miCarrito != null)
-            {
-                decimal totalProductos = miCarrito.ObtenerTotal(); // Total de productos en el carrito
-                decimal costoEnvio = decimal.Parse(ddlEnvio.SelectedValue); // Obtener el costo de envío seleccionado
-                decimal totalFinal = totalProductos + costoEnvio; // Total final
-
-                // Actualizar el Label con el total
-                lblTotal.Text = "Total: ARS " + totalFinal.ToString("N2");
-            }
-            else
-            {
-                // Manejo en caso de que el carrito no exista
-                lblTotal.Text = "Total: ARS 0.00";
-            }
-        }
-
-        protected void btnConfirmarCompra_Click(object sender, EventArgs e)
-        {
-            string metodoPago = ddlPago.SelectedValue;
-
-            if (metodoPago == "MercadoPago")
-            {
-                // Simulación de pago mediante email a través de Mercado Pago
-                string emailVendedor = "@gmail.com";
-                string asunto = "Pedido de Compra";
-                string cuerpo = $"Solicito realizar el pago del total de: {lblTotal.Text} a través de Mercado Pago. " +
-                                $"Mi método de envío es: {ddlEnvio.SelectedItem.Text}";
-
-                EnviarEmail(emailVendedor, asunto, cuerpo);
-                Response.Redirect("ConfirmacionCompra.aspx");
-            }
-            else
-            {
-                // Redirigir a Confirmación de Compra para otros métodos de pago
-                Response.Redirect("ConfirmacionCompra.aspx");
-            }
-        }
-
-
-        //FALTA AJUSTAR TODO...
-        private void EnviarEmail(string destinatario, string asunto, string cuerpo)
+        // Evento que se ejecuta al hacer clic en el botón Confirmar
+        protected void btnConfirmar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Crear el mensaje de correo
-                System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
-                mail.To.Add(destinatario);  // Destinatario del correo
-                mail.Subject = asunto;      // Asunto del correo
-                mail.Body = cuerpo;         // Cuerpo del correo
-                mail.IsBodyHtml = true;     // Si el cuerpo es HTML (si quieres que soporte formato)
+                // Recupera el carrito de compras desde la sesión
+                CarritoCompras carrito = (CarritoCompras)Session["compras"];
 
-                // Dirección de correo desde donde se enviará
-                mail.From = new System.Net.Mail.MailAddress("@gmail.com");
+                // Inicializa el ID del usuario autenticado (si lo hay)
+                int? idUsuario = null;
+                if (Session["usuario"] != null)
+                {
+                    idUsuario = ((Usuario)Session["usuario"]).IDUsuario;
+                }
 
-                // Configuración del cliente SMTP
-                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com");
-                smtp.Port = 587; // Puerto para usar con TLS
-                smtp.Credentials = new System.Net.NetworkCredential("@gmail.com", "tu_contraseña"); // Tu correo y la contraseña de tu cuenta de Gmail
-                smtp.EnableSsl = true; // Usar SSL para encriptar la conexión
+                // Crea un objeto DatosPersonales con la información ingresada en el formulario
+                DatosPersonales datosPersonales = new DatosPersonales
+                {
+                    DNI = txtDNI.Text.Trim(),
+                    Nombre = txtNombre.Text.Trim(),
+                    Apellido = txtApellido.Text.Trim(),
+                    Domicilio = txtDomicilio.Text.Trim(),
+                    Pais = txtPais.Text.Trim(),
+                    Provincia = txtProvincia.Text.Trim(),
+                    Telefono = txtTelefono.Text.Trim(),
+                    IDUsuario = idUsuario ?? 0 // Si no hay usuario autenticado, usa 0
+                };
 
-                // Enviar el correo
-                smtp.Send(mail);
+                // Guarda los datos personales en la sesión para uso posterior
+                Session["datosCheckout"] = datosPersonales;
+
+                // Valida que todos los campos obligatorios estén completos
+                if (string.IsNullOrWhiteSpace(datosPersonales.Nombre) ||
+                    string.IsNullOrWhiteSpace(datosPersonales.Apellido) ||
+                    string.IsNullOrWhiteSpace(datosPersonales.Domicilio) ||
+                    string.IsNullOrWhiteSpace(datosPersonales.Pais) ||
+                    string.IsNullOrWhiteSpace(datosPersonales.Provincia) ||
+                    string.IsNullOrWhiteSpace(datosPersonales.Telefono))
+                {
+                    lblMensajeError.Text = "Completa todos los campos antes de confirmar.";
+                    return;
+                }
+
+                // Registra el pedido utilizando una clase de negocio
+                PedidoNegocio negocio = new PedidoNegocio();
+                bool exito = negocio.RegistrarPedido(idUsuario, carrito, datosPersonales);
+
+                // Si el registro fue exitoso, redirige a la página de confirmación
+                if (exito)
+                {
+                    Response.Redirect("ConfirmacionCompra.aspx");
+                }
+                else
+                {
+                    // Muestra un mensaje de error si ocurre un problema al registrar el pedido
+                    lblMensajeError.Text = "Ocurrió un error al procesar tu pedido. Inténtalo nuevamente.";
+                }
             }
             catch (Exception ex)
             {
-                // Manejo de errores
-                Response.Write("Error al enviar el correo: " + ex.Message);
+                // Captura y muestra cualquier error inesperado
+                lblMensajeError.Text = "Ocurrió un error: " + ex.Message;
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
-
-
-
-
+    
 
 }

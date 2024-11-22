@@ -60,7 +60,8 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <a href="Checkout.aspx" class="btn btn-primary float-end">Comprar</a>
+                
+                <asp:Button ID="btnCkeckout" runat="server" Text="Comprar"  OnClick="btnCkeckout_Click"/>
             </div>
         </div>
     </div>
@@ -73,7 +74,7 @@
         </div>
     </div>
 
-
+    <asp:Label ID="lblMensajeError" runat="server" Text="Label"></asp:Label>
 
 
 </asp:Content>

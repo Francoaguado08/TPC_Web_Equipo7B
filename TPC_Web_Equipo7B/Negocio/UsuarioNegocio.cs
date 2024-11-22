@@ -6,82 +6,189 @@ namespace Negocio
 {
     public class UsuarioNegocio
     {
-        // Método para verificar si un usuario puede iniciar sesión
-        public bool Loguear(Usuarios usuarios)
+        public List<Usuario> listar()
         {
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                // Verificar que los parámetros se pasen correctamente
-                Console.WriteLine($"Nombre: {usuarios.Nombre}, Contraseña: {usuarios.Contraseña}");
-
-                // Cambiar la consulta SQL para obtener resultados
-                datos.setearConsulta("SELECT IDUsuario, IDTipoUsuario, Email FROM Usuarios WHERE Nombre = @Nombre AND Contraseña = @Contraseña");
-                datos.setearParametro("@Nombre", usuarios.Nombre);
-                datos.setearParametro("@Contraseña", usuarios.Contraseña);
-
-                // Ejecutar la consulta y leer los resultados
-                datos.ejecutarLectura();
-                while (datos.Lector.Read())
-                {
-                    usuarios.IDUsuario = (int)datos.Lector["IDUsuario"];
-                    usuarios.Email = datos.Lector["Email"] != DBNull.Value ? (string)datos.Lector["Email"] : null;
-                    usuarios.TipoUsuario = (int)datos.Lector["IDTipoUsuario"] == 1 ? TipoUsuario.Admin : TipoUsuario.Cliente;
-
-                    // Verificar si se obtiene un IDUsuario válido
-                    Console.WriteLine($"IDUsuario: {usuarios.IDUsuario}");
-
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Mostrar error para ayudar en la depuración
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-
-            return false; // Si no se encontró ningún usuario, devolver false
-        }
-
-        // Método para obtener la lista de todos los usuarios
-        public List<Usuarios> ListarUsuarios()
-        {
-            List<Usuarios> listaUsuarios = new List<Usuarios>();
+            List<Usuario> lista = new List<Usuario>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, IDTipoUsuario FROM Usuarios");
+                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, Contraseña, Rol FROM Usuarios");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Usuarios usuario = new Usuarios
+                    Usuario usuario = new Usuario
                     {
                         IDUsuario = (int)datos.Lector["IDUsuario"],
-                        Nombre = (string)datos.Lector["Nombre"],
+                        username = (string)datos.Lector["Nombre"],
                         Email = (string)datos.Lector["Email"],
-                        TipoUsuario = (int)datos.Lector["IDTipoUsuario"] == 1 ? TipoUsuario.Admin : TipoUsuario.Cliente
+                        password = (string)datos.Lector["Contraseña"],
+                        tipousuario = (string)datos.Lector["Rol"]
                     };
 
-                    listaUsuarios.Add(usuario);
+                    lista.Add(usuario);
                 }
+
+                return lista;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener los usuarios", ex);
+                throw ex;
             }
             finally
             {
                 datos.cerrarConexion();
             }
-
-            return listaUsuarios;
         }
+
+        public void agregar(Usuario nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("INSERT INTO Usuarios (Nombre, Email, Contraseña, Rol) VALUES (@Nombre, @Email, @Contraseña, @Rol)");
+                datos.setearParametro("@Nombre", nuevo.username);
+                datos.setearParametro("@Email", nuevo.Email);
+                datos.setearParametro("@Contraseña", nuevo.password);
+                datos.setearParametro("@Rol", nuevo.tipousuario);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void modificar(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE Usuarios SET Nombre = @Nombre, Email = @Email, Contraseña = @Contraseña, Rol = @Rol WHERE IDUsuario = @IDUsuario");
+                datos.setearParametro("@IDUsuario", usuario.IDUsuario);
+                datos.setearParametro("@Nombre", usuario.username);
+                datos.setearParametro("@Email", usuario.Email);
+                datos.setearParametro("@Contraseña", usuario.password);
+                datos.setearParametro("@Rol", usuario.tipousuario);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void eliminar(int idUsuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("DELETE FROM Usuarios WHERE IDUsuario = @IDUsuario");
+                datos.setearParametro("@IDUsuario", idUsuario);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+        public Usuario autenticar(string email, string contraseña)
+        {
+            Usuario usuario = null;
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, Contraseña, Rol FROM Usuarios WHERE Email = @Email AND Contraseña = @Contraseña");
+                datos.setearParametro("@Email", email);
+                datos.setearParametro("@Contraseña", contraseña);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    usuario = new Usuario
+                    {
+                        IDUsuario = (int)datos.Lector["IDUsuario"],
+                        username = (string)datos.Lector["Nombre"],
+                        Email = (string)datos.Lector["Email"],
+                        password = (string)datos.Lector["Contraseña"],
+                        tipousuario = (string)datos.Lector["Rol"]
+                    };
+                }
+
+                return usuario;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+        public bool Loguear(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                // Consulta para verificar email y contraseña
+                datos.setearConsulta(@"
+            SELECT IDUsuario, Rol 
+            FROM Usuarios 
+            WHERE Email = @Email AND Contraseña = @Contraseña");
+
+                datos.setearParametro("@Email", usuario.Email);
+                datos.setearParametro("@Contraseña", usuario.password); // Aquí deberías usar una contraseña hasheada
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    usuario.IDUsuario = (int)datos.Lector["IDUsuario"];
+                    usuario.tipousuario = (string)datos.Lector["Rol"];
+                    return true; // Inicio de sesión exitoso
+                }
+
+                return false; // Credenciales inválidas
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al intentar loguearse", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
+
+
+
+
     }
-}
+ }
+

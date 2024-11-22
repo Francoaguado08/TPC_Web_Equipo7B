@@ -114,5 +114,20 @@ namespace TPC_Web
             // Mostrar el total general en el Label
             lblTotalGeneral.Text = "Total: " + totalGeneral.ToString("C");
         }
+
+        protected void btnCkeckout_Click(object sender, EventArgs e)
+        {
+            CarritoCompras miCarrito = (CarritoCompras)Session["compras"];
+
+            if (miCarrito != null && miCarrito.ObtenerProductos().Count > 0)
+            {
+                // Redirigir a la página de confirmación
+                Response.Redirect("Checkout.aspx");
+            }
+            else
+            {
+                lblMensajeError.Text = "El carrito está vacío. Agrega productos antes de continuar.";
+            }
+        }
     }
 }

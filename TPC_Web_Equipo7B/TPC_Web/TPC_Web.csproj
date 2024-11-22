@@ -137,6 +137,7 @@
     <Content Include="Exito.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Gracias.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -215,7 +216,6 @@
     </Compile>
     <Compile Include="AdministrarUsuario.aspx.cs">
       <DependentUpon>AdministrarUsuario.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AdministrarUsuario.aspx.designer.cs">
       <DependentUpon>AdministrarUsuario.aspx</DependentUpon>
@@ -315,6 +315,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Gracias.aspx.cs">
+      <DependentUpon>Gracias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Gracias.aspx.designer.cs">
+      <DependentUpon>Gracias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

@@ -1,6 +1,8 @@
 ﻿using Dominio;
 using Negocio;
 using System;
+using System.Drawing;
+using System.Net.NetworkInformation;
 using System.Web;
 using System.Web.UI;
 
@@ -10,7 +12,7 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Verifica si el usuario ya ha iniciado sesión y lo redirige si es necesario
+            //Verifica si el usuario ya ha iniciado sesión y lo redirige si es necesario
             if (Session["Usuarios"] != null)
             {
                 Response.Redirect("Default.aspx");
@@ -19,18 +21,22 @@ namespace TPC_Web
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtUsername.Text.Trim();
+            string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                lblError.Text = "Por favor ingrese un nombre de usuario y una contraseña.";
+                lblError.Text = "Por favor ingrese un correo electrónico y una contraseña.";
                 lblError.Visible = true;
                 return;
             }
 
             // Crear un objeto de usuario con los valores proporcionados
-            Usuarios usuario = new Usuarios { Nombre = username, Contraseña = password };
+            Usuario usuario = new Usuario
+            {
+                Email = email,
+                password = password
+            };
 
             // Crear un objeto de la capa de negocio
             UsuarioNegocio negocio = new UsuarioNegocio();
@@ -38,22 +44,22 @@ namespace TPC_Web
             // Intentar loguearse
             if (negocio.Loguear(usuario))
             {
-                // Redirigir a la página según el tipo de usuario
-                if (usuario.TipoUsuario == TipoUsuario.Admin)
+                // Guardar el usuario en la sesión
+                Session["Usuario"] = usuario;
+
+                // Redirigir según el tipo de usuario
+                if (usuario.tipousuario == "Admin")
                 {
-                    // Redirigir a Administrar.aspx si es Admin
                     Response.Redirect("Administrar.aspx");
                 }
                 else
                 {
-                    // Redirigir a Default.aspx si es Cliente
                     Response.Redirect("Default.aspx");
                 }
             }
             else
             {
-                // Si las credenciales no son correctas
-                lblError.Text = "Nombre de usuario o contraseña incorrectos.";
+                lblError.Text = "Correo electrónico o contraseña incorrectos.";
                 lblError.Visible = true;
             }
         }

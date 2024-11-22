@@ -129,7 +129,11 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Login</a></li>
-                         <li class="nav-item"><a class="nav-link" runat="server" href="~/AdministrarArticulos">Administracion</a></li>
+                       <%-- CONDICION ANTES DE ENTRAR: tengo esto en mi master, necesito ocultarlo dependiento de la siguiente condicion: si el usuario que esta logueado tiene como rol admin qeu aparezca, y sino tiene que ocultarlo; Mi clase usuario tengo que saber el rol  = admin--%>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/AdministrarArticulos">Administracion</a></li>
+
+
+                      
                     </ul>
                 </div>
             </div>

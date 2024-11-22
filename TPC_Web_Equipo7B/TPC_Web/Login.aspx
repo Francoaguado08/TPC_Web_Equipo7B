@@ -6,15 +6,22 @@
         
         <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="false"></asp:Label>
         
+        
         <div class="form-group">
-            <label for="txtUsername">Usuario</label>
-            <asp:TextBox ID="txtUsername" CssClass="form-control" runat="server" placeholder="Ingrese su usuario"></asp:TextBox>
+            <label for="txtUsername">Email</label>
+            <asp:TextBox ID="txtEmail" CssClass="form-control" runat="server" placeholder="Ingrese su email"></asp:TextBox>
         </div>
+
 
         <div class="form-group">
             <label for="txtPassword">Contraseña</label>
             <asp:TextBox ID="txtPassword" CssClass="form-control" TextMode="Password" runat="server" placeholder="Ingrese su contraseña"></asp:TextBox>
         </div>
+
+        
+      
+
+
 
         <div class="text-center" style="margin-top: 20px;">
             <asp:Button ID="btnLogin" CssClass="btn btn-primary btn-block" runat="server" Text="Iniciar Sesión" OnClick="btnLogin_Click" />

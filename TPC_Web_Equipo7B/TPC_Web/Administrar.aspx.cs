@@ -7,7 +7,17 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Opcional: Verificar autenticación o permisos
+            if (Session["Rol"] == null || (string)Session["Rol"] != "Admin")
+            {
+                // Redirigir al inicio si no es admin
+                Response.Redirect("Default.aspx");
+            }
+
+
+
+
+
+
         }
 
         protected void btnAdministrarArticulos_Click(object sender, EventArgs e)

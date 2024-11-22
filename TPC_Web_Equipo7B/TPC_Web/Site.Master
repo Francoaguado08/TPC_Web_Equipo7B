@@ -1,6 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPC_Web.SiteMaster" %>
 
-  
+
 <style>
     /* ENCABEZADO */
     h1.display-4 {
@@ -31,10 +31,10 @@
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
-    .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
     .card-img-top {
         border-bottom: 2px solid #007BFF;
@@ -55,9 +55,9 @@
         transition: color 0.3s ease-in-out;
     }
 
-    .navbar-brand:hover, .nav-link:hover {
-        color: #ddd !important;
-    }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #ddd !important;
+        }
 
     /* FOOTER */
     .footer-bar {
@@ -129,11 +129,18 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Login</a></li>
-                       <%-- CONDICION ANTES DE ENTRAR: tengo esto en mi master, necesito ocultarlo dependiento de la siguiente condicion: si el usuario que esta logueado tiene como rol admin qeu aparezca, y sino tiene que ocultarlo; Mi clase usuario tengo que saber el rol  = admin--%>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/AdministrarArticulos">Administracion</a></li>
+   
+                        <ul class="navbar-nav">
+                        <li class="nav-item" id="liAdmin" runat="server" visible="false">
+                            <a class="nav-link" href="Administrar.aspx">Administración</a>
+                        </li>
+                        <li class="nav-item" id="btnLogout" runat="server" visible="false">
+                           
+                            <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" />
+                        </li>
+                    </ul>
 
 
-                      
                     </ul>
                 </div>
             </div>
@@ -147,10 +154,10 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
-         <!-- BARRA DE CREDITOS -->
-    <div class="footer-bar">
-        <p>© 2024 Digital Planet. Todos los derechos reservados. Desarrollado por "E7B".</p>
-    </div>
+            <!-- BARRA DE CREDITOS -->
+            <div class="footer-bar">
+                <p>© 2024 Digital Planet. Todos los derechos reservados. Desarrollado por "E7B".</p>
+            </div>
         </div>
     </form>
     <asp:PlaceHolder runat="server">

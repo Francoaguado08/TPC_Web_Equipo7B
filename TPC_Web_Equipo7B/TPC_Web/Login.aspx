@@ -18,13 +18,13 @@
             <asp:TextBox ID="txtPassword" CssClass="form-control" TextMode="Password" runat="server" placeholder="Ingrese su contraseña"></asp:TextBox>
         </div>
 
+        <div class="text-center" style="margin-top: 20px;">
+            <asp:Button ID="btnLogin" CssClass="btn btn-primary btn-block" runat="server" Text="Iniciar Sesión" OnClick="btnLogin_Click" />
+        </div>
         
       
 
 
 
-        <div class="text-center" style="margin-top: 20px;">
-            <asp:Button ID="btnLogin" CssClass="btn btn-primary btn-block" runat="server" Text="Iniciar Sesión" OnClick="btnLogin_Click" />
-        </div>
     </div>
 </asp:Content>

@@ -44,6 +44,10 @@ namespace TPC_Web
             // Intentar loguearse
             if (negocio.Loguear(usuario))
             {
+                // Guardar información relevante del usuario en la sesión
+                Session["IDUsuario"] = usuario.IDUsuario;
+                Session["Rol"] = usuario.tipousuario; // "Admin" o "Cliente"
+
                 // Guardar el usuario en la sesión
                 Session["Usuario"] = usuario;
 

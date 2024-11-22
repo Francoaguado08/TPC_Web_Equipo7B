@@ -138,6 +138,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Gracias.aspx" />
+    <Content Include="HistorialPedidos.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -322,6 +323,13 @@
     </Compile>
     <Compile Include="Gracias.aspx.designer.cs">
       <DependentUpon>Gracias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HistorialPedidos.aspx.cs">
+      <DependentUpon>HistorialPedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HistorialPedidos.aspx.designer.cs">
+      <DependentUpon>HistorialPedidos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

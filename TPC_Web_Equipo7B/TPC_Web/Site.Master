@@ -135,9 +135,9 @@
                             <a class="nav-link" href="Administrar.aspx">Administración</a>
                         </li>
                         <li class="nav-item" id="btnLogout" runat="server" visible="false">
-                           
                             <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" />
                         </li>
+                           
                     </ul>
 
 

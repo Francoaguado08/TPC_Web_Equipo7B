@@ -73,6 +73,44 @@ namespace Negocio
 
 
 
+        public List<Pedido> ObtenerPedidosPorUsuario(int idUsuario)
+        {
+            List<Pedido> pedidos = new List<Pedido>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                // Consultar todos los pedidos del usuario
+                datos.setearConsulta("SELECT ID, FechaPedido, Estado FROM Pedidos WHERE IDUsuario = @IDUsuario");
+                datos.setearParametro("@IDUsuario", idUsuario);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Pedido pedido = new Pedido
+                    {
+                        ID = (int)datos.Lector["ID"],
+                        FechaPedido = (DateTime)datos.Lector["FechaPedido"],
+                        Estado = (string)datos.Lector["Estado"]
+                    };
+                    pedidos.Add(pedido);
+                }
+
+                return pedidos;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                throw new Exception("Error al obtener los pedidos", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
 
     }
 }

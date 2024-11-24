@@ -287,42 +287,53 @@ namespace Negocio
 
 
 
-       // AGREGO FUNCION LISTARFILTADOS PARA MI DEFAULT.ASPX
+        // AGREGO FUNCION LISTARFILTADOS PARA MI DEFAULT.ASPX
         public List<Articulo> listarFiltrados(string campo, string criterio)
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, M.Id AS IDMarca, C.Id AS IDCategoria FROM Articulos AS A, Marcas AS M, Categorias AS C WHERE M.Id = A.IdMarca AND C.Id = A.IdCategoria ";
-                 
-                /// JOIN IMPLICITO //////
+                string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, " +
+                                  "M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, " +
+                                  "M.Id AS IDMarca, C.Id AS IDCategoria " +
+                                  "FROM Articulos AS A " +
+                                  "INNER JOIN Marcas AS M ON M.Id = A.IdMarca " +
+                                  "INNER JOIN Categorias AS C ON C.Id = A.IdCategoria ";
 
+                // Aplicar filtros según el campo
                 if (campo == "Precio")
                 {
                     switch (criterio)
                     {
                         case "Ascendente":
-                            consulta += "ORDER BY Precio ASC";
+                            consulta += "ORDER BY A.Precio ASC";
                             break;
                         case "Descendente":
-                            consulta += "ORDER BY Precio DESC";
+                            consulta += "ORDER BY A.Precio DESC";
                             break;
                     }
                 }
                 else if (campo == "Categoría")
                 {
-                    consulta += "AND C.Nombre = '" + criterio + "' ";
+                    consulta += "WHERE C.Nombre = @criterio ";
                 }
                 else if (campo == "Marca")
                 {
-                    consulta += "AND M.Nombre = '" + criterio + "' ";
+                    consulta += "WHERE M.Nombre = @criterio ";
                 }
 
-                // Imprimir la consulta SQL generada
+                // Imprimir la consulta generada (para depuración)
                 Console.WriteLine(consulta);
 
+                // Configurar parámetros para evitar inyección SQL
                 datos.setearConsulta(consulta);
+                if (campo == "Categoría" || campo == "Marca")
+                {
+                    datos.setearParametro("@criterio", criterio);
+                }
+
+                // Ejecutar lectura de datos
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -335,13 +346,17 @@ namespace Negocio
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
                     aux.Precio = (decimal)datos.Lector["Precio"];
 
-                    aux.Marca = new Marca();
-                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
-                    aux.Marca.ID = (int)datos.Lector["ID"];
+                    aux.Marca = new Marca
+                    {
+                        Nombre = (string)datos.Lector["Marca"],
+                        ID = (int)datos.Lector["IDMarca"]
+                    };
 
-                    aux.Categoria = new Categoria();
-                    aux.Categoria.Nombre = (string)datos.Lector["Categoria"];
-                    aux.Categoria.ID = (int)datos.Lector["ID"];
+                    aux.Categoria = new Categoria
+                    {
+                        Nombre = (string)datos.Lector["Categoria"],
+                        ID = (int)datos.Lector["IDCategoria"]
+                    };
 
                     lista.Add(aux);
                 }
@@ -350,27 +365,24 @@ namespace Negocio
             }
             catch (SqlException ex)
             {
-                // Capturar y manejar excepciones SQL específicas
                 Console.WriteLine("Error de SQL: " + ex.Message);
                 throw;
             }
             catch (Exception ex)
             {
-                // Capturar y manejar otras excepciones
                 Console.WriteLine("Error: " + ex.Message);
                 throw;
             }
         }
 
 
-
         // Método para obtener un artículo por su ID
 
 
-       
-        
-        
-        
+
+
+
+
         public Articulo ObtenerPorId(int id)
         {
             AccesoDatos datos = new AccesoDatos();

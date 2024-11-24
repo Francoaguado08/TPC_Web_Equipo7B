@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using Dominio;
 
 
@@ -14,7 +15,7 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, Contraseña, tipoUsuario FROM Usuarios");
+                datos.setearConsulta("SELECT IDUsuario, Email, Contraseña, tipoUsuario FROM Usuarios");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -22,7 +23,6 @@ namespace Negocio
                     Usuario usuario = new Usuario
                     {
                         IDUsuario = (int)datos.Lector["IDUsuario"],
-                        username = datos.Lector["Nombre"].ToString(),
                         Email = datos.Lector["Email"].ToString(),
                         password = datos.Lector["Contraseña"].ToString(),
                         tipousuario = datos.Lector["tipoUsuario"].ToString()
@@ -49,8 +49,7 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO Usuarios (Nombre, Email, Contraseña, tipoUsuario) VALUES (@Nombre, @Email, @Contraseña, @tipoUsuario)");
-                datos.setearParametro("@Nombre", nuevo.username);
+                datos.setearConsulta("INSERT INTO Usuarios (Email, Contraseña, tipoUsuario) VALUES ( @Email, @Contraseña, @tipoUsuario)");
                 datos.setearParametro("@Email", nuevo.Email);
                 datos.setearParametro("@Contraseña", nuevo.password);
                 datos.setearParametro("@tipoUsuario", nuevo.tipousuario);
@@ -73,9 +72,8 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("UPDATE Usuarios SET Nombre = @Nombre, Email = @Email, Contraseña = @Contraseña, tipoUsuario = @tipoUsuario WHERE IDUsuario = @IDUsuario");
+                datos.setearConsulta("UPDATE Usuarios SET Email = @Email, Contraseña = @Contraseña, tipoUsuario = @tipoUsuario WHERE IDUsuario = @IDUsuario");
                 datos.setearParametro("@IDUsuario", usuario.IDUsuario);
-                datos.setearParametro("@Nombre", usuario.username);
                 datos.setearParametro("@Email", usuario.Email);
                 datos.setearParametro("@Contraseña", usuario.password);
                 datos.setearParametro("@tipoUsuario", usuario.tipousuario);
@@ -119,7 +117,7 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT IDUsuario, Nombre, Email, Contraseña, tipoUsuario FROM Usuarios WHERE Email = @Email AND Contraseña = @Contraseña");
+                datos.setearConsulta("SELECT IDUsuario, Email, Contraseña, tipoUsuario FROM Usuarios WHERE Email = @Email AND Contraseña = @Contraseña");
                 datos.setearParametro("@Email", email);
                 datos.setearParametro("@Contraseña", password);
                 datos.ejecutarLectura();
@@ -129,7 +127,6 @@ namespace Negocio
                     return new Usuario
                     {
                         IDUsuario = (int)datos.Lector["IDUsuario"],
-                        username = datos.Lector["Nombre"].ToString(),
                         Email = datos.Lector["Email"].ToString(),
                         password = datos.Lector["Contraseña"].ToString(),
                         tipousuario = datos.Lector["tipoUsuario"].ToString()
@@ -153,5 +150,28 @@ namespace Negocio
             // Implementar lógica específica de logging si se requiere.
             Console.WriteLine($"Usuario con ID {idUsuario} ha iniciado sesión.");
         }
+
+        public bool EmailExiste(string email)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                string query = "SELECT COUNT(*) FROM Usuarios WHERE Email = @Email";
+                datos.setearConsulta(query);
+                datos.setearParametro("@Email", email);
+
+                int count = datos.ejecutarScalar();
+                return count > 0; // Devuelve true si el email ya existe
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar el email: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

@@ -18,7 +18,6 @@ namespace Dominio
 
        
             public int IDUsuario { get; set; }
-            public string username { get; set; }
             public string Email { get; set; }
             public string password { get; set; }
            
@@ -29,9 +28,6 @@ namespace Dominio
 
         public Usuario( string password, string username, string email)
         {
-
-            
-            this.username = username;
             this.password = password;
             
             this.Email = email;

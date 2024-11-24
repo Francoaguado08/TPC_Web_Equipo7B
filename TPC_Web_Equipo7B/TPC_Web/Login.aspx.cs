@@ -28,34 +28,51 @@ namespace TPC_Web
                 return;
             }
 
-            // Crear una instancia de la capa de negocio
-            UsuarioNegocio negocio = new UsuarioNegocio();
-
-            // Autenticar al usuario según su email y contraseña
-            Usuario usuario = negocio.autenticar(email, password);
-
-            if (usuario != null)
+            try
             {
-                // Guardar información relevante del usuario en la sesión
-                Session["IDUsuario"] = usuario.IDUsuario;
-                Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
-                Session["Usuario"] = usuario;
+                // Crear una instancia de la capa de negocio
+                UsuarioNegocio negocio = new UsuarioNegocio();
 
-                // Redirigir según el tipo de usuario
-                if (usuario.tipousuario == "1")
+                // Autenticar al usuario según su email y contraseña
+                Usuario usuario = negocio.autenticar(email, password);
+
+                if (usuario != null)
                 {
-                    Response.Redirect("Administrar.aspx");
+                    // Guardar información relevante del usuario en la sesión
+                    Session["IDUsuario"] = usuario.IDUsuario;
+                    Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
+
+                    // Redirigir según el tipo de usuario
+                    if (usuario.tipousuario == "1")
+                    {
+                        Response.Redirect("Administrar.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("Default.aspx");
+                    }
                 }
                 else
                 {
-                    Response.Redirect("Default.aspx");
+                    lblError.Text = "Correo electrónico o contraseña incorrectos.";
+                    lblError.Visible = true;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                lblError.Text = "Correo electrónico o contraseña incorrectos.";
+                lblError.Text = "Ocurrió un error al procesar su solicitud. Intente nuevamente.";
                 lblError.Visible = true;
+                // Opcional: registrar el error en un archivo o sistema de logs
+                System.Diagnostics.Debug.WriteLine($"Error en Login: {ex.Message}");
             }
         }
+
+
+        protected void btnRegistrarse_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("CrearUsuario.aspx");
+        }
+
+
     }
 }

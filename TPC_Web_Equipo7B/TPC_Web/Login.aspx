@@ -6,12 +6,10 @@
         
         <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="false"></asp:Label>
         
-        
         <div class="form-group">
-            <label for="txtUsername">Email</label>
+            <label for="txtEmail">Email</label>
             <asp:TextBox ID="txtEmail" CssClass="form-control" runat="server" placeholder="Ingrese su email"></asp:TextBox>
         </div>
-
 
         <div class="form-group">
             <label for="txtPassword">Contraseña</label>
@@ -20,11 +18,7 @@
 
         <div class="text-center" style="margin-top: 20px;">
             <asp:Button ID="btnLogin" CssClass="btn btn-primary btn-block" runat="server" Text="Iniciar Sesión" OnClick="btnLogin_Click" />
+            <asp:Button ID="btnRegistrarse" runat="server" CssClass="btn btn-primary" Text="Registrarse" OnClick="btnRegistrarse_Click" />
         </div>
-        
-      
-
-
-
     </div>
 </asp:Content>

@@ -218,4 +218,21 @@ VALUES
 
 
 (15, 'https://http2.mlstatic.com/D_NQ_NP_798586-MLA40076060236_122019-O.webp'); -- PlayStation 4 Slim 1TB (Imagen 1)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+USE EcommerceDB;
+GO
+
+-- Agregar la columna 'tipoUsuario' a la tabla 'Usuarios'
+ALTER TABLE Usuarios
+ADD tipoUsuario INT NOT NULL DEFAULT 2;
+GO
+
+-- Actualizar la columna 'tipoUsuario' para que el usuario con 'IDUsuario' = 1 tenga el valor 1
+UPDATE Usuarios
+SET tipoUsuario = 1
+WHERE IDUsuario = 1;
+GO
+
+-- Confirmar los cambios realizados
+SELECT * FROM Usuarios;

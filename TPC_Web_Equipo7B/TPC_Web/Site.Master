@@ -11,9 +11,42 @@
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
+    /* CONTENEDOR DE FILTROS */
+    .bg-dark {
+        background: linear-gradient(135deg, #343a40, #495057);
+        border-radius: 8px;
+    }
+
+    .form-select {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* TARJETAS */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-img-top {
+        border-bottom: 2px solid #007BFF;
+        height: 200px;
+        object-fit: contain;
+        background-color: #f8f9fa;
+    }
+
     /* NAVBAR */
     .navbar {
         background: linear-gradient(to right, black, #555);
+        margin: 0; /* Eliminar márgenes */
+        border-radius: 0; /* Asegurar esquinas cuadradas */
     }
 
     .navbar-brand, .nav-link {
@@ -21,9 +54,9 @@
         transition: color 0.3s ease-in-out;
     }
 
-    .navbar-brand:hover, .nav-link:hover {
-        color: #ddd !important;
-    }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #ddd !important;
+        }
 
     /* FOOTER */
     .footer-bar {
@@ -63,6 +96,9 @@
                         </li>
                         <li class="nav-item" id="liAdmin" runat="server" visible="false">
                             <a class="nav-link" href="Administrar.aspx">Administración</a>
+                        </li>
+                        <li class="nav-item" id="liUser" runat="server" visible="false">
+                            <a class="nav-link" href="Perfil.aspx" id="linkUserName">Perfil</a>
                         </li>
                         <li class="nav-item" id="btnLogout" runat="server" visible="false">
                             <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" CssClass="btn btn-link text-white" />

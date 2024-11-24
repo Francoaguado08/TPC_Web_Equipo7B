@@ -1,11 +1,8 @@
-﻿using Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System;
+using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
+using static System.Collections.Specialized.BitVector32;
 
 namespace TPC_Web
 {
@@ -15,41 +12,80 @@ namespace TPC_Web
         {
             if (!IsPostBack)
             {
-                // Obtener rol del usuario desde la sesión
-                int rol = Session["tipoUsuario"] != null ? Convert.ToInt32(Session["tipoUsuario"]) : 0;
+                // Obtener tipoUsuario de la sesión
+                string tipoUsuario = Session["tipoUsuario"] as string;
+                string idUsuario = Session["IDUsuario"] as string; // Asegúrate de guardar esto al loguear al usuario
 
-                // Depuración: Imprimir en el log el valor del rol
-                System.Diagnostics.Debug.WriteLine($"Rol actual: {rol}");
-
-                // Encontrar elementos del menú por su ID
-                var adminLink = FindControl("liAdmin") as HtmlGenericControl;
-                var logoutLink = FindControl("btnLogout") as HtmlGenericControl;
+                // Encontrar elementos del menú
                 var loginLink = FindControl("liLogin") as HtmlGenericControl;
+                var adminLink = FindControl("liAdmin") as HtmlGenericControl;
+                var userLink = FindControl("liUser") as HtmlGenericControl;
+                var logoutLink = FindControl("btnLogout") as HtmlGenericControl;
 
-                if (adminLink == null || logoutLink == null || loginLink == null)
+                // Lógica de visibilidad
+                if (!string.IsNullOrEmpty(tipoUsuario))
                 {
-                    System.Diagnostics.Debug.WriteLine("No se encontraron algunos elementos en el DOM.");
-                }
+                    if (loginLink != null) loginLink.Visible = false; // Ocultar botón Login
+                    if (logoutLink != null) logoutLink.Visible = true; // Mostrar botón Cerrar Sesión
 
-                // Configurar visibilidad de elementos según el rol
-                if (rol == 1) // Admin
+                    if (tipoUsuario == "1") // Admin
+                    {
+                        if (adminLink != null) adminLink.Visible = true;
+                    }
+                    else if (tipoUsuario == "2") // Cliente
+                    {
+                        if (adminLink != null) adminLink.Visible = false;
+                    }
+
+                    // Mostrar nombre del usuario
+                    if (userLink != null)
+                    {
+                        userLink.Visible = true;
+                        var linkUserName = FindControl("linkUserName") as HtmlAnchor;
+                        if (linkUserName != null && !string.IsNullOrEmpty(idUsuario))
+                        {
+                            linkUserName.InnerText = ObtenerNombreUsuario(idUsuario);
+                        }
+                    }
+                }
+                else
                 {
-                    if (adminLink != null) adminLink.Visible = true; // Mostrar menú admin
+                    if (loginLink != null) loginLink.Visible = true; // Mostrar botón Login
+                    if (logoutLink != null) logoutLink.Visible = false; // Ocultar botón Cerrar Sesión
+                    if (adminLink != null) adminLink.Visible = false; // Ocultar Administración
+                    if (userLink != null) userLink.Visible = false; // Ocultar Usuario
                 }
-                else if (rol == 2) // Cliente
-                {
-                    if (adminLink != null) adminLink.Visible = false; // Ocultar menú admin
-                }
-
-                // Mostrar botón de cerrar sesión si está logueado
-                if (logoutLink != null) logoutLink.Visible = rol != 0;
-
-                // Ocultar botón de login si está logueado
-                if (loginLink != null) loginLink.Visible = rol == 0;
             }
         }
 
+        private string ObtenerNombreUsuario(string idUsuario)
+        {
+            string nombre = "Usuario";
+            string connectionString = "tu_cadena_de_conexion"; // Asegúrate de reemplazar esto
+            string query = "SELECT Nombre FROM DatosPersonales WHERE IDUsuario = @IDUsuario";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@IDUsuario", idUsuario);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        nombre = result.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar errores
+                }
+            }
+
+            return nombre;
+        }
 
         protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
@@ -60,6 +96,5 @@ namespace TPC_Web
             // Redirigir al login
             Response.Redirect("Login.aspx");
         }
-
     }
 }

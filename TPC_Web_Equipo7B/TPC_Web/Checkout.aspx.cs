@@ -10,47 +10,6 @@ using Negocio;
 
 namespace TPC_Web
 {
-    //public partial class Checkout : System.Web.UI.Page
-    //{
-    //    protected void Page_Load(object sender, EventArgs e)
-    //    {
-    //        if (!IsPostBack)
-    //        {
-    //            // Cargar el resumen de la compra al cargar la página por primera vez
-    //            CargarResumenCompra();
-    //        }
-    //    }
-    //    private void CargarResumenCompra()
-    //    {
-    //        // Obtener el carrito de la sesión
-    //        CarritoCompras miCarrito = (CarritoCompras)Session["compras"];
-
-    //        if (miCarrito != null)
-    //        {
-    //            // Enlazar el carrito con el GridView
-    //            dgvResumenCompra.DataSource = miCarrito.ObtenerProductos();
-    //            dgvResumenCompra.DataBind();
-
-    //            // Calcular y mostrar el total general
-    //            decimal totalGeneral = miCarrito.ObtenerProductos().Sum(a => a.Precio * a.Cantidad);
-    //            lblTotalGeneral.Text = totalGeneral.ToString("C");
-    //        }
-    //        else
-    //        {
-    //            lblTotalGeneral.Text = "No hay productos en el carrito.";
-    //        }
-    //    }
-
-
-
-    //    protected void btnConfirmarCompra_Click(object sender, EventArgs e)
-    //    {
-    //        Response.Redirect("ConfirmacionCompra.aspx");
-    //    }
-
-
-
-    //}
 
 
     public partial class Checkout : Page
@@ -145,18 +104,6 @@ namespace TPC_Web
                 lblMensajeError.Text = "Ocurrió un error: " + ex.Message;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

@@ -1,6 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPC_Web.SiteMaster" %>
 
-
 <style>
     /* ENCABEZADO */
     h1.display-4 {
@@ -12,42 +11,9 @@
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    /* CONTENEDOR DE FILTROS */
-    .bg-dark {
-        background: linear-gradient(135deg, #343a40, #495057);
-        border-radius: 8px;
-    }
-
-    .form-select {
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    /* TARJETAS */
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-        .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-    .card-img-top {
-        border-bottom: 2px solid #007BFF;
-        height: 200px;
-        object-fit: contain;
-        background-color: #f8f9fa;
-    }
-
     /* NAVBAR */
     .navbar {
         background: linear-gradient(to right, black, #555);
-        margin: 0; /* Eliminar márgenes */
-        border-radius: 0; /* Asegurar esquinas cuadradas */
     }
 
     .navbar-brand, .nav-link {
@@ -55,9 +21,9 @@
         transition: color 0.3s ease-in-out;
     }
 
-        .navbar-brand:hover, .nav-link:hover {
-            color: #ddd !important;
-        }
+    .navbar-brand:hover, .nav-link:hover {
+        color: #ddd !important;
+    }
 
     /* FOOTER */
     .footer-bar {
@@ -69,99 +35,50 @@
     }
 </style>
 
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - DigitalPlanet
-    </title>
-
-    <%--Agrego los links de boostrap!--%>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>
-
-    <webopt:BundleReference runat="server" Path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <title><%: Page.Title %> - DigitalPlanet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <form runat="server">
-        <asp:ScriptManager runat="server">
-            <Scripts>
-                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                <%--Framework Scripts--%>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                <%--Site Scripts--%>
-            </Scripts>
-        </asp:ScriptManager>
-
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" runat="server" href="~/">Digital Planet</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <%--Redirigirme al index--%>
-
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Login">Login</a></li>
-   
-                        <ul class="navbar-nav">
+                        <li class="nav-item" id="liLogin" runat="server">
+                            <a class="nav-link" href="Login.aspx">Login</a>
+                        </li>
                         <li class="nav-item" id="liAdmin" runat="server" visible="false">
                             <a class="nav-link" href="Administrar.aspx">Administración</a>
                         </li>
                         <li class="nav-item" id="btnLogout" runat="server" visible="false">
-                            <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" />
+                            <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" CssClass="btn btn-link text-white" />
                         </li>
-                           
-                    </ul>
-
-
                     </ul>
                 </div>
             </div>
         </nav>
 
-
-
-
-
         <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
             <hr />
-            <!-- BARRA DE CREDITOS -->
             <div class="footer-bar">
                 <p>© 2024 Digital Planet. Todos los derechos reservados. Desarrollado por "E7B".</p>
             </div>
         </div>
     </form>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
 </body>
 </html>

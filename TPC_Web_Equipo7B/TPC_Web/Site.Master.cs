@@ -16,28 +16,40 @@ namespace TPC_Web
             if (!IsPostBack)
             {
                 // Obtener rol del usuario desde la sesión
-                string rol = Session["Rol"] as string;
+                int rol = Session["tipoUsuario"] != null ? Convert.ToInt32(Session["tipoUsuario"]) : 0;
+
+                // Depuración: Imprimir en el log el valor del rol
+                System.Diagnostics.Debug.WriteLine($"Rol actual: {rol}");
 
                 // Encontrar elementos del menú por su ID
                 var adminLink = FindControl("liAdmin") as HtmlGenericControl;
                 var logoutLink = FindControl("btnLogout") as HtmlGenericControl;
+                var loginLink = FindControl("liLogin") as HtmlGenericControl;
 
-                if (rol == "Admin")
+                if (adminLink == null || logoutLink == null || loginLink == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("No se encontraron algunos elementos en el DOM.");
+                }
+
+                // Configurar visibilidad de elementos según el rol
+                if (rol == 1) // Admin
                 {
                     if (adminLink != null) adminLink.Visible = true; // Mostrar menú admin
                 }
-                else if (rol == "Cliente")
+                else if (rol == 2) // Cliente
                 {
                     if (adminLink != null) adminLink.Visible = false; // Ocultar menú admin
                 }
 
                 // Mostrar botón de cerrar sesión si está logueado
-                if (logoutLink != null) logoutLink.Visible = !string.IsNullOrEmpty(rol);
+                if (logoutLink != null) logoutLink.Visible = rol != 0;
+
+                // Ocultar botón de login si está logueado
+                if (loginLink != null) loginLink.Visible = rol == 0;
             }
         }
 
 
-       
 
         protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
@@ -48,5 +60,6 @@ namespace TPC_Web
             // Redirigir al login
             Response.Redirect("Login.aspx");
         }
+
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Dominio;
 using Negocio;
 using System;
-using System.Drawing;
-using System.Net.NetworkInformation;
-using System.Web;
 using System.Web.UI;
 
 namespace TPC_Web
@@ -12,8 +9,8 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Verifica si el usuario ya ha iniciado sesión y lo redirige si es necesario
-            if (Session["Usuarios"] != null)
+            // Verifica si el usuario ya ha iniciado sesión y lo redirige si es necesario
+            if (Session["Usuario"] != null)
             {
                 Response.Redirect("Default.aspx");
             }
@@ -26,33 +23,26 @@ namespace TPC_Web
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                lblError.Text = "Por favor ingrese un correo electrónico y una contraseña.";
+                lblError.Text = "Por favor, ingrese un correo electrónico y una contraseña.";
                 lblError.Visible = true;
                 return;
             }
 
-            // Crear un objeto de usuario con los valores proporcionados
-            Usuario usuario = new Usuario
-            {
-                Email = email,
-                password = password
-            };
-
-            // Crear un objeto de la capa de negocio
+            // Crear una instancia de la capa de negocio
             UsuarioNegocio negocio = new UsuarioNegocio();
 
-            // Intentar loguearse
-            if (negocio.Loguear(usuario))
+            // Autenticar al usuario según su email y contraseña
+            Usuario usuario = negocio.autenticar(email, password);
+
+            if (usuario != null)
             {
                 // Guardar información relevante del usuario en la sesión
                 Session["IDUsuario"] = usuario.IDUsuario;
-                Session["Rol"] = usuario.tipousuario; // "Admin" o "Cliente"
-
-                // Guardar el usuario en la sesión
+                Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
                 Session["Usuario"] = usuario;
 
                 // Redirigir según el tipo de usuario
-                if (usuario.tipousuario == "Admin")
+                if (usuario.tipousuario == "1")
                 {
                     Response.Redirect("Administrar.aspx");
                 }

@@ -66,6 +66,16 @@
         padding: 20px 0;
         margin-top: 50px;
     }
+
+    .form-header {
+    background: linear-gradient(to right, black, #555);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Negrita */
+}
+
 </style>
 
 <!DOCTYPE html>

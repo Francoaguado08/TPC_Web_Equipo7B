@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="contact-form-container">
-        <div class="form-header">Formulario de Contacto</div>
+        <div class="form-header">Dejanos tu comentario</div>
         <div class="form-body">
             <div class="form-group">
                 <label class="form-label" for="txtNombre">Nombre:</label>

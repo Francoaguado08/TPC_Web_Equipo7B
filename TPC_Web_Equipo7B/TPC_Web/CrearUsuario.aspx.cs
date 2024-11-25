@@ -66,7 +66,7 @@ namespace TPC_Web
             int nuevoId = negocio.ObtenerIdPorEmail(email);
 
             // Redirigir a la página DatosPersonales.aspx con el ID como parámetro
-            Response.Redirect($"DatosPersonales.aspx?IDUsuario={nuevoId}");
+            Response.Redirect($"PersonalesDatos.aspx?IDUsuario={nuevoId}");
         }
 
     }

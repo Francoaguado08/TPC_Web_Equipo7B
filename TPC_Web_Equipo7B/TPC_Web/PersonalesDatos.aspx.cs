@@ -13,19 +13,29 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
-
-
-
-
+            if (!IsPostBack)
+            {
+                if (Request.QueryString["IDUsuario"] == null || !int.TryParse(Request.QueryString["IDUsuario"], out _))
+                {
+                    // Manejar el error, redirigir o mostrar mensaje
+                    Response.Redirect("CrearUsuario");
+                }
+            }
         }
+
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!int.TryParse(Request.QueryString["IDUsuario"], out int idUsuario))
+            {
+                // Manejar el error, mostrar mensaje al usuario o redirigir
+                Response.Redirect("CrearUsuario");
+                return;
+            }
+
             DatosPersonales datos = new DatosPersonales
             {
-                IDUsuario = int.Parse(Request.QueryString["IDUsuario"]),
+                IDUsuario = idUsuario,
                 DNI = txtDNI.Text,
                 Nombre = txtNombre.Text,
                 Apellido = txtApellido.Text,
@@ -35,13 +45,11 @@ namespace TPC_Web
                 Telefono = txtTelefono.Text
             };
 
-            DatoPersonalNegocio negocio = new DatoPersonalNegocio();    
+            DatoPersonalNegocio negocio = new DatoPersonalNegocio();
             negocio.Agregar(datos);
 
-            Response.Redirect("Compras.aspx");
-
-
-
+            Response.Redirect("Default.aspx");
         }
+
     }
 }

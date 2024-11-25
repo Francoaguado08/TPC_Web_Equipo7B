@@ -7,9 +7,8 @@
                       CssClass="table table-bordered">
             <Columns>
                 <asp:BoundField DataField="IDUsuario" HeaderText="ID" SortExpression="IDUsuario" />
-                <asp:BoundField DataField="username" HeaderText="Nombre" SortExpression="username" />
                 <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
-                <asp:BoundField DataField="Rol" HeaderText="Rol" SortExpression="Rol" />
+                <asp:BoundField DataField="tipoUsuario" HeaderText="Rol" SortExpression="tipoUsuario" />
             </Columns>
         </asp:GridView>
         <asp:Button ID="btnVolver" runat="server" Text="Volver a Administrar" OnClick="btnVolver_Click" CssClass="btn btn-secondary" />

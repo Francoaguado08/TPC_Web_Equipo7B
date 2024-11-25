@@ -43,7 +43,7 @@ namespace TPC_Web
                     Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
 
                     // Redirigir según el tipo de usuario
-                    if (usuario.tipousuario == "1")
+                    if (usuario.tipousuario == 1)
                     {
                         Response.Redirect("Administrar.aspx");
                     }

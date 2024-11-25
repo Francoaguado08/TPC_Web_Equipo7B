@@ -236,3 +236,6 @@ GO
 
 -- Confirmar los cambios realizados
 SELECT * FROM Usuarios;
+
+ALTER TABLE [EcommerceDB].[dbo].[Usuarios]
+DROP COLUMN [Nombre];

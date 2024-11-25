@@ -25,7 +25,8 @@ namespace Negocio
                         IDUsuario = (int)datos.Lector["IDUsuario"],
                         Email = datos.Lector["Email"].ToString(),
                         password = datos.Lector["Contraseña"].ToString(),
-                        tipousuario = datos.Lector["tipoUsuario"].ToString()
+                        tipousuario = (int)datos.Lector["tipoUsuario"]
+
                     };
 
                     lista.Add(usuario);
@@ -49,10 +50,10 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO Usuarios (Email, Contraseña, tipoUsuario) VALUES ( @Email, @Contraseña, @tipoUsuario)");
+                datos.setearConsulta("INSERT INTO Usuarios (Email, Contraseña, tipoUsuario) VALUES (@Email, @Contraseña, @tipoUsuario)");
                 datos.setearParametro("@Email", nuevo.Email);
                 datos.setearParametro("@Contraseña", nuevo.password);
-                datos.setearParametro("@tipoUsuario", nuevo.tipousuario);
+                datos.setearParametro("@tipoUsuario", nuevo.tipousuario); // Ahora es un entero
 
                 datos.ejecutarAccion();
             }
@@ -65,6 +66,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
 
         public void modificar(Usuario usuario)
         {
@@ -129,7 +131,7 @@ namespace Negocio
                         IDUsuario = (int)datos.Lector["IDUsuario"],
                         Email = datos.Lector["Email"].ToString(),
                         password = datos.Lector["Contraseña"].ToString(),
-                        tipousuario = datos.Lector["tipoUsuario"].ToString()
+                        tipousuario = (int)datos.Lector["tipoUsuario"]
                     };
                 }
 
@@ -172,6 +174,33 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public int ObtenerIdPorEmail(string email)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IDUsuario FROM Usuarios WHERE Email = @Email");
+                datos.setearParametro("@Email", email);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return (int)datos.Lector["IDUsuario"];
+                }
+
+                throw new Exception("No se pudo obtener el ID del usuario.");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
     }
 }

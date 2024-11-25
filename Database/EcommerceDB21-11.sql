@@ -239,3 +239,15 @@ SELECT * FROM Usuarios;
 
 ALTER TABLE [EcommerceDB].[dbo].[Usuarios]
 DROP COLUMN [Nombre];
+
+select * from DatosPersonales;
+
+
+SELECT * FROM Pedidos;
+
+
+
+
+
+--hacerlo null para que un usaurio que no este registrado pueda hacer la compra.
+ALTER TABLE Pedidos ALTER COLUMN IDUsuario INT NULL;

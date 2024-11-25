@@ -12,25 +12,28 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                // Número de WhatsApp y mensaje
+                string phoneNumber = "5491132320275";
+                string message = "Hola, quiero saber el estado de mi pedido.";
+
+                // Codificar el mensaje para URL
+                string encodedMessage = Server.UrlEncode(message);
+
+                // Construir el enlace para WhatsApp
+                string whatsappLinkUrl = $"https://api.whatsapp.com/send/?phone={phoneNumber}&text={encodedMessage}&type=phone_number&app_absent=0";
+
+                // Asignar el enlace al atributo href del control
+                whatsappLink.Attributes["href"] = whatsappLinkUrl;
+            }
+
 
         }
 
 
 
-        //private void GenerarEnlaceWhatsApp()
-        //{
-        //    Usuario usuario = (Usuario)Session["usuario"];
-        //    DatosPersonales datos = usuario != null
-        //        ? ObtenerDatosPersonales(usuario.IDUsuario)
-        //        : (DatosPersonales)Session["datosCheckout"];
-
-        //    string numeroWhatsApp = "5491"; // Reemplaza con el número de WhatsApp de tu negocio.
-        //    string mensaje = $"Hola, quiero saber el estado de mi pedido [IDPedido]";
-        //    string enlace = $"https://wa.me/{numeroWhatsApp}?text={Uri.EscapeDataString(mensaje)}";
-
-        //    // Asigna el enlace al control en la página
-        //    hlWhatsApp.NavigateUrl = enlace;
-        //}
+      
 
 
     }

@@ -8,7 +8,13 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Inicialización de la página si es necesario
+            int? idUsuario = Session["IDUsuario"] as int?;
+            int? tipoUsuario = Session["tipoUsuario"] as int?;
+
+            if (idUsuario == null || tipoUsuario != 1)
+            {
+                Response.Redirect("Default.aspx");
+            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
@@ -23,10 +29,8 @@ namespace TPC_Web
 
             try
             {
-                // Crear instancia de la clase MarcasNegocio
                 MarcasNegocio negocio = new MarcasNegocio();
 
-                // Crear nueva marca y agregarla
                 Marca nuevaMarca = new Marca { Nombre = nombreMarca };
                 negocio.agregarMarcas(nuevaMarca);
 
@@ -42,7 +46,6 @@ namespace TPC_Web
 
         protected void btnVolver_Click(object sender, EventArgs e)
         {
-            // Cambia "AdministrarMarcas.aspx" por la ruta de tu página de administración
             Response.Redirect("AdministrarMarca.aspx");
         }
     }

@@ -1,7 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPC_Web.SiteMaster" %>
 
 <style>
-    /* ENCABEZADO */
     h1.display-4 {
         font-family: 'Poppins', sans-serif;
         font-weight: bold;
@@ -11,7 +10,6 @@
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    /* CONTENEDOR DE FILTROS */
     .bg-dark {
         background: linear-gradient(135deg, #343a40, #495057);
         border-radius: 8px;
@@ -22,7 +20,6 @@
         border: 1px solid #ccc;
     }
 
-    /* TARJETAS */
     .card {
         border-radius: 10px;
         overflow: hidden;
@@ -30,10 +27,10 @@
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
-        .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
 
     .card-img-top {
         border-bottom: 2px solid #007BFF;
@@ -42,7 +39,6 @@
         background-color: #f8f9fa;
     }
 
-    /* NAVBAR */
     .navbar {
         background: linear-gradient(to right, black, #555);
         margin: 0;
@@ -54,11 +50,10 @@
         transition: color 0.3s ease-in-out;
     }
 
-        .navbar-brand:hover, .nav-link:hover {
-            color: #ddd !important;
-        }
+    .navbar-brand:hover, .nav-link:hover {
+        color: #ddd !important;
+    }
 
-    /* FOOTER */
     .footer-bar {
         background: linear-gradient(to right, black, #555);
         color: white;
@@ -96,11 +91,16 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1" id="Navbar" runat="server">
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
                         
+                        <!-- Administrar -->
+                        <li class="nav-item" id="liAdministrar" runat="server" visible="false">
+                            <a class="nav-link" href="Administrar.aspx">Administrar</a>
+                        </li>
+
                         <!-- Botón Login -->
                         <li class="nav-item" id="liLogin" runat="server">
                             <a class="nav-link" href="Login.aspx">Login</a>

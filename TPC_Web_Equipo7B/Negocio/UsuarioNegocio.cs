@@ -200,7 +200,31 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public void modificarRol(int idUsuario, int nuevoRol)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
+            try
+            {
+                datos.setearConsulta("UPDATE Usuarios SET tipoUsuario = @tipoUsuario WHERE IDUsuario = @IDUsuario");
+                datos.limpiarParametros(); // Limpia cualquier parámetro previo
+                datos.setearParametro("@IDUsuario", idUsuario);
+                datos.setearParametro("@tipoUsuario", nuevoRol);
+
+                datos.ejecutarAccion();
+
+                Console.WriteLine("Consulta ejecutada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al ejecutar la consulta: {ex.Message}");
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
     }
 }

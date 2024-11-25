@@ -1,10 +1,7 @@
 ﻿using Negocio;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Dominio;
 
 namespace TPC_Web
@@ -17,36 +14,37 @@ namespace TPC_Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            int? idUsuario = Session["IDUsuario"] as int?;
+            int? tipoUsuario = Session["tipoUsuario"] as int?;
+
+            if (idUsuario == null || tipoUsuario != 1)
+            {
+                Response.Redirect("Default.aspx");
+            }
+
             if (!IsPostBack)
             {
-                // Cargar las categorías y marcas en los dropdowns
                 cargarCategorias();
                 cargarMarcas();
 
-                // Si se está editando un artículo
                 if (Request.QueryString["id"] != null)
                 {
                     int id = int.Parse(Request.QueryString["id"]);
                     List<Articulo> temporal = (List<Articulo>)Session["listaArticulos"];
                     Articulo seleccionado = temporal.Find(x => x.ID == id);
 
-                    // Mostrar datos del artículo en los controles
                     txtCodigo.Text = seleccionado.Codigo;
                     txtNombre.Text = seleccionado.Nombre;
                     txtDescripcion.Text = seleccionado.Descripcion;
                     txtPrecio.Text = seleccionado.Precio.ToString();
-
                     ddlCategorias.SelectedValue = seleccionado.Categoria.ID.ToString();
                     ddlMarcas.SelectedValue = seleccionado.Marca.ID.ToString();
-
-                  
                 }
             }
         }
 
         private void cargarCategorias()
         {
-            // Cargar las categorías desde la base de datos
             List<Categoria> categorias = negocioCategoria.listar();
             ddlCategorias.DataSource = categorias;
             ddlCategorias.DataTextField = "Nombre";
@@ -56,7 +54,6 @@ namespace TPC_Web
 
         private void cargarMarcas()
         {
-            // Cargar las marcas desde la base de datos
             List<Marca> marcas = negocioMarca.listar();
             ddlMarcas.DataSource = marcas;
             ddlMarcas.DataTextField = "Nombre";
@@ -66,21 +63,18 @@ namespace TPC_Web
 
         protected void btnAceptar_Click(object sender, EventArgs e)
         {
-            // Crear una nueva instancia de Articulo
-            Articulo articulo = new Articulo();
-
-            // Asignar los valores del formulario a las propiedades del artículo
-            articulo.Codigo = txtCodigo.Text;
-            articulo.Nombre = txtNombre.Text;
-            articulo.Descripcion = txtDescripcion.Text;
+            Articulo articulo = new Articulo
+            {
+                Codigo = txtCodigo.Text,
+                Nombre = txtNombre.Text,
+                Descripcion = txtDescripcion.Text
+            };
 
             if (decimal.TryParse(txtPrecio.Text, out decimal precio))
             {
                 articulo.Precio = precio;
             }
 
-
-            // Asignar la categoría seleccionada
             if (int.TryParse(ddlCategorias.SelectedValue, out int categoriaId))
             {
                 articulo.Categoria = new Categoria
@@ -90,7 +84,6 @@ namespace TPC_Web
                 };
             }
 
-            // Asignar la marca seleccionada
             if (int.TryParse(ddlMarcas.SelectedValue, out int marcaId))
             {
                 articulo.Marca = new Marca
@@ -100,26 +93,12 @@ namespace TPC_Web
                 };
             }
 
-            
-            // Verificar si la sesión contiene la lista de artículos
-            List<Articulo> temporal = (List<Articulo>)Session["listaArticulos"];
-
-            // Si es la primera vez o no existe la lista, inicialízala
-            if (temporal == null)
-            {
-                temporal = new List<Articulo>();
-                Session["listaArticulos"] = temporal; // Asignamos la lista vacía a la sesión
-            }
-
-            // Agregar el artículo a la lista en la sesión
+            List<Articulo> temporal = (List<Articulo>)Session["listaArticulos"] ?? new List<Articulo>();
             temporal.Add(articulo);
+            Session["listaArticulos"] = temporal;
 
             negocioArticulo.agregar(articulo);
-
-            // Redirigir a la página de administración de artículos
             Response.Redirect("AdministrarArticulos.aspx", false);
-
-
         }
     }
 }

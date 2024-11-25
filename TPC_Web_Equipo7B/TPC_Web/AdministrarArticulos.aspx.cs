@@ -2,23 +2,26 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TPC_Web
 {
     public partial class AdministrarArticulos : System.Web.UI.Page
     {
-
-
         ArticuloNegocio negocioArticulo = new ArticuloNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Verificar si el usuario está logueado y tiene permisos de administrador
+            int? idUsuario = Session["IDUsuario"] as int?;
+            int? tipoUsuario = Session["tipoUsuario"] as int?;
+
+            if (idUsuario == null || tipoUsuario != 1)
+            {
+                // Redirigir al inicio si no está logueado o no tiene permiso de administrador
+                Response.Redirect("Default.aspx");
+            }
+
             if (!IsPostBack)
             {
                 // Cargar los artículos en el GridView
@@ -36,9 +39,6 @@ namespace TPC_Web
             gvArticulos.DataBind();
         }
 
-       
-        
-        
         protected void btnNuevoArticulo_Click(object sender, EventArgs e)
         {
             // Redirige a la página de alta de artículo

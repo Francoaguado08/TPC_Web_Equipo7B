@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Web.UI;
-using Negocio;
-using Dominio;
 
 namespace TPC_Web
 {
@@ -11,24 +9,36 @@ namespace TPC_Web
         {
             if (!IsPostBack)
             {
-                // Verificar si el usuario está logueado
                 int? idUsuario = Session["IDUsuario"] as int?;
                 int? tipoUsuario = Session["tipoUsuario"] as int?;
 
-                // Configurar visibilidad de los botones según el estado de la sesión
-                liLogin.Visible = idUsuario == null; // Mostrar Login si no hay sesión
-                liPerfil.Visible = idUsuario != null; // Mostrar Perfil si el usuario está logueado
-                btnLogout.Visible = idUsuario != null; // Mostrar Cerrar Sesión si el usuario está logueado
+                liLogin.Visible = idUsuario == null;
+                liPerfil.Visible = idUsuario != null;
+                btnLogout.Visible = idUsuario != null;
+
+                if (idUsuario != null && tipoUsuario == 1)
+                {
+                    // Agregar dinámicamente el enlace de Administrar
+                    var liAdministrar = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
+                    liAdministrar.Attributes["class"] = "nav-item";
+
+                    var aAdministrar = new System.Web.UI.HtmlControls.HtmlAnchor
+                    {
+                        HRef = "Administrar.aspx",
+                        InnerText = "Administrar"
+                    };
+                    aAdministrar.Attributes["class"] = "nav-link";
+
+                    liAdministrar.Controls.Add(aAdministrar);
+                    Navbar.Controls.Add(liAdministrar); // Navbar es el contenedor del menú.
+                }
             }
         }
 
         protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
-            // Limpiar la sesión
             Session.Clear();
             Session.Abandon();
-
-            // Redirigir al login
             Response.Redirect("Login.aspx");
         }
     }

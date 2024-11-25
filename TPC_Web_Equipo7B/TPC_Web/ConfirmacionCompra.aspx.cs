@@ -70,6 +70,7 @@ namespace TPC_Web
                         lblNombre.Text = $"{datosCheckout.Nombre} {datosCheckout.Apellido}";
                         lblDomicilio.Text = datosCheckout.Domicilio;
                         lblTelefono.Text = datosCheckout.Telefono;
+
                     }
                 }
             }

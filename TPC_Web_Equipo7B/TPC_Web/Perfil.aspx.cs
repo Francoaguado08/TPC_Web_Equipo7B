@@ -11,8 +11,13 @@ namespace TPC_Web
         DatoPersonalNegocio datoPersonalNegocio = new DatoPersonalNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
+        { 
+                if (Session["Email"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                }
+            
+            else 
             {
                 // Cargar los datos del usuario logueado
                 CargarDatosUsuario();

@@ -24,22 +24,13 @@ namespace TPC_Web
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogin;
 
         /// <summary>
-        /// Control liAdmin.
+        /// Control liPerfil.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liAdmin;
-
-        /// <summary>
-        /// Control liUser.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liUser;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liPerfil;
 
         /// <summary>
         /// Control btnLogout.

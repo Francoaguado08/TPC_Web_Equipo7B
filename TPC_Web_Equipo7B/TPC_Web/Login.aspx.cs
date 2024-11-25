@@ -41,6 +41,7 @@ namespace TPC_Web
                     // Guardar información relevante del usuario en la sesión
                     Session["IDUsuario"] = usuario.IDUsuario;
                     Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
+                    Session["Email"] = usuario.Email; // Agregar esta línea
 
                     // Redirigir según el tipo de usuario
                     if (usuario.tipousuario == 1)
@@ -62,10 +63,12 @@ namespace TPC_Web
             {
                 lblError.Text = "Ocurrió un error al procesar su solicitud. Intente nuevamente.";
                 lblError.Visible = true;
+
                 // Opcional: registrar el error en un archivo o sistema de logs
                 System.Diagnostics.Debug.WriteLine($"Error en Login: {ex.Message}");
             }
         }
+
 
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)

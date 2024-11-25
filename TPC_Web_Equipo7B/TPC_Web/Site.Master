@@ -45,8 +45,8 @@
     /* NAVBAR */
     .navbar {
         background: linear-gradient(to right, black, #555);
-        margin: 0; /* Eliminar márgenes */
-        border-radius: 0; /* Asegurar esquinas cuadradas */
+        margin: 0;
+        border-radius: 0;
     }
 
     .navbar-brand, .nav-link {
@@ -68,14 +68,13 @@
     }
 
     .form-header {
-    background: linear-gradient(to right, black, #555);
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 24px; /* Tamaño de fuente más grande */
-    font-weight: bold; /* Negrita */
-}
-
+        background: linear-gradient(to right, black, #555);
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: bold;
+    }
 </style>
 
 <!DOCTYPE html>
@@ -101,15 +100,18 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
+                        
+                        <!-- Botón Login -->
                         <li class="nav-item" id="liLogin" runat="server">
                             <a class="nav-link" href="Login.aspx">Login</a>
                         </li>
-                        <li class="nav-item" id="liAdmin" runat="server" visible="false">
-                            <a class="nav-link" href="Administrar.aspx">Administración</a>
+
+                        <!-- Botón Perfil -->
+                        <li class="nav-item" id="liPerfil" runat="server" visible="false">
+                            <a class="nav-link" href="Perfil.aspx">Perfil</a>
                         </li>
-                        <li class="nav-item" id="liUser" runat="server" visible="false">
-                            <a class="nav-link" href="Perfil.aspx" id="linkUserName">Perfil</a>
-                        </li>
+
+                        <!-- Botón Cerrar Sesión -->
                         <li class="nav-item" id="btnLogout" runat="server" visible="false">
                             <asp:Button ID="btnCerrarSesion" runat="server" OnClick="btnCerrarSesion_Click" Text="Cerrar Sesión" CssClass="btn btn-link text-white" />
                         </li>

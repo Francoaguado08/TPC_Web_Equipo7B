@@ -126,8 +126,11 @@ namespace TPC_Web
             }
             else
             {
+                // Mostrar el mensaje de error
                 lblMensajeError.Text = "El carrito está vacío. Agrega productos antes de continuar.";
+                lblMensajeError.Visible = true; // Asegurarse de que el mensaje sea visible
             }
         }
+
     }
 }

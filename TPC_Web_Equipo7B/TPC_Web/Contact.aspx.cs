@@ -6,8 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Net.Mail;
 using System.Net;
-
-
+using System.Text.RegularExpressions;
 
 namespace TPC_Web
 {
@@ -29,10 +28,19 @@ namespace TPC_Web
                     return;
                 }
 
+                // Validar formato del email
+                string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(email, emailPattern))
+                {
+                    lblResultado.Text = "Por favor, ingrese un email válido.";
+                    lblResultado.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
                 // Configuración del mensaje de correo
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("e7b.contacto@gmail.com"); //
-                mail.To.Add("e7b.contacto@gmail.com"); // 
+                mail.From = new MailAddress("e7b.contacto@gmail.com");
+                mail.To.Add("e7b.contacto@gmail.com");
                 mail.Subject = "Nuevo mensaje de contacto";
                 mail.Body = $"Nombre: {nombre}\nEmail: {email}\nMensaje:\n{mensaje}";
 

@@ -2,6 +2,8 @@
 using Negocio;
 using System;
 using System.Web.UI;
+using System.Text.RegularExpressions;
+
 
 namespace TPC_Web
 {
@@ -17,6 +19,7 @@ namespace TPC_Web
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
 
+            // Validar campos vacíos
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 lblMensaje.Text = "Por favor, complete todos los campos.";
@@ -25,8 +28,18 @@ namespace TPC_Web
                 return;
             }
 
+            // Validar formato del correo
+            if (!EsEmailValido(email))
+            {
+                lblMensaje.Text = "El correo no tiene un formato válido.";
+                lblMensaje.CssClass = "text-danger";
+                lblMensaje.Visible = true;
+                return;
+            }
+
             UsuarioNegocio negocio = new UsuarioNegocio();
 
+            // Validar si el correo ya está registrado
             if (negocio.EmailExiste(email))
             {
                 lblMensaje.Text = "El correo ya está registrado.";
@@ -45,6 +58,14 @@ namespace TPC_Web
             // Reasignar el valor del password al TextBox
             txtPassword.Attributes["value"] = password;
         }
+
+        // Método para validar el formato del correo
+        private bool EsEmailValido(string email)
+        {
+            string patron = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, patron);
+        }
+
 
 
         protected void btnRegistrar_Click(object sender, EventArgs e)

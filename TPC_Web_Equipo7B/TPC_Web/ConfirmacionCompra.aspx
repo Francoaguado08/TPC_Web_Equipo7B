@@ -42,6 +42,12 @@
                     <asp:Label ID="lblDomicilio" runat="server" CssClass="text-muted"></asp:Label></p>
                 <p><strong>Teléfono:</strong>
                     <asp:Label ID="lblTelefono" runat="server" CssClass="text-muted"></asp:Label></p>
+                <p><strong>DNI:</strong>
+                    <asp:Label ID="lblDNI" runat="server" CssClass="text-muted"></asp:Label></p>
+                <p><strong>Pais:</strong>
+                    <asp:Label ID="lblPais" runat="server" CssClass="text-muted"></asp:Label></p>
+                
+
             </div>
         </div>
 

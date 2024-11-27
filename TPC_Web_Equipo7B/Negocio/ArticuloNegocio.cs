@@ -38,7 +38,7 @@ namespace Negocio
                             Nombre = (string)datos.Lector["Nombre"],
                             Descripcion = (string)datos.Lector["Descripcion"],
                             Precio = (decimal)datos.Lector["Precio"],
-                           
+                         
 
                             Marca = new Marca
                             {
@@ -71,6 +71,9 @@ namespace Negocio
             }
         }
 
+
+
+
         public void agregar(Articulo nuevo)
         {
             AccesoDatos acceso = new AccesoDatos();
@@ -100,6 +103,8 @@ namespace Negocio
                 acceso.cerrarConexion();
             }
         }
+
+
 
 
 

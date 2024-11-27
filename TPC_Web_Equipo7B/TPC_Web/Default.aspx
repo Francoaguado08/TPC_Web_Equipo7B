@@ -1,10 +1,13 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TPC_Web._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    
+    
     <div class="container mt-5">
         <div class="text-center mb-4">
             <img src="banner.png" alt="Banner" class="img-fluid mt-3">
-        </div>
+         </div>
+    </div>
 
         <!-- FILTROS -->
 

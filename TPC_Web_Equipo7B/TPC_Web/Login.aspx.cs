@@ -39,6 +39,10 @@ namespace TPC_Web
                 if (usuario != null)
                 {
                     // Guardar información relevante del usuario en la sesión
+
+                    // Guardar el usuario en la sesión
+                    Session["usuario"] = usuario;
+
                     Session["IDUsuario"] = usuario.IDUsuario;
                     Session["tipoUsuario"] = usuario.tipousuario; // "1" para Admin, "2" para Cliente
                     Session["Email"] = usuario.Email; // Agregar esta línea

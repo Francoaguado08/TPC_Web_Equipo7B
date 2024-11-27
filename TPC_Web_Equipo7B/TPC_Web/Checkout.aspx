@@ -19,10 +19,12 @@
         </div>
     </section>
 
-    <!-- Datos personales -->
-    <section>
-        <h3>DATOS DE FACTURACION:</h3>
-        <div class="form-group">
+  
+    <section cssClass="border-dark">
+
+        <h3>Datos relevantes para finalizar la compra</h3>
+
+        <div Class="form-group"> 
             <asp:TextBox ID="txtNombre" runat="server" Placeholder="Nombre" CssClass="form-control" />
         </div>
         <div class="form-group">
@@ -43,9 +45,26 @@
         <div class="form-group">
             <asp:TextBox ID="txtTelefono" runat="server" Placeholder="Teléfono" CssClass="form-control" />
         </div>
+          
+       
+            <h4> Email para recibir notficaciones del pedido!</h4>
+            <div class="form-group">
+            <asp:TextBox ID="txtEmail" runat="server" Placeholder="Email" CssClass="form-control" />
+        </div>
+
+
+
+
         <div class="form-actions">
             <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar Compra" CssClass="btn btn-primary" OnClick="btnConfirmar_Click" />
         </div>
         <asp:Label ID="lblMensajeError" runat="server" CssClass="error-message" ForeColor="Red"></asp:Label>
     </section>
+
+
+
+
+
+
+
 </asp:Content>

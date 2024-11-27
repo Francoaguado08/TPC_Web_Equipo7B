@@ -59,40 +59,32 @@ namespace TPC_Web
                         lblNombre.Text = $"{datos.Nombre} {datos.Apellido}";
                         lblDomicilio.Text = datos.Domicilio;
                         lblTelefono.Text = datos.Telefono;
+                        lblDNI.Text = datos.DNI;
+                        lblPais.Text = datos.Pais;  
                     }
                 }
                 else
                 {
                     // Usuario no registrado: Cargar datos del formulario de checkout
                     DatosPersonales datosCheckout = (DatosPersonales)Session["datosCheckout"];
+
                     if (datosCheckout != null)
                     {
                         lblNombre.Text = $"{datosCheckout.Nombre} {datosCheckout.Apellido}";
                         lblDomicilio.Text = datosCheckout.Domicilio;
                         lblTelefono.Text = datosCheckout.Telefono;
+                        lblPais.Text = datosCheckout.Pais;
+                        lblDNI.Text = datosCheckout.DNI;    
 
                     }
                 }
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
 
 
-        private DatosPersonales ObtenerDatosPersonales(int idUsuario)
+        public DatosPersonales ObtenerDatosPersonales(int idUsuario)
         {
             AccesoDatos datosAcceso = new AccesoDatos();
             DatosPersonales datos = null;
@@ -135,15 +127,34 @@ namespace TPC_Web
             return datos;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         protected void btnConfirmarCompra_Click(object sender, EventArgs e)
         {
 
             // Validaciones iniciales
             CarritoCompras carrito = (CarritoCompras)Session["compras"];
             Usuario usuario = (Usuario)Session["usuario"];
+
+           
+            
             DatosPersonales datos = usuario != null
-                ? ObtenerDatosPersonales(usuario.IDUsuario)
-                : (DatosPersonales)Session["datosCheckout"];
+                ? ObtenerDatosPersonales(usuario.IDUsuario) //USUARIO REGISTRADO
+                : (DatosPersonales)Session["datosCheckout"];//USUARIO SIN REGISTRARSE
 
             if (carrito == null || carrito.ObtenerProductos().Count == 0 || datos == null)
             {
@@ -152,10 +163,12 @@ namespace TPC_Web
                 return;
             }
 
+
+
             try
             {
                 PedidoNegocio pedidoNegocio = new PedidoNegocio();
-                bool resultado = pedidoNegocio.RegistrarPedido(usuario?.IDUsuario, carrito, datos);
+                bool resultado = pedidoNegocio.RegistrarPedidoCompleto(usuario?.IDUsuario, carrito, datos);
 
                 if (resultado)
                 {
@@ -175,7 +188,6 @@ namespace TPC_Web
                 lblError.Text = "Ocurrió un error. Por favor, intenta nuevamente.";
                 lblError.Visible = true;
             }
-
 
 
 

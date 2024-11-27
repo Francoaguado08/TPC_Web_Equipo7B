@@ -1,7 +1,9 @@
 ﻿using Dominio;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,53 +11,117 @@ namespace Negocio
 {
     public class PedidoNegocio
     {
-        public bool RegistrarPedido(int? idUsuario, CarritoCompras carrito, DatosPersonales datos)
+
+       /// ------------------------------------------------------------------------------------------------------
+        
+        
+        //Metodo principal para registrar el pedido.
+        public bool RegistrarPedidoCompleto(int? idUsuario, CarritoCompras carrito, DatosPersonales datos)
+        {
+            try
+            {
+                // Validar carrito
+                if (carrito == null || carrito.ObtenerProductos().Count == 0)
+                {
+                    throw new Exception("El carrito está vacío.");
+                }
+
+                // Validar datos personales
+                if (datos == null)
+                {
+                    throw new Exception("No se proporcionaron datos personales.");
+                }
+
+                PedidoNegocio pedidoNegocio = new PedidoNegocio();
+
+                // 1. Registrar datos personales si aplica
+                if (idUsuario.HasValue)
+                {
+                    pedidoNegocio.RegistrarDatosPersonales(idUsuario.Value, datos);
+                }
+
+                // 2. Registrar el pedido
+                int idPedido = pedidoNegocio.RegistrarPedido(idUsuario);
+
+                // 3. Registrar los detalles del pedido
+                pedidoNegocio.RegistrarDetallesPedido(idPedido, carrito.ObtenerProductos());
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al completar el registro del pedido.", ex);
+            }
+        }
+
+
+
+
+
+       // Si el usuario es registrado y no tiene datos personales asociados, o si es un cliente no registrado,
+       // insertamos sus datos en la tabla DatosPersonales.
+        public void RegistrarDatosPersonales(int idUsuario, DatosPersonales datosPersonales)
         {
             AccesoDatos datosAcceso = new AccesoDatos();
 
             try
             {
-                // Registrar datos personales solo si el usuario está autenticado y no tiene datos previos
-                if (idUsuario.HasValue && !DatosPersonalesExisten(idUsuario.Value, datosAcceso))
+                // Verificar si ya existen datos personales
+                datosAcceso.setearConsulta("SELECT COUNT(*) FROM DatosPersonales WHERE IDUsuario = @IDUsuario");
+                datosAcceso.setearParametro("@IDUsuario", idUsuario);
+            
+                int existe = Convert.ToInt32(datosAcceso.ejecutarScalar());
+
+                if (existe == 0) // Si no existen los datos, registrar --->
                 {
-                    datosAcceso.setearConsulta(@"
-                    INSERT INTO DatosPersonales 
-                    (IDUsuario, DNI, Nombre, Apellido, Domicilio, Pais, Provincia, Telefono) 
-                    VALUES (@IDUsuario, @DNI, @Nombre, @Apellido, @Domicilio, @Pais, @Provincia, @Telefono)");
-                    datosAcceso.setearParametro("@IDUsuario", idUsuario.Value);
-                    datosAcceso.setearParametro("@DNI", datos.DNI);
-                    datosAcceso.setearParametro("@Nombre", datos.Nombre);
-                    datosAcceso.setearParametro("@Apellido", datos.Apellido);
-                    datosAcceso.setearParametro("@Domicilio", datos.Domicilio);
-                    datosAcceso.setearParametro("@Pais", datos.Pais);
-                    datosAcceso.setearParametro("@Provincia", datos.Provincia);
-                    datosAcceso.setearParametro("@Telefono", datos.Telefono);
+                 
+                    datosAcceso.setearConsulta(@"INSERT INTO DatosPersonales 
+                                    (IDUsuario, DNI, Nombre, Apellido, Domicilio, Pais, Provincia, Telefono) 
+                                    VALUES (@IDUsuario, @DNI, @Nombre, @Apellido, @Domicilio, @Pais, @Provincia, @Telefono)");
+
+
+                    datosAcceso.setearParametro("@IDUsuario", idUsuario);
+                    datosAcceso.setearParametro("@DNI", datosPersonales.DNI);
+                    datosAcceso.setearParametro("@Nombre", datosPersonales.Nombre);
+                    datosAcceso.setearParametro("@Apellido", datosPersonales.Apellido);
+                    datosAcceso.setearParametro("@Domicilio", datosPersonales.Domicilio);
+                    datosAcceso.setearParametro("@Pais", datosPersonales.Pais);
+                    datosAcceso.setearParametro("@Provincia", datosPersonales.Provincia);
+                    datosAcceso.setearParametro("@Telefono", datosPersonales.Telefono);
                     datosAcceso.ejecutarAccion();
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al registrar datos personales.", ex);
+            }
+            finally
+            {
+                datosAcceso.cerrarConexion();
+            }
+        }
 
-                // Registrar el pedido
+
+
+        //Este método registra el pedido y devuelve el ID generado.
+        public int RegistrarPedido(int? idUsuario)
+        {
+            AccesoDatos datosAcceso = new AccesoDatos();
+
+            try
+            {
+                // INSERTED.ID --> devuelve el valor de la columna ID del nuevo registro.
+                //Para que lo quiero ?  datosAcceso.ejecutarScalar(): Ejecuta la consulta y obtiene el valor de INSERTED.ID (el ID del pedido recién creado).
+                //
                 datosAcceso.setearConsulta(@"
-                INSERT INTO Pedidos (IDUsuario, Estado) 
+                INSERT INTO Pedidos (IDUsuario, FechaPedido, Estado) 
                 OUTPUT INSERTED.ID 
-                VALUES (@IDUsuario, 'Pendiente')");
-                datosAcceso.setearParametro("@IDUsuario", idUsuario ?? (object)DBNull.Value);
-                int idPedido = datosAcceso.ejecutarScalar();
+                VALUES (@IDUsuario, GETDATE(), 'Pendiente')");
+                datosAcceso.setearParametro("@IDUsuario", idUsuario ?? (object)DBNull.Value); //si idUsuario tiene un valor, se usa directamente.
+                                                                                              //Si es null, se pasa DBNull.Value a la base de datos.
+                // Si idUsuario es null, se pasa DBNull.Value a la base de datos
 
-                // Registrar detalles del pedido
-                foreach (Articulo producto in carrito.ObtenerProductos())
-                {
-                    datosAcceso.setearConsulta(@"
-                    INSERT INTO DetallesPedidos 
-                    (IDPedido, IDArticulo, Cantidad, PrecioUnitario) 
-                    VALUES (@IDPedido, @IDArticulo, @Cantidad, @PrecioUnitario)");
-                    datosAcceso.setearParametro("@IDPedido", idPedido);
-                    datosAcceso.setearParametro("@IDArticulo", producto.ID);
-                    datosAcceso.setearParametro("@Cantidad", producto.Cantidad);
-                    datosAcceso.setearParametro("@PrecioUnitario", producto.Precio);
-                    datosAcceso.ejecutarAccion();
-                }
-
-                return true;
+                return Convert.ToInt32(datosAcceso.ejecutarScalar());
             }
             catch (Exception ex)
             {
@@ -67,14 +133,42 @@ namespace Negocio
             }
         }
 
-        private bool DatosPersonalesExisten(int idUsuario, AccesoDatos datosAcceso)
+
+
+        //Este método agrega los productos del carrito a la tabla DetallesPedidos.
+        public void RegistrarDetallesPedido(int idPedido, List<Articulo> productos)
         {
-            datosAcceso.setearConsulta("SELECT COUNT(*) FROM DatosPersonales WHERE IDUsuario = @IDUsuario");
-            datosAcceso.setearParametro("@IDUsuario", idUsuario);
-            int cantidad = (int)datosAcceso.ejecutarScalar();
-            return cantidad > 0;
+            AccesoDatos datosAcceso = new AccesoDatos();
+
+            try
+            {
+                
+
+                foreach (var producto in productos)
+                {
+                    datosAcceso.setearConsulta(@"
+                        INSERT INTO DetallesPedidos 
+                        (IDPedido, IDArticulo, Cantidad, PrecioUnitario) 
+                        VALUES (@IDPedido, @IDArticulo, @Cantidad, @PrecioUnitario)");
+                    datosAcceso.setearParametro("@IDPedido", idPedido);
+                    datosAcceso.setearParametro("@IDArticulo", producto.ID);
+                    datosAcceso.setearParametro("@Cantidad", producto.Cantidad);
+                    datosAcceso.setearParametro("@PrecioUnitario", producto.Precio);
+                    datosAcceso.ejecutarAccion();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al registrar los detalles del pedido.", ex);
+            }
+            finally
+            {
+                datosAcceso.cerrarConexion();
+            }
         }
 
+
+       /// ------------------------------------------------------------------------------------------------------------------
 
 
         public List<Pedido> ObtenerPedidosPorUsuario(int idUsuario)
@@ -113,6 +207,15 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+
+
+
+       
+
+
+
 
 
 

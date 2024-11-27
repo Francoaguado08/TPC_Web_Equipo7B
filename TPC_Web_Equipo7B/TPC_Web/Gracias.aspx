@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-
+ <%--   gracias--%>
 
     <div class="container text-center py-5">
         <div class="card shadow-lg border-0">
@@ -18,9 +18,9 @@
                     Si tienes alguna pregunta o deseas saber el estado de tu pedido, contáctanos por WhatsApp:
                
                 </p>
-   <a id="whatsappLink" runat="server" class="btn btn-success btn-lg shadow-sm" target="_blank">
-    <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-</a>
+                    <a id="whatsappLink" runat="server" class="btn btn-success btn-lg shadow-sm" target="_blank">
+                     <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                    </a>
             </div>
         </div>
 

@@ -25,6 +25,9 @@ namespace Dominio
 
         public int Cantidad { get; set; } // Agrega esta propiedad
 
+
+        public int Stock { get; set; } // Nueva propiedad
+
     }
 
 }

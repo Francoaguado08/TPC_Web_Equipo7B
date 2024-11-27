@@ -52,6 +52,7 @@ namespace TPC_Web
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
 
+
             Usuario nuevoUsuario = new Usuario
             {
                 Email = email,

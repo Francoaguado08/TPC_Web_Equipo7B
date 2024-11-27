@@ -21,7 +21,7 @@
 
     <!-- Datos personales -->
     <section>
-        <h3>Datos Personales:</h3>
+        <h3>DATOS DE FACTURACION:</h3>
         <div class="form-group">
             <asp:TextBox ID="txtNombre" runat="server" Placeholder="Nombre" CssClass="form-control" />
         </div>

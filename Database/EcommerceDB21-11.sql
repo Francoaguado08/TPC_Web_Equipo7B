@@ -251,3 +251,34 @@ SELECT * FROM Pedidos;
 
 --hacerlo null para que un usaurio que no este registrado pueda hacer la compra.
 ALTER TABLE Pedidos ALTER COLUMN IDUsuario INT NULL;
+
+
+
+------------------------------------------------------------------------------------------------------------->
+-- 26 / 11 --> AGREGAMOS
+ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 0;
+
+	
+--CREATE TRIGGER TR_ActualizarStock
+--ON DetallesPedidos
+--AFTER INSERT
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+
+--    -- Actualizar el stock en la tabla Articulos
+--    UPDATE A
+--    SET A.Stock = A.Stock - DP.Cantidad
+--    FROM Articulos A
+--    INNER JOIN inserted DP
+--        ON A.ID = DP.IDArticulo;
+
+--    -- Verificar que ningún artículo quede con stock negativo
+--    IF EXISTS (SELECT 1 FROM Articulos WHERE Stock < 0)
+--    BEGIN
+--        -- Revertir la transacción si el stock es insuficiente
+--        ROLLBACK TRANSACTION;
+--        THROW 50000, 'Error: Stock insuficiente para uno o más artículos.', 1;
+--    END
+--END;
+--GO

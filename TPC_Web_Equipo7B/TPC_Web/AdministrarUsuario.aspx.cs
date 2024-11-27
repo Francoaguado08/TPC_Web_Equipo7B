@@ -89,14 +89,12 @@ namespace TPC_Web
             if (e.CommandName == "EliminarUsuario")
             {
                 int index = Convert.ToInt32(e.CommandArgument);
-                GridViewRow selectedRow = gvUsuarios.Rows[index];
-                int idUsuario = Convert.ToInt32(selectedRow.Cells[0].Text);
+                int idUsuario = Convert.ToInt32(gvUsuarios.DataKeys[index].Value); // Obtener IDUsuario
 
                 try
                 {
                     UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                    usuarioNegocio.eliminar(idUsuario);
-
+                    usuarioNegocio.eliminar(idUsuario); // Método para eliminar el usuario
                     CargarUsuarios();
                     Response.Write("<script>alert('Usuario eliminado correctamente');</script>");
                 }
@@ -105,6 +103,9 @@ namespace TPC_Web
                     Response.Write($"<script>alert('Error al eliminar el usuario: {ex.Message}');</script>");
                 }
             }
+
+
         }
-    }
+
+    }   
 }

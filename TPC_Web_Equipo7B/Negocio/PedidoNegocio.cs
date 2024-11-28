@@ -138,37 +138,39 @@ namespace Negocio
         //Este método agrega los productos del carrito a la tabla DetallesPedidos.
         public void RegistrarDetallesPedido(int idPedido, List<Articulo> productos)
         {
-            AccesoDatos datosAcceso = new AccesoDatos();
-
-            try
+            foreach (var producto in productos)
             {
-                
-
-                foreach (var producto in productos)
+                AccesoDatos datosAcceso = new AccesoDatos(); // Crear una nueva instancia en cada iteración
+                try
                 {
                     datosAcceso.setearConsulta(@"
-                        INSERT INTO DetallesPedidos 
-                        (IDPedido, IDArticulo, Cantidad, PrecioUnitario) 
-                        VALUES (@IDPedido, @IDArticulo, @Cantidad, @PrecioUnitario)");
+                INSERT INTO DetallesPedidos 
+                (IDPedido, IDArticulo, Cantidad, PrecioUnitario) 
+                VALUES (@IDPedido, @IDArticulo, @Cantidad, @PrecioUnitario)");
                     datosAcceso.setearParametro("@IDPedido", idPedido);
                     datosAcceso.setearParametro("@IDArticulo", producto.ID);
                     datosAcceso.setearParametro("@Cantidad", producto.Cantidad);
                     datosAcceso.setearParametro("@PrecioUnitario", producto.Precio);
                     datosAcceso.ejecutarAccion();
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al registrar los detalles del pedido.", ex);
-            }
-            finally
-            {
-                datosAcceso.cerrarConexion();
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error al registrar el producto con ID {producto.ID}.", ex);
+                }
+                finally
+                {
+                    // Asegúrate de cerrar la conexión y limpiar parámetros después de cada iteración
+                    datosAcceso.cerrarConexion();
+                    datosAcceso.limpiarParametros();
+                }
             }
         }
 
 
-       /// ------------------------------------------------------------------------------------------------------------------
+
+
+
+        /// ------------------------------------------------------------------------------------------------------------------
 
 
         public List<Pedido> ObtenerPedidosPorUsuario(int idUsuario)

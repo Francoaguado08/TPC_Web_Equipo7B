@@ -1,6 +1,26 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPC_Web.SiteMaster" %>
 
 <style>
+
+       /* Estilo del área del carrusel */
+
+    #bannerArea {
+        width: 100%;
+        max-height: 130px; /* Ajusta esta altura según el tamaño de banner.png */
+        overflow: hidden;
+    }
+
+    #mainBannerCarousel img.banner-img {
+        height: 130px; /* Asegúrate de que coincida con el tamaño del banner */
+        object-fit: cover; /* Mantiene las proporciones de la imagen */
+    }
+
+    .carousel-indicators button {
+        background-color: #fff;*/ /* Mejora la visibilidad de los indicadores */
+    }
+
+  
+
     h1.display-4 {
         font-family: 'Poppins', sans-serif;
         font-weight: bold;

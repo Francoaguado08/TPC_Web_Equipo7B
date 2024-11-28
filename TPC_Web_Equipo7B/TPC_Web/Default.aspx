@@ -3,11 +3,42 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     
     
-    <div class="container mt-5">
-        <div class="text-center mb-4">
-            <img src="banner.png" alt="Banner" class="img-fluid mt-3">
+ <!-- Contenedor principal -->
+ <div class="container mt-4">
+     <!-- Área del banner -->
+     <div id="bannerArea" class="mb-4">
+         <div id="mainBannerCarousel" class="carousel slide" data-bs-ride="carousel">
+             <!-- Indicadores -->
+             <div class="carousel-indicators">
+                 <button type="button" data-bs-target="#mainBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                 <button type="button" data-bs-target="#mainBannerCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                 <button type="button" data-bs-target="#mainBannerCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+             </div>
+
+             <!-- Contenido del Carrusel -->
+             <div class="carousel-inner">
+                 <div class="carousel-item active">
+                     <img src="banner.png" class="d-block w-100 banner-img" alt="Primer Banner">
+                 </div>
+                 <div class="carousel-item">
+                     <img src="banner2.png" class="d-block w-100 banner-img" alt="Segundo Banner">
+                 </div>
+                 <div class="carousel-item">
+                     <img src="banner.png" class="d-block w-100 banner-img" alt="Tercer Banner">
+                 </div>
+             </div>
+
+             <!-- Flechas del Carrusel Izq- Der -->
+    <%--         <button class="carousel-control-prev" type="button" data-bs-target="#mainBannerCarousel" data-bs-slide="prev">
+                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                 <span class="visually-hidden">Anterior</span>
+             </button>
+             <button class="carousel-control-next" type="button" data-bs-target="#mainBannerCarousel" data-bs-slide="next">
+                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                 <span class="visually-hidden">Siguiente</span>
+             </button>--%>
          </div>
-    </div>
+     </div>
 
         <!-- FILTROS -->
 

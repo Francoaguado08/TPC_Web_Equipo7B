@@ -282,3 +282,31 @@ ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 0;
 --    END
 --END;
 --GO
+
+
+
+
+USE EcommerceDB;
+GO
+-- Elimina y vuelve a agregar las claves foraneas en DatosPersonales y Pedidos.
+-- Configura ON DELETE CASCADE para que la eliminación en Usuarios se propague a las tablas relacionadas 
+
+ALTER TABLE DatosPersonales
+DROP CONSTRAINT FK_DatosPersonales_Usuarios;
+
+ALTER TABLE DatosPersonales
+ADD CONSTRAINT FK_DatosPersonales_Usuarios
+FOREIGN KEY (IDUsuario)
+REFERENCES Usuarios(IDUsuario)
+ON DELETE CASCADE;
+
+ALTER TABLE Pedidos
+DROP CONSTRAINT FK_Pedidos_Usuarios;
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT FK_Pedidos_Usuarios
+FOREIGN KEY (IDUsuario)
+REFERENCES Usuarios(IDUsuario)
+ON DELETE CASCADE;
+
+

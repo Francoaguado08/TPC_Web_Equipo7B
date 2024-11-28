@@ -61,6 +61,14 @@ namespace TPC_Web
             int id = Convert.ToInt32(gvCategorias.DataKeys[e.RowIndex].Value);
             string nuevoNombre = ((TextBox)gvCategorias.Rows[e.RowIndex].Cells[1].Controls[0]).Text;
 
+            // Validar si el nombre ya existe
+            if (negocioCategoria.ExisteNombreCategoria(nuevoNombre, id))
+            {
+                lblError.Text = "El nombre de la categoría ya existe. Por favor, elige otro nombre.";
+                lblError.Visible = true;
+                return;
+            }
+
             Categoria categoriaActualizada = new Categoria
             {
                 ID = id,
@@ -71,6 +79,8 @@ namespace TPC_Web
             gvCategorias.EditIndex = -1;
             CargarCategorias();
         }
+
+
 
         protected void gvCategorias_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {

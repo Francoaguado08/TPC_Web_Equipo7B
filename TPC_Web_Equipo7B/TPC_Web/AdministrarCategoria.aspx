@@ -3,6 +3,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Administrar Categorías</h2>
 
+    <%-- Label para mostrar errores --%>
+    <asp:Label ID="lblError" runat="server" CssClass="text-danger" Visible="false"></asp:Label>
+
     <asp:GridView ID="gvCategorias" DataKeyNames="ID" runat="server" CssClass="table table-dark table-bordered" 
         AutoGenerateColumns="false" 
         OnRowEditing="gvCategorias_RowEditing" 

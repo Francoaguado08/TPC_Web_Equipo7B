@@ -24,6 +24,7 @@ namespace TPC_Web
             if (string.IsNullOrEmpty(nombreCategoria))
             {
                 lblMensaje.Text = "El nombre de la categoría no puede estar vacío.";
+                lblMensaje.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 
@@ -31,6 +32,15 @@ namespace TPC_Web
             {
                 CategoriaNegocio negocio = new CategoriaNegocio();
 
+                // Validar si el nombre ya existe
+                if (negocio.ExisteNombreCategoria(nombreCategoria))
+                {
+                    lblMensaje.Text = "El nombre de la categoría ya existe. Por favor, elige otro.";
+                    lblMensaje.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
+                // Si el nombre no existe, agregar la nueva categoría
                 Categoria nuevaCategoria = new Categoria { Nombre = nombreCategoria };
                 negocio.agregarCategoria(nuevaCategoria);
 
@@ -41,8 +51,10 @@ namespace TPC_Web
             catch (Exception ex)
             {
                 lblMensaje.Text = "Error: " + ex.Message;
+                lblMensaje.ForeColor = System.Drawing.Color.Red;
             }
         }
+
 
         protected void btnVolver_Click(object sender, EventArgs e)
         {

@@ -41,10 +41,15 @@ namespace Negocio
 
         public void agregarMarcas(Marca nueva)
         {
+            if (ExisteNombreMarca(nueva.Nombre))
+            {
+                throw new Exception("La marca ya existe.");
+            }
+
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("insert into Marcas (Nombre) VALUES (@Nombre)");
+                datos.setearConsulta("INSERT INTO Marcas (Nombre) VALUES (@Nombre)");
                 datos.setearParametro("@Nombre", nueva.Nombre);
                 datos.ejecutarAccion();
             }
@@ -52,8 +57,12 @@ namespace Negocio
             {
                 throw ex;
             }
-            finally { datos.cerrarConexion(); }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
+
 
         public void eliminarMarca(int ID)
         {
@@ -88,6 +97,35 @@ namespace Negocio
             }
             finally { datos.cerrarConexion(); }
         }
+        public bool ExisteNombreMarca(string nombre, int idExcluido = 0)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(*) FROM Marcas WHERE Nombre = @Nombre AND ID != @ID");
+                datos.setearParametro("@Nombre", nombre);
+                datos.setearParametro("@ID", idExcluido);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return (int)datos.Lector[0] > 0;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
 
     }
 }

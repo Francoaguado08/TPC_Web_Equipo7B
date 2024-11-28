@@ -61,6 +61,14 @@ namespace TPC_Web
             int id = Convert.ToInt32(gvMarcas.DataKeys[e.RowIndex].Value);
             string nuevoNombre = ((TextBox)gvMarcas.Rows[e.RowIndex].Cells[1].Controls[0]).Text;
 
+            // Validar si el nombre ya existe
+            if (negocioMarca.ExisteNombreMarca(nuevoNombre, id))
+            {
+                lblError.Text = "El nombre de la marca ya existe. Por favor, elige otro nombre.";
+                lblError.Visible = true;
+                return;
+            }
+
             Marca marcaActualizada = new Marca
             {
                 ID = id,
@@ -71,6 +79,7 @@ namespace TPC_Web
             gvMarcas.EditIndex = -1;
             CargarMarcas();
         }
+
 
         protected void gvMarcas_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {

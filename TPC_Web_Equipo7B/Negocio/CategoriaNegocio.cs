@@ -88,6 +88,33 @@ namespace Negocio
             }
             finally { datos.cerrarConexion(); }
         }
+        public bool ExisteNombreCategoria(string nombre, int idExcluido = 0)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(*) FROM Categorias WHERE Nombre = @Nombre AND ID != @ID");
+                datos.setearParametro("@Nombre", nombre);
+                datos.setearParametro("@ID", idExcluido);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return (int)datos.Lector[0] > 0;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
     }//cierre de CategoriaNegocio
 }

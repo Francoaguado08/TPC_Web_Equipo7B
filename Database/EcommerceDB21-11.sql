@@ -86,7 +86,6 @@ CREATE TABLE Pedidos (
     IDUsuario INT NOT NULL,
     FechaPedido DATETIME NOT NULL DEFAULT GETDATE(),
     Estado NVARCHAR(50) NOT NULL,
-    CONSTRAINT FK_Pedidos_Usuarios FOREIGN KEY (IDUsuario) REFERENCES Usuarios(IDUsuario)
 );
 GO
 
@@ -300,13 +299,6 @@ FOREIGN KEY (IDUsuario)
 REFERENCES Usuarios(IDUsuario)
 ON DELETE CASCADE;
 
-ALTER TABLE Pedidos
-DROP CONSTRAINT FK_Pedidos_Usuarios;
 
-ALTER TABLE Pedidos
-ADD CONSTRAINT FK_Pedidos_Usuarios
-FOREIGN KEY (IDUsuario)
-REFERENCES Usuarios(IDUsuario)
-ON DELETE CASCADE;
 
 

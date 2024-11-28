@@ -34,7 +34,7 @@ namespace TPC_Web
                 Marca nuevaMarca = new Marca { Nombre = nombreMarca };
                 negocio.agregarMarcas(nuevaMarca);
 
-                lblMensaje.ForeColor = System.Drawing.Color.Green;
+                lblMensaje.Attributes.Add("style", "color:green !important;");
                 lblMensaje.Text = "Marca guardada exitosamente.";
                 txtNombre.Text = ""; // Limpiar el campo
             }

@@ -11,21 +11,21 @@
 
         /* Ajuste de la imagen */
         .img-small {
-            max-width: 300px; /* Ancho máximo de la imagen */
-            max-height: 300px; /* Altura máxima de la imagen */
-            object-fit: cover; /* Mantiene proporciones */
-            border-radius: 8px; /* Bordes redondeados */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+            max-width: 300px;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Tarjeta de detalles */
         .detalle-card {
-            flex: 1; /* Ocupa el espacio restante */
+            flex: 1;
         }
 
         .detalle-card-header {
-            background-color: #007bff; /* Color de fondo (azul Bootstrap) */
-            color: white; /* Color del texto */
+            background-color: #007bff;
+            color: white;
             padding: 10px;
             border-radius: 8px 8px 0 0;
             text-align: center;
@@ -37,7 +37,7 @@
             border-top: none;
             padding: 20px;
             border-radius: 0 0 8px 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Botones */
@@ -51,6 +51,19 @@
         <!-- Título de la página -->
         <h1 class="text-center mb-4">Detalle del Artículo</h1>
 
+        <% 
+            string defaultUrl = "https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png";
+            string idParam = Request.QueryString["id"];
+            if (string.IsNullOrEmpty(idParam) || !int.TryParse(idParam, out int idArticulo))
+            {
+                Response.Redirect("Default.aspx", false);
+                return;
+            }
+
+            Negocio.ImagenesNegocio negocioObj = new Negocio.ImagenesNegocio();
+            List<Dominio.Imagen> listaImagenes = negocioObj.listarImagenesArticuloSeleccionado(idArticulo);
+        %>
+
         <!-- Contenedor principal -->
         <div class="detalle-articulo-container">
             <!-- Imagen del artículo -->
@@ -58,13 +71,7 @@
                 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <%  
-                            string defaultUrl = "https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png";
-                            Negocio.ImagenesNegocio negocioObj = new Negocio.ImagenesNegocio();
-
-                            int idArticulo = int.Parse(Request.QueryString["id"]);
-                            List<Dominio.Imagen> listaImagenes = negocioObj.listarImagenesArticuloSeleccionado(idArticulo);
-
-                            if (listaImagenes.Count == 0)
+                            if (listaImagenes == null || listaImagenes.Count == 0)
                             { %>
                         <div class="carousel-item active">
                             <img src="<%= defaultUrl %>" class="d-block img-small" alt="Imagen predeterminada">

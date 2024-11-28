@@ -39,6 +39,7 @@ namespace TPC_Web
                     txtPrecio.Text = seleccionado.Precio.ToString();
                     ddlCategorias.SelectedValue = seleccionado.Categoria.ID.ToString();
                     ddlMarcas.SelectedValue = seleccionado.Marca.ID.ToString();
+                    txtStock.Text = seleccionado.Stock.ToString();
                 }
             }
         }
@@ -63,39 +64,67 @@ namespace TPC_Web
 
         protected void btnAceptar_Click(object sender, EventArgs e)
         {
+            // Verificar que todos los campos estén llenos
+            if (string.IsNullOrWhiteSpace(txtCodigo.Text) ||
+                string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                string.IsNullOrWhiteSpace(txtDescripcion.Text) ||
+                string.IsNullOrWhiteSpace(txtPrecio.Text) ||
+                string.IsNullOrWhiteSpace(txtStock.Text) ||
+                ddlCategorias.SelectedValue == null ||
+                ddlMarcas.SelectedValue == null)
+            {
+                lblError.Text = "Por favor, complete todos los campos antes de continuar.";
+                lblError.Visible = true;
+                return;
+            }
+
+            // Validar el precio
+            if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || precio <= 0)
+            {
+                lblError.Text = "El precio debe ser un número válido y mayor a 0.";
+                lblError.Visible = true;
+                return;
+            }
+
+            // Validar el stock
+            if (!int.TryParse(txtStock.Text, out int stock) || stock < 0)
+            {
+                lblError.Text = "El stock debe ser un número entero positivo.";
+                lblError.Visible = true;
+                return;
+            }
+
             Articulo articulo = new Articulo
             {
                 Codigo = txtCodigo.Text,
                 Nombre = txtNombre.Text,
-                Descripcion = txtDescripcion.Text
+                Descripcion = txtDescripcion.Text,
+                Precio = precio,
+                Stock = stock,
+                Categoria = new Categoria
+                {
+                    ID = int.Parse(ddlCategorias.SelectedValue),
+                    Nombre = ddlCategorias.SelectedItem.Text
+                },
+                Marca = new Marca
+                {
+                    ID = int.Parse(ddlMarcas.SelectedValue),
+                    Nombre = ddlMarcas.SelectedItem.Text
+                }
             };
 
-            if (decimal.TryParse(txtPrecio.Text, out decimal precio))
+            // Validar si el código ya existe
+            List<Articulo> listaExistente = (List<Articulo>)Session["listaArticulos"] ?? negocioArticulo.listar();
+            if (listaExistente.Exists(a => a.Codigo.Equals(articulo.Codigo, StringComparison.OrdinalIgnoreCase)))
             {
-                articulo.Precio = precio;
+                lblError.Text = "El código de producto ya existe. Por favor, ingrese un código diferente.";
+                lblError.Visible = true;
+                return;
             }
 
-            if (int.TryParse(ddlCategorias.SelectedValue, out int categoriaId))
-            {
-                articulo.Categoria = new Categoria
-                {
-                    ID = categoriaId,
-                    Nombre = ddlCategorias.SelectedItem.Text
-                };
-            }
-
-            if (int.TryParse(ddlMarcas.SelectedValue, out int marcaId))
-            {
-                articulo.Marca = new Marca
-                {
-                    ID = marcaId,
-                    Nombre = ddlMarcas.SelectedItem.Text
-                };
-            }
-
-            List<Articulo> temporal = (List<Articulo>)Session["listaArticulos"] ?? new List<Articulo>();
-            temporal.Add(articulo);
-            Session["listaArticulos"] = temporal;
+            // Agregar el artículo a la lista y la base de datos
+            listaExistente.Add(articulo);
+            Session["listaArticulos"] = listaExistente;
 
             negocioArticulo.agregar(articulo);
             Response.Redirect("AdministrarArticulos.aspx", false);

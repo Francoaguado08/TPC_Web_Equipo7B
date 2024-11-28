@@ -2,29 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace TPC_Web
 {
     public partial class DetalleArticulo : System.Web.UI.Page
     {
-        public Articulo artiSeleccionado; //Variable para guardar el arti seleccionado que me pasaron desde el home.
+        public Articulo artiSeleccionado; //Variable para guardar el artículo seleccionado desde el home.
+
         public void Page_Load(object sender, EventArgs e)
         {
-
-
             if (!IsPostBack)
             {
+                // Verifica si existe el parámetro "id" en la consulta
+                string idParam = Request.QueryString["id"];
 
-
-                // Obtiene el ID del artículo de la cadena de consulta
-                int id = int.Parse(Request.QueryString["id"]);
+                if (string.IsNullOrEmpty(idParam) || !int.TryParse(idParam, out int id))
+                {
+                    // Si no hay un id válido, redirige a "Default.aspx"
+                    Response.Redirect("Default.aspx", false);
+                    return; // Asegura que el código no continúe ejecutándose
+                }
 
                 // Busca el artículo en la lista almacenada en la sesión
-                artiSeleccionado = ((List<Articulo>)Session["articulos"]).Find(x => x.ID == id);
+                artiSeleccionado = ((List<Articulo>)Session["articulos"])?.Find(x => x.ID == id);
 
                 if (artiSeleccionado != null)
                 {
@@ -41,23 +43,7 @@ namespace TPC_Web
                     // Redirige si no se encuentra el artículo
                     Response.Redirect("Default.aspx", false);
                 }
-
-
-
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
     }
 }

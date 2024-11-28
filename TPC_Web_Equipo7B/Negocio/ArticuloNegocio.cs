@@ -15,7 +15,8 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, A.Precio, A.Stock, M.Nombre AS Marca, C.Nombre AS Categoria, I.ImagenURL " +
+                datos.setearConsulta("SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, A.Precio, A.Stock, " +
+                                     "M.Nombre AS Marca, C.Nombre AS Categoria, I.ImagenURL " +
                                      "FROM ARTICULOS A " +
                                      "LEFT JOIN MARCAS M ON A.IDMarca = M.Id " +
                                      "LEFT JOIN CATEGORIAS C ON A.IDCategoria = C.ID " +
@@ -36,7 +37,7 @@ namespace Negocio
                             Nombre = (string)datos.Lector["Nombre"],
                             Descripcion = (string)datos.Lector["Descripcion"],
                             Precio = (decimal)datos.Lector["Precio"],
-                            Stock = datos.Lector["Stock"] != DBNull.Value ? (int)datos.Lector["Stock"] : 0,
+                            Stock = datos.Lector["Stock"] != DBNull.Value ? (int)datos.Lector["Stock"] : 0, // Manejo del campo Stock
                             Marca = new Marca
                             {
                                 Nombre = datos.Lector["Marca"] != DBNull.Value ? (string)datos.Lector["Marca"] : ""
@@ -44,11 +45,13 @@ namespace Negocio
                             Categoria = new Categoria
                             {
                                 Nombre = datos.Lector["Categoria"] != DBNull.Value ? (string)datos.Lector["Categoria"] : ""
-                            }
+                            },
+                            ImagenURL = new List<string>() // Inicialización de la lista para imágenes
                         };
                         lista.Add(aux);
                     }
 
+                    // Agregar URL de imagen si existe
                     if (!Convert.IsDBNull(datos.Lector["ImagenURL"]))
                     {
                         aux.ImagenURL.Add((string)datos.Lector["ImagenURL"]);
@@ -67,18 +70,24 @@ namespace Negocio
             }
         }
 
+
         public void agregar(Articulo nuevo)
         {
             AccesoDatos acceso = new AccesoDatos();
             try
             {
-                acceso.setearConsulta("INSERT INTO Articulos (Codigo, Nombre, Descripcion, Precio, IDMarca, IDCategoria) VALUES (@Codigo, @Nombre, @Descripcion, @Precio, @IDMarca, @IDCategoria)");
+                // Agregamos Stock en la consulta SQL
+                acceso.setearConsulta("INSERT INTO Articulos (Codigo, Nombre, Descripcion, Precio, Stock, IDMarca, IDCategoria) " +
+                                      "VALUES (@Codigo, @Nombre, @Descripcion, @Precio, @Stock, @IDMarca, @IDCategoria)");
+
                 acceso.setearParametro("@Codigo", nuevo.Codigo);
                 acceso.setearParametro("@Nombre", nuevo.Nombre);
                 acceso.setearParametro("@Descripcion", nuevo.Descripcion);
                 acceso.setearParametro("@Precio", nuevo.Precio);
+                acceso.setearParametro("@Stock", nuevo.Stock); // Incluimos el parámetro Stock
                 acceso.setearParametro("@IDMarca", nuevo.Marca.ID);
                 acceso.setearParametro("@IDCategoria", nuevo.Categoria.ID);
+
                 acceso.ejecutarAccion();
             }
             catch (Exception ex)
@@ -91,22 +100,26 @@ namespace Negocio
             }
         }
 
+
         public int agregarr(Articulo nuevo)
         {
             AccesoDatos acceso = new AccesoDatos();
             try
             {
-                acceso.setearConsulta("INSERT INTO Articulos (Codigo, Nombre, Descripcion, Precio, IDMarca, IDCategoria) " +
+                // Incluimos Stock en la consulta SQL
+                acceso.setearConsulta("INSERT INTO Articulos (Codigo, Nombre, Descripcion, Precio, Stock, IDMarca, IDCategoria) " +
                                       "OUTPUT INSERTED.ID " +
-                                      "VALUES (@Codigo, @Nombre, @Descripcion, @Precio, @IDMarca, @IDCategoria)");
+                                      "VALUES (@Codigo, @Nombre, @Descripcion, @Precio, @Stock, @IDMarca, @IDCategoria)");
+
                 acceso.setearParametro("@Codigo", nuevo.Codigo);
                 acceso.setearParametro("@Nombre", nuevo.Nombre);
                 acceso.setearParametro("@Descripcion", nuevo.Descripcion);
                 acceso.setearParametro("@Precio", nuevo.Precio);
+                acceso.setearParametro("@Stock", nuevo.Stock); // Incluimos el parámetro Stock
                 acceso.setearParametro("@IDMarca", nuevo.Marca.ID);
                 acceso.setearParametro("@IDCategoria", nuevo.Categoria.ID);
 
-                int idArticulo = acceso.ejecutarScalar();
+                int idArticulo = acceso.ejecutarScalar(); // Devuelve el ID del artículo insertado
                 return idArticulo;
             }
             catch (Exception ex)
@@ -118,6 +131,7 @@ namespace Negocio
                 acceso.cerrarConexion();
             }
         }
+
 
         public void agregarImagen(int idArticulo, string imagenURL)
         {
@@ -163,12 +177,22 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("UPDATE Articulos SET Codigo = @Codigo, Nombre = @Nombre, Precio = @Precio, Descripcion = @Descripcion WHERE ID = @ID");
+                string consulta = "UPDATE Articulos SET " +
+                                  "Codigo = @Codigo, " +
+                                  "Nombre = @Nombre, " +
+                                  "Precio = @Precio, " +
+                                  "Descripcion = @Descripcion, " +
+                                  "Stock = @Stock " + // Agregamos el campo Stock
+                                  "WHERE ID = @ID";
+
+                datos.setearConsulta(consulta);
                 datos.setearParametro("@ID", modificar.ID);
                 datos.setearParametro("@Codigo", modificar.Codigo);
                 datos.setearParametro("@Nombre", modificar.Nombre);
                 datos.setearParametro("@Descripcion", modificar.Descripcion);
                 datos.setearParametro("@Precio", modificar.Precio);
+                datos.setearParametro("@Stock", modificar.Stock); // Incluimos el parámetro Stock
+
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -181,13 +205,14 @@ namespace Negocio
             }
         }
 
+
         public Articulo ObtenerPorId(int id)
         {
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                string consulta = "SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, A.IDCategoria, A.IDMarca, A.Precio, " +
+                string consulta = "SELECT A.ID, A.Codigo, A.Nombre, A.Descripcion, A.IDCategoria, A.IDMarca, A.Precio, A.Stock, " +
                                   "C.Nombre AS NombreCategoria, M.Nombre AS NombreMarca " +
                                   "FROM Articulos A " +
                                   "INNER JOIN Categorias C ON A.IDCategoria = C.ID " +
@@ -207,6 +232,7 @@ namespace Negocio
                         Nombre = (string)datos.Lector["Nombre"],
                         Descripcion = (string)datos.Lector["Descripcion"],
                         Precio = (decimal)datos.Lector["Precio"],
+                        Stock = (int)datos.Lector["Stock"], // Incluyendo el campo Stock
                         Categoria = new Categoria
                         {
                             ID = (int)datos.Lector["IDCategoria"],
@@ -233,6 +259,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
 
         public void AgregarStock(int idArticulo, int cantidad)
         {
@@ -301,7 +328,7 @@ namespace Negocio
             try
             {
                 string consulta = "SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion AS Descripcion, " +
-                                  "M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, " +
+                                  "M.Nombre AS Marca, C.Nombre AS Categoria, A.Precio, A.Stock, " + // Incluimos Stock
                                   "M.Id AS IDMarca, C.Id AS IDCategoria " +
                                   "FROM Articulos AS A " +
                                   "INNER JOIN Marcas AS M ON M.Id = A.IdMarca " +
@@ -345,6 +372,7 @@ namespace Negocio
                         Nombre = (string)datos.Lector["Nombre"],
                         Descripcion = (string)datos.Lector["Descripcion"],
                         Precio = (decimal)datos.Lector["Precio"],
+                        Stock = datos.Lector["Stock"] != DBNull.Value ? (int)datos.Lector["Stock"] : 0, // Manejo del campo Stock
                         Marca = new Marca
                         {
                             Nombre = (string)datos.Lector["Marca"],
@@ -371,5 +399,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
     }
 }

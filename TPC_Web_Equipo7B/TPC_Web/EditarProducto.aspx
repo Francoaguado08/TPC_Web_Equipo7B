@@ -35,20 +35,19 @@
                 <asp:DropDownList ID="ddlMarcas" runat="server" CssClass="form-select"></asp:DropDownList>
             </div>
 
+            <!-- Nuevo apartado para el Stock -->
+            <div class="mb-3">
+                <label for="txtStock" class="form-label">Stock</label>
+                <asp:TextBox ID="txtStock" runat="server" CssClass="form-control"></asp:TextBox>
+            </div>
+
+            <!-- Mensaje de error -->
+            <asp:Label ID="lblError" runat="server" CssClass="text-danger" Visible="false"></asp:Label>
+
             <div class="mb-3">
                 <asp:Button ID="btnAceptar" runat="server" CssClass="btn btn-dark" OnClick="btnAceptar_Click" Text="Guardar Cambios" />
                 <a href="AdministrarArticulos.aspx" class="btn btn-secondary">Cancelar</a>
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
 </asp:Content>

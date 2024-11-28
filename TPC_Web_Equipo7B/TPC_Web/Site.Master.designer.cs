@@ -51,6 +51,15 @@ namespace TPC_Web
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liPerfil;
 
         /// <summary>
+        /// Control aPerfil.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aPerfil;
+
+        /// <summary>
         /// Control btnLogout.
         /// </summary>
         /// <remarks>

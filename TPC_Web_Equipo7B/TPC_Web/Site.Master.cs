@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI;
+using Negocio;
 
 namespace TPC_Web
 {
@@ -16,21 +17,33 @@ namespace TPC_Web
                 liPerfil.Visible = idUsuario != null;
                 btnLogout.Visible = idUsuario != null;
 
-                if (idUsuario != null && tipoUsuario == 1)
+                if (idUsuario != null)
                 {
-                    // Agregar dinámicamente el enlace de Administrar
-                    var liAdministrar = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
-                    liAdministrar.Attributes["class"] = "nav-item";
+                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                    string nombreUsuario = usuarioNegocio.ObtenerNombreUsuario((int)idUsuario);
 
-                    var aAdministrar = new System.Web.UI.HtmlControls.HtmlAnchor
+                    if (!string.IsNullOrEmpty(nombreUsuario))
                     {
-                        HRef = "Administrar.aspx",
-                        InnerText = "Administrar"
-                    };
-                    aAdministrar.Attributes["class"] = "nav-link";
+                        // Cambia el texto y el enlace de "Perfil"
+                        aPerfil.InnerText = $"Hola, {nombreUsuario}";
+                        aPerfil.HRef = "Perfil.aspx"; // Enlace a la página de perfil
+                    }
 
-                    liAdministrar.Controls.Add(aAdministrar);
-                    Navbar.Controls.Add(liAdministrar); // Navbar es el contenedor del menú.
+                    if (tipoUsuario == 1)
+                    {
+                        var liAdministrar = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
+                        liAdministrar.Attributes["class"] = "nav-item";
+
+                        var aAdministrar = new System.Web.UI.HtmlControls.HtmlAnchor
+                        {
+                            HRef = "Administrar.aspx",
+                            InnerText = "Administrar"
+                        };
+                        aAdministrar.Attributes["class"] = "nav-link";
+
+                        liAdministrar.Controls.Add(aAdministrar);
+                        Navbar.Controls.Add(liAdministrar);
+                    }
                 }
             }
         }

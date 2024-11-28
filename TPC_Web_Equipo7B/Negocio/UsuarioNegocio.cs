@@ -225,6 +225,33 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+        public string ObtenerNombreUsuario(int idUsuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT Nombre FROM DatosPersonales WHERE IDUsuario = @IDUsuario");
+                datos.setearParametro("@IDUsuario", idUsuario);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return datos.Lector["Nombre"].ToString();
+                }
+
+                return null; // Si no se encuentra el usuario
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el nombre del usuario: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
     }
 }

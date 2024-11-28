@@ -1,25 +1,21 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TPC_Web.SiteMaster" %>
 
 <style>
-
-       /* Estilo del área del carrusel */
-
+    /* Estilo del área del carrusel */
     #bannerArea {
         width: 100%;
-        max-height: 130px; /* Ajusta esta altura según el tamaño de banner.png */
+        max-height: 130px;
         overflow: hidden;
     }
 
     #mainBannerCarousel img.banner-img {
-        height: 130px; /* Asegúrate de que coincida con el tamaño del banner */
-        object-fit: cover; /* Mantiene las proporciones de la imagen */
+        height: 130px;
+        object-fit: cover;
     }
 
     .carousel-indicators button {
-        background-color: #fff;*/ /* Mejora la visibilidad de los indicadores */
+        background-color: #fff;
     }
-
-  
 
     h1.display-4 {
         font-family: 'Poppins', sans-serif;
@@ -115,7 +111,7 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
-                        
+
                         <!-- Administrar -->
                         <li class="nav-item" id="liAdministrar" runat="server" visible="false">
                             <a class="nav-link" href="Administrar.aspx">Administrar</a>
@@ -126,9 +122,9 @@
                             <a class="nav-link" href="Login.aspx">Login</a>
                         </li>
 
-                        <!-- Botón Perfil -->
+                        <!-- Botón Hola, [Nombre] -->
                         <li class="nav-item" id="liPerfil" runat="server" visible="false">
-                            <a class="nav-link" href="Perfil.aspx">Perfil</a>
+                            <a class="nav-link" id="aPerfil" runat="server" href="#"></a>
                         </li>
 
                         <!-- Botón Cerrar Sesión -->

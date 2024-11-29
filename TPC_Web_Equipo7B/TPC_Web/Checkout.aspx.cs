@@ -67,12 +67,43 @@ namespace TPC_Web
         {
             try
             {
+                // Verificar si los datos personales están completos
                 if (!SonDatosCompletos())
                 {
-                    lblMensajeError.Text = "Por favor, completa todos los campos antes de continuar.";
+                    lblMensajeError.Text = "Por favor, completa todos los campos obligatorios del formulario.";
                     return;
                 }
 
+                // Validar formato de email
+                if (!EsEmailValido(txtEmail.Text))
+                {
+                    lblMensajeError.Text = "El correo electrónico ingresado no es válido.";
+                    return;
+                }
+
+                // Validar DNI
+                if (!EsNumerico(txtDNI.Text) || txtDNI.Text.Length != 8)
+                {
+                    lblMensajeError.Text = "El DNI debe contener exactamente 8 números.";
+                    return;
+                }
+
+                // Validar teléfono
+                if (!EsNumerico(txtTelefono.Text) || txtTelefono.Text.Length < 10)
+                {
+                    lblMensajeError.Text = "El número de teléfono ingresado no es válido.";
+                    return;
+                }
+
+                // Validar carrito de compras
+                CarritoCompras carrito = (CarritoCompras)Session["compras"];
+                if (carrito == null || !carrito.ObtenerProductos().Any())
+                {
+                    lblMensajeError.Text = "El carrito de compras está vacío. No puedes continuar con el pedido.";
+                    return;
+                }
+
+                // Validar método de pago seleccionado
                 if (string.IsNullOrWhiteSpace(ddlMetodoPago.SelectedValue))
                 {
                     lblMensajeError.Text = "Por favor, selecciona un método de pago antes de continuar.";
@@ -83,11 +114,13 @@ namespace TPC_Web
 
                 if (metodoPago == "Transferencia")
                 {
+                    // Registrar pedido para transferencia
                     lblMensajeError.Text = "Tu pedido se ha registrado. Realiza la transferencia para completar tu compra.";
                     RegistrarPedidoEnBaseDeDatos();
                 }
                 else if (metodoPago == "TarjetaCredito")
                 {
+                    // Validar campos de tarjeta
                     if (string.IsNullOrWhiteSpace(txtNumeroTarjeta.Text) ||
                         string.IsNullOrWhiteSpace(txtNombreTitular.Text) ||
                         string.IsNullOrWhiteSpace(txtFechaVencimiento.Text) ||
@@ -97,15 +130,24 @@ namespace TPC_Web
                         return;
                     }
 
+                    // Validar formato y longitud de número de tarjeta
                     if (!EsNumerico(txtNumeroTarjeta.Text) || txtNumeroTarjeta.Text.Length != 16)
                     {
-                        lblMensajeError.Text = "El número de tarjeta no es válido.";
+                        lblMensajeError.Text = "El número de tarjeta no es válido. Debe contener 16 dígitos.";
                         return;
                     }
 
+                    // Validar formato y longitud de código de seguridad
                     if (!EsNumerico(txtCodigoSeguridad.Text) || txtCodigoSeguridad.Text.Length != 3)
                     {
                         lblMensajeError.Text = "El código de seguridad (CVV) debe contener 3 números.";
+                        return;
+                    }
+
+                    // Validar fecha de vencimiento de tarjeta
+                    if (!EsFechaVencimientoValida(txtFechaVencimiento.Text))
+                    {
+                        lblMensajeError.Text = "La fecha de vencimiento de la tarjeta no es válida o ya ha expirado.";
                         return;
                     }
 
@@ -113,6 +155,7 @@ namespace TPC_Web
                     RegistrarPedidoEnBaseDeDatos();
                 }
 
+                // Redirigir a la página de agradecimiento si todo está correcto
                 Response.Redirect("Gracias.aspx");
             }
             catch (Exception ex)
@@ -120,6 +163,7 @@ namespace TPC_Web
                 lblMensajeError.Text = "Error: " + ex.Message;
             }
         }
+
 
         private void RegistrarPedidoEnBaseDeDatos()
         {
@@ -240,5 +284,40 @@ namespace TPC_Web
 
             return datos;
         }
+        private bool EsFechaVencimientoValida(string fecha)
+        {
+            try
+            {
+                // Intentar parsear la fecha en formato MM/yy
+                if (DateTime.TryParseExact(fecha, "MM/yy",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None,
+                    out DateTime fechaVencimiento))
+                {
+                    // Validar que la fecha sea futura
+                    return fechaVencimiento > DateTime.Now;
+                }
+                return false; // Si no se pudo parsear, la fecha es inválida
+            }
+            catch
+            {
+                return false; // Manejar excepciones y considerar fecha como inválida
+            }
+        }
+        private bool EsEmailValido(string email)
+        {
+            try
+            {
+                // Intentar crear un objeto MailAddress con el email proporcionado
+                var mail = new System.Net.Mail.MailAddress(email);
+                return mail.Address == email;
+            }
+            catch
+            {
+                return false; // Si falla, el email no es válido
+            }
+        }
+
+
     }
 }

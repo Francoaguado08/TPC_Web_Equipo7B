@@ -23,9 +23,9 @@ namespace TPC_Web
             }
         }
 
-
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            // Validar que IDUsuario es numérico
             if (!int.TryParse(Request.QueryString["IDUsuario"], out int idUsuario))
             {
                 // Manejar el error, mostrar mensaje al usuario o redirigir
@@ -33,6 +33,23 @@ namespace TPC_Web
                 return;
             }
 
+            // Validar que DNI contiene solo números
+            if (!int.TryParse(txtDNI.Text, out _))
+            {
+                lblError.Text = "El DNI debe contener solo números.";
+                lblError.Visible = true;
+                return;
+            }
+
+            // Validar que Telefono contiene solo números
+            if (!int.TryParse(txtTelefono.Text, out _))
+            {
+                lblError.Text = "El teléfono debe contener solo números.";
+                lblError.Visible = true;
+                return;
+            }
+
+            // Crear objeto DatosPersonales
             DatosPersonales datos = new DatosPersonales
             {
                 IDUsuario = idUsuario,
@@ -45,11 +62,11 @@ namespace TPC_Web
                 Telefono = txtTelefono.Text
             };
 
+            // Guardar los datos usando la capa de negocio
             DatoPersonalNegocio negocio = new DatoPersonalNegocio();
             negocio.Agregar(datos);
 
             Response.Redirect("Default.aspx");
         }
-
     }
 }

@@ -64,11 +64,19 @@
             margin-top: 15px;
             font-size: 14px;
         }
+
+        .error-message {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
     </style>
 
     <div class="form-container">
         <h2>Datos Personales</h2>
-        <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="false"></asp:Label>
+
+        <!-- Label para mensajes de error -->
+        <asp:Label ID="lblError" runat="server" CssClass="error-message" ForeColor="Red" Visible="false"></asp:Label>
 
         <div class="form-group">
             <label for="txtDNI">DNI</label>

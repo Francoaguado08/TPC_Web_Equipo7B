@@ -9,8 +9,10 @@ namespace TPC_Web
 {
     public partial class AdministrarPedidos : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Validar si el usuario tiene acceso (tipoUsuario == 1 significa administrador).
             int? idUsuario = Session["IDUsuario"] as int?;
             int? tipoUsuario = Session["tipoUsuario"] as int?;
 
@@ -21,34 +23,34 @@ namespace TPC_Web
 
             if (!IsPostBack)
             {
-                PedidoNegocio negocio = new PedidoNegocio();
-                List<Pedido> pedidos = negocio.ObtenerTodosLosPedidos();
-
-                gvPedidos.DataSource = pedidos;
-                gvPedidos.AllowPaging = true;
-                gvPedidos.PageSize = 10;
-                gvPedidos.PageIndexChanging += GvPedidos_PageIndexChanging;
-                gvPedidos.DataBind();
+                CargarPedidos();
             }
         }
 
-        private void GvPedidos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        private void CargarPedidos()
         {
-            gvPedidos.PageIndex = e.NewPageIndex;
             PedidoNegocio negocio = new PedidoNegocio();
             List<Pedido> pedidos = negocio.ObtenerTodosLosPedidos();
+
             gvPedidos.DataSource = pedidos;
             gvPedidos.DataBind();
+        }
+
+        protected void GvPedidos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            // Cambiar al índice de página seleccionado y recargar los pedidos.
+            gvPedidos.PageIndex = e.NewPageIndex;
+            CargarPedidos();
         }
 
         protected void gvPedidos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Modificar")
             {
-                // Obtener el ID del pedido desde el CommandArgument
-                int idPedido = Convert.ToInt32(e.CommandArgument); // El CommandArgument tiene el ID del pedido
+                // Obtener el ID del pedido desde el CommandArgument.
+                int idPedido = Convert.ToInt32(e.CommandArgument);
 
-                // Obtener la fila que disparó el evento
+                // Obtener la fila que disparó el evento.
                 GridViewRow row = (GridViewRow)((Button)e.CommandSource).NamingContainer;
                 DropDownList ddlEstado = (DropDownList)row.FindControl("ddlEstado");
 
@@ -56,19 +58,31 @@ namespace TPC_Web
                 {
                     string nuevoEstado = ddlEstado.SelectedValue;
 
-                    // Crear una instancia de PedidoNegocio para modificar el estado
+                    // Modificar el estado del pedido.
                     PedidoNegocio negocio = new PedidoNegocio();
-
-                    // Modificar el estado del pedido
                     negocio.ModificarEstadoPedido(idPedido, nuevoEstado);
 
-                    // Recargar los pedidos y volver a enlazarlos al GridView
-                    List<Pedido> pedidos = negocio.ObtenerTodosLosPedidos();
-                    gvPedidos.DataSource = pedidos;
-                    gvPedidos.DataBind();
+                    // Recargar los pedidos después de la actualización.
+                    CargarPedidos();
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }

@@ -85,7 +85,7 @@ CREATE TABLE Pedidos (
     ID INT PRIMARY KEY IDENTITY(1,1),
     IDUsuario INT NOT NULL,
     FechaPedido DATETIME NOT NULL DEFAULT GETDATE(),
-    Estado NVARCHAR(50) NOT NULL,
+    Estado NVARCHAR(50) NOT NULL
 );
 GO
 
@@ -258,29 +258,6 @@ ALTER TABLE Pedidos ALTER COLUMN IDUsuario INT NULL;
 --ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 0;
 
 	
---CREATE TRIGGER TR_ActualizarStock
---ON DetallesPedidos
---AFTER INSERT
---AS
---BEGIN
---    SET NOCOUNT ON;
-
---    -- Actualizar el stock en la tabla Articulos
---    UPDATE A
---    SET A.Stock = A.Stock - DP.Cantidad
---    FROM Articulos A
---    INNER JOIN inserted DP
---        ON A.ID = DP.IDArticulo;
-
---    -- Verificar que ningún artículo quede con stock negativo
---    IF EXISTS (SELECT 1 FROM Articulos WHERE Stock < 0)
---    BEGIN
---        -- Revertir la transacción si el stock es insuficiente
---        ROLLBACK TRANSACTION;
---        THROW 50000, 'Error: Stock insuficiente para uno o más artículos.', 1;
---    END
---END;
---GO
 
 
 
@@ -346,4 +323,14 @@ BEGIN
     END
 END;
 GO
+
+----------------------- 29-11
+
+--- ELIMINACION EN CASCADA --> CUANDO SE ELIMINA UN USUARIO , SE ELIMINAN SUS DATOS PERSONALES!
+-- POR SI OPTAMOS ESTO!
+--ALTER TABLE DatosPersonales
+--ADD CONSTRAINT FK_DatosPersonales_Usuarios
+--FOREIGN KEY (IDUsuario) 
+--REFERENCES Usuarios(IDUsuario)
+--ON DELETE CASCADE;
 

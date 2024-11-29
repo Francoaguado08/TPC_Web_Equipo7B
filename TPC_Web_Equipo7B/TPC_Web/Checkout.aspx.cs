@@ -1,20 +1,12 @@
-﻿using Dominio;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Net.Mail; // Para validación de email
+using System.Net.Mail;
+using Dominio;
 using Negocio;
-using Microsoft.Win32;
-using System.Security.Cryptography;
-using static System.Collections.Specialized.BitVector32;
-using System.Web.UI.WebControls.WebParts;
 
 namespace TPC_Web
 {
-    public partial class Checkout : Page
+    public partial class Checkout : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -48,7 +40,26 @@ namespace TPC_Web
 
                 gvCarrito.DataSource = carrito.ObtenerProductos();
                 gvCarrito.DataBind();
-                lblTotal.Text = "Total: " + carrito.ObtenerTotal().ToString("C");
+                lblTotal.Text = carrito.ObtenerTotal().ToString("C");
+            }
+        }
+
+        protected void ddlMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string metodoPago = ddlMetodoPago.SelectedValue;
+
+            // Mostrar/ocultar secciones según la selección
+            divTransferencia.Visible = metodoPago == "Transferencia";
+            divTarjeta.Visible = metodoPago == "TarjetaCredito";
+
+            // Actualizar el total en el caso de transferencia
+            if (metodoPago == "Transferencia")
+            {
+                CarritoCompras carrito = (CarritoCompras)Session["compras"];
+                if (carrito != null)
+                {
+                    lblTotalTransferencia.Text = carrito.ObtenerTotal().ToString("C");
+                }
             }
         }
 
@@ -56,34 +67,65 @@ namespace TPC_Web
         {
             try
             {
-                // Validar si los campos están rellenados
                 if (!SonDatosCompletos())
                 {
                     lblMensajeError.Text = "Por favor, completa todos los campos antes de continuar.";
                     return;
                 }
 
-                // Validar que el teléfono y el DNI sean numéricos
-                if (!EsNumerico(txtTelefono.Text) || !EsNumerico(txtDNI.Text))
+                if (string.IsNullOrWhiteSpace(ddlMetodoPago.SelectedValue))
                 {
-                    lblMensajeError.Text = "El campo Teléfono y DNI deben contener solo números.";
+                    lblMensajeError.Text = "Por favor, selecciona un método de pago antes de continuar.";
                     return;
                 }
 
-                // Validar el formato del email
-                if (!EsEmailValido(txtEmail.Text))
+                string metodoPago = ddlMetodoPago.SelectedValue;
+
+                if (metodoPago == "Transferencia")
                 {
-                    lblMensajeError.Text = "El email ingresado no es válido. Por favor, verifica e intenta nuevamente.";
-                    return;
+                    lblMensajeError.Text = "Tu pedido se ha registrado. Realiza la transferencia para completar tu compra.";
+                    RegistrarPedidoEnBaseDeDatos();
+                }
+                else if (metodoPago == "TarjetaCredito")
+                {
+                    if (string.IsNullOrWhiteSpace(txtNumeroTarjeta.Text) ||
+                        string.IsNullOrWhiteSpace(txtNombreTitular.Text) ||
+                        string.IsNullOrWhiteSpace(txtFechaVencimiento.Text) ||
+                        string.IsNullOrWhiteSpace(txtCodigoSeguridad.Text))
+                    {
+                        lblMensajeError.Text = "Por favor, completa todos los datos de la tarjeta antes de continuar.";
+                        return;
+                    }
+
+                    if (!EsNumerico(txtNumeroTarjeta.Text) || txtNumeroTarjeta.Text.Length != 16)
+                    {
+                        lblMensajeError.Text = "El número de tarjeta no es válido.";
+                        return;
+                    }
+
+                    if (!EsNumerico(txtCodigoSeguridad.Text) || txtCodigoSeguridad.Text.Length != 3)
+                    {
+                        lblMensajeError.Text = "El código de seguridad (CVV) debe contener 3 números.";
+                        return;
+                    }
+
+                    lblMensajeError.Text = "Pago procesado exitosamente con tarjeta de crédito.";
+                    RegistrarPedidoEnBaseDeDatos();
                 }
 
+                Response.Redirect("Gracias.aspx");
+            }
+            catch (Exception ex)
+            {
+                lblMensajeError.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void RegistrarPedidoEnBaseDeDatos()
+        {
+            try
+            {
                 CarritoCompras carrito = (CarritoCompras)Session["compras"];
-                if (carrito == null || carrito.ObtenerProductos().Count == 0)
-                {
-                    lblMensajeError.Text = "El carrito está vacío. Por favor, agrega productos antes de confirmar.";
-                    return;
-                }
-
                 Usuario usuario = (Usuario)Session["usuario"];
 
                 DatosPersonales datosPersonales = usuario != null
@@ -93,34 +135,24 @@ namespace TPC_Web
                 PedidoNegocio pedidoNegocio = new PedidoNegocio();
                 bool exito = pedidoNegocio.RegistrarPedidoCompleto(usuario?.IDUsuario, carrito, datosPersonales);
 
-                if (exito)
+                if (!exito)
                 {
-                    Session["compras"] = null;
-                    Session["datosCheckout"] = null;
-                    Response.Redirect("Gracias.aspx");
+                    lblMensajeError.Text = "Ocurrió un problema al registrar el pedido.";
                 }
                 else
                 {
-                    lblMensajeError.Text = "Ocurrió un problema al procesar el pedido.";
+                    Session["compras"] = null;
                 }
             }
             catch (Exception ex)
             {
-                lblMensajeError.Text = "Error: " + ex.Message;
+                lblMensajeError.Text = "Error al registrar en la base de datos: " + ex.Message;
             }
         }
 
-        private bool EsEmailValido(string email)
+        private bool EsNumerico(string texto)
         {
-            try
-            {
-                var mail = new MailAddress(email);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return long.TryParse(texto, out _);
         }
 
         private bool SonDatosCompletos()
@@ -135,12 +167,7 @@ namespace TPC_Web
                    !string.IsNullOrWhiteSpace(txtEmail.Text);
         }
 
-        private bool EsNumerico(string texto)
-        {
-            return int.TryParse(texto, out _);
-        }
-
-        public DatosPersonales ObtenerDatosDesdeSesion(Usuario usuario)
+        private DatosPersonales ObtenerDatosDesdeSesion(Usuario usuario)
         {
             return new DatosPersonales
             {
@@ -155,7 +182,7 @@ namespace TPC_Web
             };
         }
 
-        public DatosPersonales ObtenerDatosDesdeFormulario()
+        private DatosPersonales ObtenerDatosDesdeFormulario()
         {
             return new DatosPersonales
             {
@@ -169,7 +196,7 @@ namespace TPC_Web
             };
         }
 
-        public DatosPersonales ObtenerDatosPersonales(int idUsuario)
+        private DatosPersonales ObtenerDatosPersonales(int idUsuario)
         {
             AccesoDatos datosAcceso = new AccesoDatos();
             DatosPersonales datos = null;
@@ -178,7 +205,6 @@ namespace TPC_Web
             {
                 datosAcceso.setearConsulta("SELECT * FROM DatosPersonales WHERE IDUsuario = @IDUsuario");
                 datosAcceso.setearParametro("@IDUsuario", idUsuario);
-
                 datosAcceso.ejecutarLectura();
 
                 if (datosAcceso.Lector.Read())
@@ -196,12 +222,6 @@ namespace TPC_Web
                         Telefono = datosAcceso.Lector["Telefono"].ToString()
                     };
                 }
-
-                datosAcceso.Lector.Close();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {

@@ -43,6 +43,31 @@ namespace TPC_Web
 
                         liAdministrar.Controls.Add(aAdministrar);
                         Navbar.Controls.Add(liAdministrar);
+
+
+
+
+
+
+
+                        // Opción "Estadísticas"
+                        var liEstadisticas = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
+                        liEstadisticas.Attributes["class"] = "nav-item";
+
+                        var aEstadisticas = new System.Web.UI.HtmlControls.HtmlAnchor
+                        {
+                            HRef = "Estadisticas.aspx",
+                            InnerText = "Estadísticas"
+                        };
+                        aEstadisticas.Attributes["class"] = "nav-link";
+
+                        liEstadisticas.Controls.Add(aEstadisticas);
+                        Navbar.Controls.Add(liEstadisticas);
+
+
+
+
+
                     }
                 }
             }

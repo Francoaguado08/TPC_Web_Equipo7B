@@ -135,6 +135,7 @@
     <Content Include="DetalleArticulo.aspx" />
     <Content Include="EditarProducto.aspx" />
     <Content Include="EliminarProducto.aspx" />
+    <Content Include="Estadisticas.aspx" />
     <Content Include="Exito.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -317,6 +318,13 @@
     </Compile>
     <Compile Include="EliminarProducto.aspx.designer.cs">
       <DependentUpon>EliminarProducto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Estadisticas.aspx.cs">
+      <DependentUpon>Estadisticas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Estadisticas.aspx.designer.cs">
+      <DependentUpon>Estadisticas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Exito.aspx.cs">
       <DependentUpon>Exito.aspx</DependentUpon>

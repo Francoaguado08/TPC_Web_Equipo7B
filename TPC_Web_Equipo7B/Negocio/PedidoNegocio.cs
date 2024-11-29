@@ -12,9 +12,20 @@ namespace Negocio
     public class PedidoNegocio
     {
 
-       /// ------------------------------------------------------------------------------------------------------
-        
-        
+
+
+      
+
+
+
+
+
+
+
+
+        /// ------------------------------------------------------------------------------------------------------
+
+
         //Metodo principal para registrar el pedido.
         public bool RegistrarPedidoCompleto(int? idUsuario, CarritoCompras carrito, DatosPersonales datos)
         {

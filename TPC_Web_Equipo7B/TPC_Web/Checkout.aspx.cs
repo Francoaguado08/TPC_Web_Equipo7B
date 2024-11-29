@@ -125,12 +125,13 @@ namespace TPC_Web
         {
             try
             {
+                // **8. Registrar el pedido y actualizar la base de datos**
                 CarritoCompras carrito = (CarritoCompras)Session["compras"];
                 Usuario usuario = (Usuario)Session["usuario"];
 
                 DatosPersonales datosPersonales = usuario != null
-                    ? ObtenerDatosDesdeSesion(usuario)
-                    : ObtenerDatosDesdeFormulario();
+                    ? ObtenerDatosDesdeSesion(usuario) // Obtener datos desde sesión
+                    : ObtenerDatosDesdeFormulario(); // O desde el formulario
 
                 PedidoNegocio pedidoNegocio = new PedidoNegocio();
                 bool exito = pedidoNegocio.RegistrarPedidoCompleto(usuario?.IDUsuario, carrito, datosPersonales);
@@ -141,6 +142,7 @@ namespace TPC_Web
                 }
                 else
                 {
+                    // Vaciar el carrito tras confirmar el pedido
                     Session["compras"] = null;
                 }
             }
@@ -149,6 +151,14 @@ namespace TPC_Web
                 lblMensajeError.Text = "Error al registrar en la base de datos: " + ex.Message;
             }
         }
+
+
+
+
+
+
+
+
 
         private bool EsNumerico(string texto)
         {

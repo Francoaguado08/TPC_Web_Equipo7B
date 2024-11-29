@@ -34,6 +34,20 @@ namespace Negocio
 
         }
 
+        public int EJECUTARACCION()
+        {
+            try
+            {
+                return comando.ExecuteNonQuery(); // Retorna el número de filas afectadas
+            }
+            catch (Exception ex)
+            {
+                throw ex; // Lanza la excepción para ser manejada en niveles superiores
+            }
+        }
+
+
+
 
 
         public void setearConsulta(string consulta)

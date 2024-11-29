@@ -255,7 +255,7 @@ ALTER TABLE Pedidos ALTER COLUMN IDUsuario INT NULL;
 
 ------------------------------------------------------------------------------------------------------------->
 -- 26 / 11 --> AGREGAMOS
-ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 0;
+--ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 0;
 
 	
 --CREATE TRIGGER TR_ActualizarStock
@@ -301,4 +301,49 @@ ON DELETE CASCADE;
 
 
 
+
+ALTER TABLE Articulos ADD Stock INT NOT NULL DEFAULT 50;
+
+
+SELECT * FROM Usuarios;
+
+SELECT COUNT(*) AS CantidadUsuarios 
+FROM Usuarios;
+
+SELECT COUNT(*) AS Compras2024 
+FROM Pedidos 
+WHERE YEAR(FechaPedido) = 2024;
+
+
+
+SELECT ID, Nombre, Stock FROM Articulos WHERE ID = 1;
+
+
+CREATE TRIGGER TR_ActualizarStock
+ON DetallesPedidos
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Actualizar el stock en la tabla Articulos
+    UPDATE Articulos
+    SET Stock = Stock - inserted.Cantidad
+    FROM Articulos
+    INNER JOIN inserted
+    ON Articulos.ID = inserted.IDArticulo;
+
+    -- Opcional: Validar que el stock no sea negativo
+    IF EXISTS (
+        SELECT 1 
+        FROM Articulos 
+        WHERE Stock < 0
+    )
+    BEGIN
+        -- Opcional: Si ocurre, puedes revertir la transacción
+        RAISERROR ('Stock insuficiente para uno o más artículos.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+GO
 

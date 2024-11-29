@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,6 +9,46 @@ namespace Negocio
 {
     public class ArticuloNegocio
     {
+
+
+
+        //Este método se asegura de que solo se descuente el stock si hay suficiente cantidad disponible(Stock >= @Cantidad).
+         //Si no hay suficiente stock, el UPDATE no se realizará.
+        public void actualizarStock(int idArticulo, int cantidad)
+        {   AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                UPDATE Articulos
+                SET Stock = Stock - @Cantidad
+                WHERE ID = @IDArticulo AND Stock >= @Cantidad");
+
+                datos.setearParametro("@IDArticulo", idArticulo);
+                datos.setearParametro("@Cantidad", cantidad);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar el stock del artículo.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         public List<Articulo> listar()
         {
             List<Articulo> lista = new List<Articulo>();

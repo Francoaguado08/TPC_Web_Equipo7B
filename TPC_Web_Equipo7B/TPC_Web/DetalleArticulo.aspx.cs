@@ -37,6 +37,7 @@ namespace TPC_Web
                     txtDescripcion.Text = artiSeleccionado.Descripcion;
                     txtMarca.Text = $"Marca: {artiSeleccionado.Marca}";
                     txtCategoria.Text = $"Categoría: {artiSeleccionado.Categoria}";
+                    lblStockDisponible.Text = artiSeleccionado.Stock.ToString();
                 }
                 else
                 {

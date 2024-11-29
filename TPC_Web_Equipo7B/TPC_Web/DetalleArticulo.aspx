@@ -111,6 +111,7 @@
                     <p><strong>Descripción:</strong> <asp:Label ID="txtDescripcion" runat="server" /></p>
                     <p><strong>Marca:</strong> <asp:Label ID="txtMarca" runat="server" /></p>
                     <p><strong>Categoría:</strong> <asp:Label ID="txtCategoria" runat="server" /></p>
+                    <p><strong>Stock disponible:</strong> <asp:Label ID="lblStockDisponible" runat="server"></asp:Label></p>
                 </div>
             </div>
         </div>

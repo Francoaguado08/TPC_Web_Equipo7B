@@ -49,9 +49,13 @@
         <%-- Botones para acciones adicionales --%>
         <div class="d-flex justify-content-between mt-4">
             <asp:Button ID="btnCkeckout" runat="server" Text="Comprar" CssClass="btn btn-success" OnClick="btnCkeckout_Click" />
+           
+            <asp:Button ID="btnLimpiarCarrito" runat="server" Text="Limpiar Carrito" CssClass="btn btn-danger" Onclick="btnLimpiarCarrito_Click" />
             <a href="Default.aspx" class="btn btn-primary">Volver</a>
         </div>
-
+        <br />
+        <br />
+        <br />  
         <%-- Mensaje de error --%>
         <asp:Label ID="lblMensajeError" runat="server" Text="Error: Algo salió mal." CssClass="text-danger mt-3 d-block" Visible="false"></asp:Label>
     </div>

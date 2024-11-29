@@ -1,55 +1,73 @@
 ﻿<%@ Page Title="Detalles Artículo" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DetalleArticulo.aspx.cs" Inherits="TPC_Web.DetalleArticulo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <style>
-        /* Estilo general */
-        .detalle-articulo-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px; /* Espaciado entre imagen y detalles */
-        }
+  <style>
+    /* Estilo general */
+    .detalle-articulo-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px; /* Espaciado entre imagen y detalles */
+    }
 
-        /* Ajuste de la imagen */
-        .img-small {
-            max-width: 300px;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    /* Ajuste del carrusel */
+    .carousel {
+        width: 300px; /* Tamaño fijo del carrusel */
+        height: 300px;
+        overflow: hidden;
+        flex-shrink: 0; /* Evita que el carrusel reduzca su tamaño */
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa; /* Color de fondo para prevenir contenido vacío */
+    }
 
-        /* Tarjeta de detalles */
-        .detalle-card {
-            flex: 1;
-        }
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-        .detalle-card-header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            border-radius: 8px 8px 0 0;
-            text-align: center;
-            font-weight: bold;
-        }
+    /* Tarjeta de detalles */
+    .detalle-card {
+        flex: 1; /* Se expande para ocupar el espacio restante */
+        min-width: 300px; /* Evita que el contenido colapse en pantallas pequeñas */
+    }
 
-        .detalle-card-body {
-            border: 1px solid #ddd;
-            border-top: none;
-            padding: 20px;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .detalle-card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 8px 8px 0 0;
+        text-align: center;
+        font-weight: bold;
+    }
 
-        /* Botones */
-        .detalle-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
+    .detalle-card-body {
+        border: 1px solid #ddd;
+        border-top: none;
+        padding: 20px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-    <div class="container mt-5">
+    /* Botones */
+    .detalle-buttons {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .container {
+    margin-top: 0; /* Elimina cualquier margen superior */
+}
+
+    
+</style>
+
+
+   
         <!-- Título de la página -->
-        <h1 class="text-center mb-4">Detalle del Artículo</h1>
+
+        <h1 class="form-header">DETALLE</h1>
+
 
         <% 
             string defaultUrl = "https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png";

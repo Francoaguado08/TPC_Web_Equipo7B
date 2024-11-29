@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Compras.aspx.cs" Inherits="TPC_Web.Compras" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="container my-4">
-        <h1 class="text-center mb-4">Compras</h1>
-        <h2>Detalle de compra</h2>
+    
+        <h1 class="form-header">COMPRAS</h1>
+        <h2 class="text-center mb-4">DETALLE DE TU COMPRA</h2>
         <p class="text-muted">Puede modificar la cantidad de compra en determinado artículo.</p>
 
         <%-- GridView para mostrar los productos en el carrito --%>

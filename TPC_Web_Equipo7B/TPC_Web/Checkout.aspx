@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Checkout" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="TPC_Web.Checkout" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Checkout</h2>
+    <div class="form-header">FINALIZA TU COMPRA</div>
 
     <!-- Resumen de la compra -->
     <section>
@@ -20,7 +20,7 @@
     </section>
 
     <section cssClass="border-dark">
-        <h3>Datos relevantes para finalizar la compra</h3>
+        <div class="form-header">DATOS DE FACTURACION</div>
         <div class="form-group">
             <asp:TextBox ID="txtNombre" runat="server" Placeholder="Nombre" CssClass="form-control" />
         </div>
@@ -43,14 +43,14 @@
             <asp:TextBox ID="txtTelefono" runat="server" Placeholder="Teléfono" CssClass="form-control" />
         </div>
 
-        <h4>Email para recibir notificaciones del pedido!</h4>
+        <div class="form-header">RECIBI TU FACTURA</div>
         <div class="form-group">
             <asp:TextBox ID="txtEmail" runat="server" Placeholder="Email" CssClass="form-control" />
         </div>
 
         <!-- Método de pago -->
         <div class="form-group">
-            <label for="ddlMetodoPago">Método de Pago:</label>
+             <div class="form-header">PAGO</div>
             <asp:DropDownList ID="ddlMetodoPago" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="ddlMetodoPago_SelectedIndexChanged">
                 <asp:ListItem Value="" Text="Seleccionar método de pago" />
                 <asp:ListItem Value="Transferencia" Text="Transferencia Bancaria" />
@@ -59,24 +59,26 @@
         </div>
 
         <!-- Información para transferencia bancaria -->
-        <div id="divTransferencia" runat="server" visible="false" class="form-group">
-            <h4>Detalles para realizar la transferencia:</h4>
-            <p><strong>Banco:</strong> Banco BBVA</p>
-            <p><strong>Titular:</strong> E7B SRL. </p>
-            <p><strong>CUIT:</strong> 30-70345234-7</p>
-            <p><strong>Cuenta:</strong> 347-456789/2</p>
-            <p><strong>CBU:</strong> 0987654321234567891234</p>
-            <p><strong>Total a transferir:</strong> <asp:Label ID="lblTotalTransferencia" runat="server" CssClass="total-label"></asp:Label></p>
-        </div>
+        <div id="divTransferencia" runat="server" visible="false" class="transferencia-container">
+    <h4>Detalles para realizar la transferencia:</h4>
+    <p><strong>Banco:</strong> Banco BBVA</p>
+    <p><strong>Titular:</strong> E7B SRL. </p>
+    <p><strong>CUIT:</strong> 30-70345234-7</p>
+    <p><strong>Cuenta:</strong> 347-456789/2</p>
+    <p><strong>CBU:</strong> 0987654321234567891234</p>
+    <p><strong>Total a transferir:</strong> <asp:Label ID="lblTotalTransferencia" runat="server" CssClass="total-label"></asp:Label></p>
+</div>
+
 
         <!-- Formulario para tarjeta de crédito -->
-        <div id="divTarjeta" runat="server" visible="false" class="form-group">
-            <h4>Ingrese los datos de su tarjeta:</h4>
-            <asp:TextBox ID="txtNumeroTarjeta" runat="server" Placeholder="Número de tarjeta" CssClass="form-control" MaxLength="16" />
-            <asp:TextBox ID="txtNombreTitular" runat="server" Placeholder="Nombre del titular" CssClass="form-control" />
-            <asp:TextBox ID="txtFechaVencimiento" runat="server" Placeholder="Fecha de vencimiento (MM/AA)" CssClass="form-control" />
-            <asp:TextBox ID="txtCodigoSeguridad" runat="server" Placeholder="Código de seguridad (CVV)" CssClass="form-control" MaxLength="3" />
-        </div>
+        <div id="divTarjeta" runat="server" visible="false" class="tarjeta-container">
+    <h4>Ingrese los datos de su tarjeta:</h4>
+    <asp:TextBox ID="txtNumeroTarjeta" runat="server" Placeholder="Número de tarjeta" CssClass="form-control" MaxLength="16" />
+    <asp:TextBox ID="txtNombreTitular" runat="server" Placeholder="Nombre del titular" CssClass="form-control" />
+    <asp:TextBox ID="txtFechaVencimiento" runat="server" Placeholder="Fecha de vencimiento (MM/AA)" CssClass="form-control" />
+    <asp:TextBox ID="txtCodigoSeguridad" runat="server" Placeholder="Código de seguridad (CVV)" CssClass="form-control" MaxLength="3" />
+</div>
+
 
 
 

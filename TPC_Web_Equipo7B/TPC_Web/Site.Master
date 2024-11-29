@@ -86,6 +86,73 @@
         font-size: 24px;
         font-weight: bold;
     }
+
+    .transferencia-container {
+    background: linear-gradient(to bottom, black, #555); /* Fondo degradado negro a gris */
+    color: white; /* Texto blanco */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
+    margin-bottom: 20px; /* Separación inferior */
+    font-family: Arial, sans-serif; /* Fuente legible */
+}
+
+.transferencia-container h4 {
+    font-size: 1.5rem; /* Tamaño del título */
+    font-weight: bold; /* Negrita */
+    margin-bottom: 10px; /* Espaciado inferior */
+    text-align: center; /* Centrado */
+}
+
+.transferencia-container p {
+    font-size: 1rem; /* Tamaño del texto */
+    margin-bottom: 8px; /* Separación entre líneas */
+}
+
+.transferencia-container p strong {
+    color: #f1c40f; /* Color dorado para destacar */
+}
+
+.total-label {
+    font-size: 1.2rem; /* Tamaño más grande para el total */
+    font-weight: bold; /* Resaltar el total */
+    color: #1abc9c; /* Color verde para el total */
+}
+
+.tarjeta-container {
+    background: linear-gradient(to bottom, black, #555); /* Fondo degradado negro a gris */
+    color: white; /* Texto blanco */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
+    margin-bottom: 20px; /* Separación inferior */
+    font-family: Arial, sans-serif; /* Fuente legible */
+}
+
+.tarjeta-container h4 {
+    font-size: 1.5rem; /* Tamaño del título */
+    font-weight: bold; /* Negrita */
+    margin-bottom: 20px; /* Espaciado inferior */
+    text-align: center; /* Centrado */
+}
+
+.tarjeta-container .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Espaciado entre campos */
+    border: 1px solid #ddd; /* Bordes claros */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 1rem; /* Tamaño de texto */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna */
+}
+
+.tarjeta-container .form-control:focus {
+    border-color: #1abc9c; /* Color verde en foco */
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5); /* Sombra verde */
+    outline: none; /* Elimina el borde predeterminado */
+}
+
+
 </style>
 
 <!DOCTYPE html>

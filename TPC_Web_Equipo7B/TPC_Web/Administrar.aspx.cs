@@ -7,13 +7,11 @@ namespace TPC_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Verificar si el usuario está logueado
             int? idUsuario = Session["IDUsuario"] as int?;
             int? tipoUsuario = Session["tipoUsuario"] as int?;
 
             if (idUsuario == null || tipoUsuario != 1)
             {
-                // Redirigir al inicio si no está logueado o no tiene permiso de administrador
                 Response.Redirect("Default.aspx");
             }
         }
@@ -36,6 +34,11 @@ namespace TPC_Web
         protected void btnAdministrarUsuario_Click(object sender, EventArgs e)
         {
             Response.Redirect("AdministrarUsuario.aspx");
+        }
+
+        protected void btnAdministrarPedidos_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AdministrarPedidos.aspx");
         }
     }
 }

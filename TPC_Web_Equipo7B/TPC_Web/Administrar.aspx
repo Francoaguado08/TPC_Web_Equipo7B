@@ -6,5 +6,6 @@
         <asp:Button ID="btnAdministrarCategoria" runat="server" Text="Administrar Categorías" OnClick="btnAdministrarCategoria_Click" CssClass="btn btn-success" />
         <asp:Button ID="btnAdministrarMarca" runat="server" Text="Administrar Marcas" OnClick="btnAdministrarMarca_Click" CssClass="btn btn-info" />
         <asp:Button ID="btnAdministrarUsuario" runat="server" Text="Administrar Usuarios" OnClick="btnAdministrarUsuario_Click" CssClass="btn btn-warning" />
+        <asp:Button ID="btnAdministrarPedidos" runat="server" Text="Administrar Pedidos" OnClick="btnAdministrarPedidos_Click" CssClass="btn btn-danger" />
     </div>
 </asp:Content>

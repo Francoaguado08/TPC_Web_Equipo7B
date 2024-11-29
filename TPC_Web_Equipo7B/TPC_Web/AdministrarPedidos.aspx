@@ -1,7 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HistorialPedidos.aspx.cs" Inherits="TPC_Web.HistorialPedidos" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AdministrarPedidos.aspx.cs" Inherits="TPC_Web.AdministrarPedidos" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <!-- Estilos CSS -->
     <style>
         .grid-view {
             width: 100%;
@@ -52,25 +50,26 @@
         }
     </style>
 
-
-    <h2>Historial de Pedidos</h2>
-    <p>Aquí puedes consultar los pedidos que has realizado.</p>
+    <h2>Administrar Pedidos</h2>
+    <p>Aquí puedes administrar todos los pedidos realizados.</p>
 
     <asp:GridView ID="gvPedidos" runat="server" AutoGenerateColumns="False" CssClass="grid-view" OnRowCommand="gvPedidos_RowCommand">
         <Columns>
             <asp:BoundField DataField="FechaPedido" HeaderText="Fecha de Pedido" SortExpression="FechaPedido" />
             <asp:BoundField DataField="Estado" HeaderText="Estado" SortExpression="Estado" />
-            
 
             <asp:TemplateField HeaderText="Acciones">
                 <ItemTemplate>
-                    <asp:LinkButton ID="btnVerDetalles" runat="server" Text="<i class='fa fa-eye'></i> Ver Detalles"
-                                   CommandName="VerDetalles" CommandArgument='<%# Eval("ID") %>' CssClass="link-button" />
+                    <asp:DropDownList ID="ddlEstado" runat="server" CssClass="link-button">
+                        <asp:ListItem Text="Procesando" Value="Procesando"></asp:ListItem>
+                        <asp:ListItem Text="Enviado" Value="Enviado"></asp:ListItem>
+                        <asp:ListItem Text="Entregado" Value="Entregado"></asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:Button ID="btnModificar" runat="server" Text="Modificar" CommandName="Modificar" CommandArgument='<%# Eval("ID") %>' CssClass="link-button" />
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
     </asp:GridView>
 
-    <!-- Incluir FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 </asp:Content>

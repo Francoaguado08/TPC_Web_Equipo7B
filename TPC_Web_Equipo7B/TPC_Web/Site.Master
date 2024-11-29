@@ -178,6 +178,9 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Compras">🛒Compras</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Acerca de Nosotros</a></li>
+                        <li class="nav-item" id="liHistorialPedidos" runat="server">
+                        <a class="nav-link" runat="server" href="~/HistorialPedidos.aspx">📜 Historial de Pedidos</a>
+                    </li>
 
                         <!-- Administrar -->
                         <li class="nav-item" id="liAdministrar" runat="server" visible="false">

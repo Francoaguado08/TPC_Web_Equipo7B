@@ -1,43 +1,21 @@
 ﻿using Dominio;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Negocio
 {
     public class PedidoNegocio
     {
-
-
-
-      
-
-
-
-
-
-
-
-
-        /// ------------------------------------------------------------------------------------------------------
-
-
-        //Metodo principal para registrar el pedido.
         public bool RegistrarPedidoCompleto(int? idUsuario, CarritoCompras carrito, DatosPersonales datos)
         {
             try
             {
-                // Validar carrito
                 if (carrito == null || carrito.ObtenerProductos().Count == 0)
                 {
                     throw new Exception("El carrito está vacío.");
                 }
 
-                // Validar datos personales
                 if (datos == null)
                 {
                     throw new Exception("No se proporcionaron datos personales.");
@@ -45,16 +23,13 @@ namespace Negocio
 
                 PedidoNegocio pedidoNegocio = new PedidoNegocio();
 
-                // 1. Registrar datos personales si aplica
                 if (idUsuario.HasValue)
                 {
                     pedidoNegocio.RegistrarDatosPersonales(idUsuario.Value, datos);
                 }
 
-                // 2. Registrar el pedido
                 int idPedido = pedidoNegocio.RegistrarPedido(idUsuario);
 
-                // 3. Registrar los detalles del pedido
                 pedidoNegocio.RegistrarDetallesPedido(idPedido, carrito.ObtenerProductos());
 
                 return true;
@@ -65,31 +40,22 @@ namespace Negocio
             }
         }
 
-
-
-
-
-       // Si el usuario es registrado y no tiene datos personales asociados, o si es un cliente no registrado,
-       // insertamos sus datos en la tabla DatosPersonales.
         public void RegistrarDatosPersonales(int idUsuario, DatosPersonales datosPersonales)
         {
             AccesoDatos datosAcceso = new AccesoDatos();
 
             try
             {
-                // Verificar si ya existen datos personales
                 datosAcceso.setearConsulta("SELECT COUNT(*) FROM DatosPersonales WHERE IDUsuario = @IDUsuario");
                 datosAcceso.setearParametro("@IDUsuario", idUsuario);
-            
+
                 int existe = Convert.ToInt32(datosAcceso.ejecutarScalar());
 
-                if (existe == 0) // Si no existen los datos, registrar --->
+                if (existe == 0)
                 {
-                 
                     datosAcceso.setearConsulta(@"INSERT INTO DatosPersonales 
                                     (IDUsuario, DNI, Nombre, Apellido, Domicilio, Pais, Provincia, Telefono) 
                                     VALUES (@IDUsuario, @DNI, @Nombre, @Apellido, @Domicilio, @Pais, @Provincia, @Telefono)");
-
 
                     datosAcceso.setearParametro("@IDUsuario", idUsuario);
                     datosAcceso.setearParametro("@DNI", datosPersonales.DNI);
@@ -112,25 +78,17 @@ namespace Negocio
             }
         }
 
-
-
-        //Este método registra el pedido y devuelve el ID generado.
         public int RegistrarPedido(int? idUsuario)
         {
             AccesoDatos datosAcceso = new AccesoDatos();
 
             try
             {
-                // INSERTED.ID --> devuelve el valor de la columna ID del nuevo registro.
-                //Para que lo quiero ?  datosAcceso.ejecutarScalar(): Ejecuta la consulta y obtiene el valor de INSERTED.ID (el ID del pedido recién creado).
-                //
                 datosAcceso.setearConsulta(@"
                 INSERT INTO Pedidos (IDUsuario, FechaPedido, Estado) 
                 OUTPUT INSERTED.ID 
                 VALUES (@IDUsuario, GETDATE(), 'Pendiente')");
-                datosAcceso.setearParametro("@IDUsuario", idUsuario ?? (object)DBNull.Value); //si idUsuario tiene un valor, se usa directamente.
-                                                                                              //Si es null, se pasa DBNull.Value a la base de datos.
-                // Si idUsuario es null, se pasa DBNull.Value a la base de datos
+                datosAcceso.setearParametro("@IDUsuario", idUsuario ?? (object)DBNull.Value);
 
                 return Convert.ToInt32(datosAcceso.ejecutarScalar());
             }
@@ -144,14 +102,12 @@ namespace Negocio
             }
         }
 
-
-
-        //Este método agrega los productos del carrito a la tabla DetallesPedidos.
         public void RegistrarDetallesPedido(int idPedido, List<Articulo> productos)
         {
             foreach (var producto in productos)
             {
-                AccesoDatos datosAcceso = new AccesoDatos(); // Crear una nueva instancia en cada iteración
+                AccesoDatos datosAcceso = new AccesoDatos();
+
                 try
                 {
                     datosAcceso.setearConsulta(@"
@@ -170,19 +126,11 @@ namespace Negocio
                 }
                 finally
                 {
-                    // Asegúrate de cerrar la conexión y limpiar parámetros después de cada iteración
                     datosAcceso.cerrarConexion();
                     datosAcceso.limpiarParametros();
                 }
             }
         }
-
-
-
-
-
-        /// ------------------------------------------------------------------------------------------------------------------
-
 
         public List<Pedido> ObtenerPedidosPorUsuario(int idUsuario)
         {
@@ -191,7 +139,6 @@ namespace Negocio
 
             try
             {
-                // Consultar todos los pedidos del usuario
                 datos.setearConsulta("SELECT ID, FechaPedido, Estado FROM Pedidos WHERE IDUsuario = @IDUsuario");
                 datos.setearParametro("@IDUsuario", idUsuario);
 
@@ -212,7 +159,6 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                // Manejo de errores
                 throw new Exception("Error al obtener los pedidos", ex);
             }
             finally
@@ -221,14 +167,158 @@ namespace Negocio
             }
         }
 
+        public List<DetallesPedidos> ObtenerDetallesPorPedido(int idPedido)
+        {
+            List<DetallesPedidos> detalles = new List<DetallesPedidos>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT IDDetallePedido, IDPedido, IDArticulo, Cantidad, PrecioUnitario 
+            FROM DetallesPedidos 
+            WHERE IDPedido = @IDPedido");
+
+                datos.setearParametro("@IDPedido", idPedido);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    DetallesPedidos detalle = new DetallesPedidos
+                    {
+                        IDDetallePedido = (int)datos.Lector["IDDetallePedido"],
+                        IDPedido = (int)datos.Lector["IDPedido"],
+                        IDArticulo = (int)datos.Lector["IDArticulo"],
+                        Cantidad = (int)datos.Lector["Cantidad"],
+                        PrecioUnitario = (decimal)datos.Lector["PrecioUnitario"]
+                    };
+                    detalles.Add(detalle);
+                }
+
+                return detalles;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los detalles del pedido", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void ModificarEstadoPedido(int idPedido, string nuevoEstado)
+        {
+            AccesoDatos datosAcceso = new AccesoDatos();
+
+            Pedido pedido = ObtenerPedidoPorId(idPedido);
+            if (pedido.Estado == nuevoEstado)
+            {
+                // Esto lanza una excepción si el estado es el mismo que antes
+                throw new Exception("El pedido ya está en el estado seleccionado.");
+            }
+
+            try
+            {
+                datosAcceso.setearConsulta("UPDATE Pedidos SET Estado = @Estado WHERE ID = @IDPedido");
+                datosAcceso.setearParametro("@Estado", nuevoEstado);
+                datosAcceso.setearParametro("@IDPedido", idPedido);
+                datosAcceso.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar el estado del pedido.", ex);
+            }
+            finally
+            {
+                datosAcceso.cerrarConexion();
+            }
+        }
 
 
 
+        public List<Pedido> ObtenerTodosLosPedidos()
+        {
+            List<Pedido> pedidos = new List<Pedido>();
+            AccesoDatos datos = new AccesoDatos();
 
-       
+            try
+            {
+                // Modificamos la consulta para que traiga todos los pedidos
+                datos.setearConsulta("SELECT ID, FechaPedido, Estado FROM Pedidos");
 
+                datos.ejecutarLectura();
 
+                while (datos.Lector.Read())
+                {
+                    Pedido pedido = new Pedido
+                    {
+                        ID = (int)datos.Lector["ID"],
+                        FechaPedido = (DateTime)datos.Lector["FechaPedido"],
+                        Estado = (string)datos.Lector["Estado"]
+                    };
+                    pedidos.Add(pedido);
+                }
 
+                return pedidos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener todos los pedidos.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public Pedido ObtenerPedidoPorId(int idPedido)
+        {
+            Pedido pedido = null;
+            AccesoDatos datosAcceso = new AccesoDatos();
+
+            try
+            {
+                string query = "SELECT * FROM Pedidos WHERE ID = @ID";
+                datosAcceso.setearConsulta(query);
+                datosAcceso.setearParametro("@ID", idPedido);
+
+                datosAcceso.ejecutarLectura();
+
+                if (datosAcceso.Lector.Read())
+                {
+                    pedido = new Pedido();
+
+                    if (datosAcceso.Lector["ID"] != DBNull.Value)
+                    {
+                        pedido.ID = Convert.ToInt32(datosAcceso.Lector["ID"]);
+                    }
+
+                    if (datosAcceso.Lector["FechaPedido"] != DBNull.Value)
+                    {
+                        pedido.FechaPedido = Convert.ToDateTime(datosAcceso.Lector["FechaPedido"]);
+                    }
+
+                    if (datosAcceso.Lector["Estado"] != DBNull.Value)
+                    {
+                        pedido.Estado = datosAcceso.Lector["Estado"].ToString();
+                    }
+                    else
+                    {
+                        pedido.Estado = string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el pedido por ID.", ex);
+            }
+            finally
+            {
+                datosAcceso.cerrarConexion();
+            }
+
+            return pedido;
+        }
 
 
 

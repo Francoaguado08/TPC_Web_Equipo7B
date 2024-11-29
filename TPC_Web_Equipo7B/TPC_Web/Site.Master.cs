@@ -16,6 +16,7 @@ namespace TPC_Web
                 liLogin.Visible = idUsuario == null;
                 liPerfil.Visible = idUsuario != null;
                 btnLogout.Visible = idUsuario != null;
+                liHistorialPedidos.Visible = idUsuario != null;  // Visibilidad de Historial de Pedidos
 
                 if (idUsuario != null)
                 {
@@ -31,6 +32,7 @@ namespace TPC_Web
 
                     if (tipoUsuario == 1)
                     {
+                        // Agregar opciones adicionales solo para tipoUsuario == 1 (por ejemplo, Administrar y Estadísticas)
                         var liAdministrar = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
                         liAdministrar.Attributes["class"] = "nav-item";
 
@@ -43,12 +45,6 @@ namespace TPC_Web
 
                         liAdministrar.Controls.Add(aAdministrar);
                         Navbar.Controls.Add(liAdministrar);
-
-
-
-
-
-
 
                         // Opción "Estadísticas"
                         var liEstadisticas = new System.Web.UI.HtmlControls.HtmlGenericControl("li");
@@ -63,11 +59,6 @@ namespace TPC_Web
 
                         liEstadisticas.Controls.Add(aEstadisticas);
                         Navbar.Controls.Add(liEstadisticas);
-
-
-
-
-
                     }
                 }
             }
